@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frosty Delight | Premium Ice Cream</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Pacifico&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="commonstyle.css">
+</head>
+<body>
+    <div class="background-blobs"></div>
+    
+    <header id="main-header"></header>
+
+    <section class="hero" style="display: flex; align-items: center; justify-content: space-around; padding: 100px 8%; min-height: 80vh;">
+        <div class="glass-card" style="max-width: 500px; padding: 40px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(15px); border-radius: 30px; border: 1px solid rgba(255, 255, 255, 0.3);">
+            <h1 style="font-size: 3rem; line-height: 1.2; margin-bottom: 20px; font-family: 'Playfair Display';">
+    Ya <span style="color: #003366;">Gareebnawaz</span> CSC
+</h1>
+<p style="font-size: 1.2rem; color: #555; margin-bottom: 30px; font-weight: 500;">
+    "Aapki har digital zaroorat ka hal" <br> 
+    Aadhaar, Banking, aur sabhi Government services ab ek hi chat ke niche.
+</p>
+            
+            <div class="cta-buttons" style="display: flex; gap: 15px;">
+                <a href="flavour.html" style="text-decoration: none;">
+                    <button class="add-btn" style="padding: 15px 30px; font-size: 1rem;">Explore Menu</button>
+                </a>
+                <a href="story.html" style="text-decoration: none;">
+                    <button style="padding: 15px 30px; background: transparent; border: 2px solid #d63384; color: #d63384; border-radius: 25px; font-weight: bold; cursor: pointer;">Our Story</button>
+                </a>
+            </div>
+        </div>
+
+<div class="hero-image" style="position: relative;">
+    
+    <a href="Flavour.html" style="text-decoration: none; cursor: pointer;">
+        <img id="frostySlider" src="images/n/1.jpg" alt="CSC services" 
+             style="width: 100%; height: 500px; object-fit: cover; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.1); transition: opacity 0.5s ease-in-out;">
+        
+        <div class="floating-badge" style="position: absolute; bottom: -20px; right: -20px; background: #ff6b6b; color: white; padding: 15px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(255,107,107,0.3);">
+            Explore Our Services..!
+        </div>
+    </a>
+
+</div>
+</div>
+    </section>
+
+    <script src="logic.js"></script>
+<script>
+    const totalImages = 10;
+    const speed = 2000;
+    let currentImage = 1;
+    const slider = document.getElementById('frostySlider');
+
+    setInterval(() => {
+        // 1. Fade Out
+        slider.style.opacity = 0;
+
+        setTimeout(() => {
+            currentImage++;
+            if (currentImage > totalImages) {
+                currentImage = 1;
+            }
+
+            // --- CHANGE: Onload ko src se pehle rakhein ---
+            slider.onload = function() {
+                slider.style.opacity = 1;
+            };
+
+            // Image path set karein
+            slider.src = "images/n/" + currentImage + ".jpg";
+
+            // Fallback: Agar onload miss ho jaye toh 0.2s baad dikha de
+            setTimeout(() => {
+                if(slider.style.opacity == 0) slider.style.opacity = 1;
+            }, 200);
+
+        }, 500); 
+    }, speed);
+</script>
+</body>
+</html>

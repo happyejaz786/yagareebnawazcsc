@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YA GAREEBNAWAZ CSC | DIGITAL SEVA KENDRA</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&family=Pacifico&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="commonstyle.css">
+</head>
+<body>
+    <div class="background-blobs"></div>
+    
+    <header id="main-header"></header>
+<section class="hero" style="display: flex; align-items: center; justify-content: space-around; padding: 60px 8%; min-height: 80vh;">
+    <div class="glass-card" style="max-width: 500px; padding: 40px; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); border-radius: 30px; border: 1px solid rgba(0, 51, 102, 0.2);">
+        <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: #003366; margin-bottom: 20px;">
+            Ya <span style="color: #007bff;">Gareebnawaz</span> CSC
+        </h1>
+        <p style="font-size: 1.1rem; color: #444; line-height: 1.6; margin-bottom: 30px;">
+            "Aapki har digital zaroorat ka ek hi samadhan." <br>
+            Aadhaar, PAN, Banking aur sabhi Sarkari suvidhayein ab hamare kendra par uplabdha hain.
+        </p>
+        <a href="#" class="add-btn" style="text-decoration: none; background: #003366; color: white; padding: 15px 40px; border-radius: 50px; font-weight: bold; font-size: 1.1rem; box-shadow: 0 10px 20px rgba(0,51,102,0.3); transition: 0.3s; display: inline-block;">Hamaari Sevaayein</a>
+    </div>
+
+    <div class="hero-image" style="position: relative;">
+        <div style="width: 650px; height: 400px; background: #fff; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); border: 2px solid #003366;">
+            <img id="frostySlider" 
+                 src="images/n/1.jpg" 
+                 alt="CSC Banner" 
+                 style="width: 100%; height: 100%; object-fit: contain; transition: opacity 0.5s ease-in-out;">
+        </div>
+        
+        <div class="floating-badge" style="position: absolute; bottom: -15px; right: -15px; background: #007bff; color: white; padding: 12px 25px; border-radius: 50px; font-weight: bold; box-shadow: 0 10px 20px rgba(0,123,255,0.3);">
+            75/- Only*
+        </div>
+    </div>
+</section>
+    <script src="logic.js"></script>
+<script>
+    const totalImages = 10;
+    const speed = 2000;
+    let currentImage = 1;
+    const slider = document.getElementById('frostySlider');
+
+    setInterval(() => {
+        // 1. Fade Out
+        slider.style.opacity = 0;
+
+        setTimeout(() => {
+            currentImage++;
+            if (currentImage > totalImages) {
+                currentImage = 1;
+            }
+
+            // --- CHANGE: Onload ko src se pehle rakhein ---
+            slider.onload = function() {
+                slider.style.opacity = 1;
+            };
+
+            // Image path set karein
+            slider.src = "images/n/" + currentImage + ".jpg";
+
+            // Fallback: Agar onload miss ho jaye toh 0.2s baad dikha de
+            setTimeout(() => {
+                if(slider.style.opacity == 0) slider.style.opacity = 1;
+            }, 200);
+
+        }, 500); 
+    }, speed);
+</script>
+</body>
+</html>
