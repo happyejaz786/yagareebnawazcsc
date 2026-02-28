@@ -1,113 +1,59 @@
 /**
- * logic.js - GAREEBNAWAZ CSC OFFICIAL
- * Project: CSC Digital Seva Portal
- * Date: 26 Feb 2026
- * Final Update: Fixed WhatsApp Link & Navigation Logic
+ * logic.js - YA GAREEBNAWAZ CSC OFFICIAL
  */
 
-// 1. Inject Header (Navbar) - Poori tarah se clean aur functional navigation
-function injectHeader() {
+function injectLayout() {
     const headerContainer = document.getElementById('main-header');
+    const footerContainer = document.getElementById('main-footer');
+
+    // 1. CSC Header with Logo Fix
     if (headerContainer) {
         headerContainer.innerHTML = `
-        <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 15px 8%; background: white; border-bottom: 2px solid #003366; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-family: 'Poppins', sans-serif;">
-            
-            <div class="logo-wrapper" onclick="window.location.href='index.html'" style="display: flex; align-items: center; gap: 12px; cursor: pointer;">
-                <img src="images/logo.jpg" alt="CSC Logo" class="main-logo" style="width: 55px; height: 55px; border-radius: 50%; border: 2px solid #003366; transition: 0.3s; object-fit: cover;">
-                <div class="logo-text" style="line-height: 1.1; text-align: left;">
-                    <span style="font-weight: 900; font-size: 1.4rem; color: #003366; display: block; letter-spacing: 1px;">GAREEBNAWAZ</span>
-                    <span style="font-size: 0.75rem; color: #666; font-weight: bold; text-transform: uppercase;">Digital Seva Center</span>
+        <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 8%; background: white; border-bottom: 2px solid #003366; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-family: 'Poppins', sans-serif;">
+            <div class="logo-wrapper" onclick="window.location.href='index.html'" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
+                <img src="images/logo.jpg" alt="CSC Logo" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #003366; object-fit: cover;">
+                <div class="logo-text" style="line-height: 1.1;">
+                    <span style="font-weight: 900; font-size: 1.2rem; color: #003366; display: block;">GAREEBNAWAZ</span>
+                    <span style="font-size: 0.7rem; color: #666; font-weight: bold;">DIGITAL SEVA CENTER</span>
                 </div>
             </div>
-            
-            <ul class="nav-links" style="display: flex; list-style: none; gap: 25px; margin: 0; padding: 0;">
-                <li><a href="index.html" class="nav-item">Home</a></li>
-                <li><a href="services.html" class="nav-item">Services</a></li>
-                <li><a href="status.html" class="nav-item">Track Status</a></li>
-                <li><a href="contact.html" class="nav-item">Contact Us</a></li>
+            <ul class="nav-links" style="display: flex; list-style: none; gap: 20px; margin: 0; padding: 0;">
+                <li><a href="index.html" style="text-decoration:none; color:#003366; font-weight:700;">Home</a></li>
+                <li><a href="services.html" style="text-decoration:none; color:#003366; font-weight:700;">Services</a></li>
+                <li><a href="contact.html" style="text-decoration:none; color:#003366; font-weight:700;">Contact</a></li>
             </ul>
-
-            <div class="nav-cta">
-                <button type="button" 
-                        onclick="event.stopPropagation(); window.open('https://wa.me/917007420882?text=Hello%20Gareebnawaz%20CSC', '_blank');" 
-                        style="background: #25D366; color: white; padding: 12px 22px; border-radius: 50px; border: none; font-weight: bold; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 10px rgba(37,211,102,0.3); font-size: 0.9rem;">
-                    <i class="fab fa-whatsapp" style="font-size: 1.2rem;"></i> Chat Now
-                </button>
-            </div>
-        </nav>
-        `;
+        </nav>`;
     }
-}
 
-// 2. Slider Logic for Home Page (CSC Banners)
-function initSlider() {
-    // TotalImages ko aapne 10 rakha tha, agar poster ek hi hai to ise 1 kar dein.
-    const totalImages = 1; 
-    const speed = 4000;    
-    let currentImage = 1;
-    const slider = document.getElementById('frostySlider');
-
-    if (slider) {
-        setInterval(() => {
-            slider.style.opacity = 0; // Fade out effect
-            
-            setTimeout(() => {
-                currentImage++;
-                if (currentImage > totalImages) {
-                    currentImage = 1;
-                }
-                slider.src = `images/n/${currentImage}.jpg`;
+    // 2. CSC Footer with Social Links & Counter
+    if (footerContainer) {
+        const uniqueTime = new Date().getTime(); 
+        footerContainer.innerHTML = `
+        <footer style="background: linear-gradient(to right, #001f3f, #003366); color: white; padding: 25px 8%; margin-top: 40px; border-top: 4px solid #007bff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
                 
-                slider.onload = () => {
-                    slider.style.opacity = 1; // Fade in
-                };
-            }, 500);
-        }, speed);
+                <div style="text-align: left;">
+                    <h3 style="margin: 0; font-family: 'Cambria', serif; font-weight: bold; font-size: 1.3rem; color: #fff; letter-spacing: 0.5px;">
+                        © 2026 Developed by Mohammad Ejaz Khan
+                    </h3>
+                    <div style="display: flex; gap: 18px; margin-top: 10px; font-size: 1.4rem;">
+                        <a href="https://wa.me/917007420882" target="_blank" style="color: white; transition: 0.3s;"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" style="color: white; transition: 0.3s;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="color: white; transition: 0.3s;"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div style="text-align: right;">
+                    <div style="background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); display: inline-block;">
+                        <span style="font-size: 0.65rem; text-transform: uppercase; display: block; margin-bottom: 4px; opacity: 0.9; font-weight: bold; letter-spacing: 1px;">Total Visitors</span>
+                        <img src="https://hitwebcounter.com/counter/counter.php?page=happyejaz786_final&style=0005&nbdigits=5&type=page&initCount=0&nocache=${uniqueTime}" 
+                             style="width: 100px; height: auto; display: block; margin: 0 auto;" alt="Visitor Counter">
+                    </div>
+                </div>
+                
+            </div>
+        </footer>`;
     }
 }
 
-// 3. Page Initialization & Event Listeners
-document.addEventListener('DOMContentLoaded', () => {
-    injectHeader();
-    initSlider();
-    
-    // Smooth Scroll Fix: Sirf '#' se shuru hone wale internal links ko handle karein
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            const targetId = this.getAttribute('href');
-            if (targetId !== "#") {
-                e.preventDefault();
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-    });
-});
-
-// CSS Styling through JS for Animations
-const customStyles = document.createElement('style');
-customStyles.innerHTML = `
-    .nav-item {
-        text-decoration: none;
-        color: #003366;
-        font-weight: 600;
-        font-size: 1rem;
-        position: relative;
-        transition: 0.3s;
-    }
-    .nav-item::after {
-        content: '';
-        position: absolute;
-        width: 0; height: 2px;
-        bottom: -5px; left: 0;
-        background-color: #007bff;
-        transition: 0.3s;
-    }
-    .nav-item:hover { color: #007bff; }
-    .nav-item:hover::after { width: 100%; }
-    .main-logo:hover { transform: scale(1.05); }
-    .nav-cta button:hover { transform: translateY(-2px); background: #128C7E !important; transition: 0.2s; }
-`;
-document.head.appendChild(customStyles);
+document.addEventListener('DOMContentLoaded', injectLayout);
