@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Ya Gareebnawaz CSC</title>
+
+    <link rel="stylesheet" href="commonstyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .contact-section {
+            padding: 50px 8%;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .contact-title {
+            text-align: center;
+            color: #003366;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .contact-card {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .contact-card h3 {
+            color: #003366;
+            margin-bottom: 20px;
+        }
+
+        .contact-card p {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 12px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .google { background: #db4437; }
+        .mapbtn { background: #4285F4; }
+        .whatsapp { background: #25D366; }
+
+        .map-card iframe {
+            width: 100%;
+            height: 420px;
+            border: 0;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header id="main-header"></header>
+
+<section class="contact-section">
+
+    <h2 class="contact-title">
+        Humein <span style="color:#007bff;">Sampark</span> Karein
+    </h2>
+
+    <div class="contact-grid">
+
+        <!-- LEFT SIDE INFO -->
+        <div class="contact-card">
+            <h3><i class="fas fa-map-marker-alt"></i> Hamara Pata</h3>
+
+            <p>
+                <strong>National CSC Digital Seva Kendra</strong><br>
+                Mohalla Alizai Near Badi Masjid<br>
+                National Girls Inter College Road<br>
+                Shahjahanpur, Uttar Pradesh - 242001
+            </p>
+
+            <hr style="margin:20px 0;">
+
+            <p>
+                <strong><i class="fas fa-phone-alt" style="color:#25D366;"></i> Support:</strong><br>
+                +91 7007420882
+            </p>
+
+            <div style="margin-top:25px;">
+
+                <a href="https://g.page/r/CaSbnIdP3_saEBE/review"
+                   target="_blank"
+                   class="btn google">
+                   <i class="fab fa-google"></i> Write a Google Review
+                </a>
+
+                <a href="https://maps.google.com/?daddr=National+CSC+Digital+Seva+Kendra+Shahjahanpur+242001"
+                   target="_blank"
+                   class="btn mapbtn">
+                   <i class="fas fa-directions"></i> Get Directions
+                </a>
+
+                <a href="https://wa.me/917007420882?text=Hello%20Ejaz%20Bhai"
+                   target="_blank"
+                   class="btn whatsapp">
+                   <i class="fab fa-whatsapp"></i> WhatsApp Chat
+                </a>
+
+            </div>
+        </div>
+
+        <!-- RIGHT SIDE MAP -->
+        <div class="contact-card map-card">
+            <iframe
+                src="https://www.google.com/maps?q=National+CSC+Digital+Seva+Kendra+Mohalla+Alizai+Near+Badi+Masjid+National+Girls+Inter+College+Road+Shahjahanpur+Uttar+Pradesh+242001&output=embed"
+                loading="lazy">
+            </iframe>
+        </div>
+
+    </div>
+
+</section>
+
+<footer id="main-footer"></footer>
+
+<script src="logic.js"></script>
+
+</body>
+</html>
