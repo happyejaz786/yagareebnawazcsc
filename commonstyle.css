@@ -1,6 +1,6 @@
 /* ========================================
    MASTER COMBINATION CSS - YA GAREEBNAWAZ CSC
-   (Final Quick Fix for Images & Cards)
+   (Final Professional Update with Borders)
    ======================================== */
 
 * { 
@@ -29,7 +29,7 @@ body {
 .navbar {
     display: flex; justify-content: space-between; align-items: center; padding: 10px 10%;
     background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(15px); 
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border-bottom: 2px solid #003366; /* Match with screenshot border */
     position: sticky; top: 0; z-index: 1000;
 }
 
@@ -52,10 +52,10 @@ body {
 }
 .nav-menu a:hover { color: #007bff; }
 
-/* --- GRID & CARDS (IMAGE FIT FIX APPLIED HERE) --- */
+/* --- GRID & CARDS (IMAGE & BORDER FIX APPLIED) --- */
 .grid-container {
     display: grid;
-    /* Card ki width badha kar 350px kar di gayi hai */
+    /* Card width for 3-column professional layout */
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
     gap: 30px; margin-top: 40px; max-width: 1200px; margin-inline: auto; padding: 20px 0;
 }
@@ -64,26 +64,39 @@ body {
     background: rgba(255, 255, 255, 0.7); 
     backdrop-filter: blur(15px); padding: 25px; border-radius: 20px;
     border: 1px solid rgba(0, 51, 102, 0.1); box-shadow: 0 10px 30px rgba(0, 51, 102, 0.05);
-    transition: all 0.3s; display: flex; flex-direction: column; justify-content: space-between; height: 100%;
+    transition: all 0.3s ease-in-out; display: flex; flex-direction: column; justify-content: space-between; height: 100%;
 }
 
 .glass-card:hover {
-    transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); border-color: rgba(0, 123, 255, 0.3);
+    transform: translateY(-10px); 
+    box-shadow: 0 15px 40px rgba(0, 51, 102, 0.1); 
+    border-color: #007bff;
 }
 
+/* Image with Blue Border & White BG as per screenshot */
 .glass-card img {
     width: 100%;
-    height: 200px; /* Standard Height */
-    object-fit: contain; /* PERFECT FIT - kategi nahi image */
-    background: #f9f9f9; /* Image choti ho toh background clean dikhe */
-    border-radius: 12px; margin-bottom: 15px; display: block; transition: transform 0.5s ease;
+    height: 220px; 
+    object-fit: contain; /* Professional poster fit */
+    background: #ffffff; /* White BG for posters */
+    border: 2px solid #003366; /* THEME BLUE BORDER */
+    border-radius: 12px; 
+    margin-bottom: 15px; 
+    display: block; 
+    transition: transform 0.5s ease;
 }
 
-.glass-card:hover img { transform: scale(1.03); }
+.glass-card:hover img { transform: scale(1.02); }
 
-/* --- BUTTONS --- */
+/* --- BUTTONS (Premium Rounded) --- */
 .add-btn {
-    background: #003366; color: white; padding: 12px 25px; border-radius: 30px; border: none;
+    background: #003366; color: white; padding: 15px 25px; border-radius: 50px; border: none;
     cursor: pointer; font-weight: 700; width: 100%; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
 }
-.add-btn:hover { background: #0056b3; box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3); }
+.add-btn:hover { background: #0056b3; box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3); transform: scale(1.02); }
+
+/* --- FOOTER POSITION FIX --- */
+#main-footer {
+    width: 100%;
+    margin-top: auto;
+}
