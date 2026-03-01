@@ -1,59 +1,103 @@
-/**
- * logic.js - YA GAREEBNAWAZ CSC OFFICIAL
- */
+// ========================================
+// FINAL LOGIC.JS (With Dropdown Submenu)
+// ========================================
 
-function injectLayout() {
-    const headerContainer = document.getElementById('main-header');
-    const footerContainer = document.getElementById('main-footer');
+function loadHeader() {
+    const header = document.getElementById("main-header");
 
-    // 1. CSC Header with Logo Fix
-    if (headerContainer) {
-        headerContainer.innerHTML = `
-        <nav class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 12px 8%; background: white; border-bottom: 2px solid #003366; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.05); font-family: 'Poppins', sans-serif;">
-            <div class="logo-wrapper" onclick="window.location.href='index.html'" style="display: flex; align-items: center; gap: 10px; cursor: pointer;">
-                <img src="images/logo.jpg" alt="CSC Logo" style="width: 45px; height: 45px; border-radius: 50%; border: 2px solid #003366; object-fit: cover;">
-                <div class="logo-text" style="line-height: 1.1;">
-                    <span style="font-weight: 900; font-size: 1.2rem; color: #003366; display: block;">GAREEBNAWAZ</span>
-                    <span style="font-size: 0.7rem; color: #666; font-weight: bold;">DIGITAL SEVA CENTER</span>
-                </div>
-            </div>
-            <ul class="nav-links" style="display: flex; list-style: none; gap: 20px; margin: 0; padding: 0;">
-                <li><a href="index.html" style="text-decoration:none; color:#003366; font-weight:700;">Home</a></li>
-                <li><a href="services.html" style="text-decoration:none; color:#003366; font-weight:700;">Services</a></li>
-                <li><a href="contact.html" style="text-decoration:none; color:#003366; font-weight:700;">Contact</a></li>
-            </ul>
-        </nav>`;
-    }
+    if (header) {
+        header.innerHTML = `
+        <style>
+            @keyframes floatSphere { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+            .logo-wrapper:hover .main-logo { transform: rotate(360deg); }
+            .main-logo { transition: transform 0.6s ease-in-out; }
+            .nav-link-bold { font-weight: 700 !important; text-decoration: none; color: #333; text-transform: uppercase; font-size: 17px; transition: 0.3s; }
+            .nav-link-bold:hover { color: #007bff; }
+            
+            /* Submenu CSS */
+            .dropdown:hover .dropdown-content { display: block !important; }
+            .dropdown-content::-webkit-scrollbar { width: 6px; }
+            .dropdown-content::-webkit-scrollbar-thumb { background: #007bff; border-radius: 10px; }
+            .menu-columns a { padding: 10px 15px; text-decoration: none; color: #555; font-weight: 700; font-size: 15px; transition: 0.3s; border-bottom: 1px solid #f9f9f9; display: block; white-space: nowrap; }
+            .menu-columns a:last-child { border-bottom: none; }
+            .menu-columns a:hover { background: #f0f8ff; color: #007bff; padding-left: 20px; }
+        </style>
 
-    // 2. CSC Footer with Social Links & Counter
-    if (footerContainer) {
-        const uniqueTime = new Date().getTime(); 
-        footerContainer.innerHTML = `
-        <footer style="background: linear-gradient(to right, #001f3f, #003366); color: white; padding: 25px 8%; margin-top: 40px; border-top: 4px solid #007bff;">
-            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
-                
-                <div style="text-align: left;">
-                    <h3 style="margin: 0; font-family: 'Cambria', serif; font-weight: bold; font-size: 1.3rem; color: #fff; letter-spacing: 0.5px;">
-                        © 2026 Developed by Mohammad Ejaz Khan
+        <nav style="display:flex; justify-content:space-between; align-items:center; padding:12px 8%; background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); position:sticky; top:0; z-index:1000; border-bottom:1px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            
+            <div class="logo-wrapper" style="display:flex; align-items:center; gap:15px; cursor: pointer;">
+                <img src="images/logo.jpg" alt="CSC Logo" class="main-logo" style="height:80px; width:80px; border-radius:50%; object-fit: cover; border: 3px solid #003366; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+                <div style="display: flex; flex-direction: column; justify-content: center;">
+                    <div style="font-family: 'Playfair Display', serif; font-weight:900; font-size:2.2rem; color:#003366; line-height: 1.1;">
+                        YA GAREEBNAWAZ <span class="moving-sphere" style="color:#007bff; display: inline-block; animation: floatSphere 3s ease-in-out infinite;">CSC</span>
+                    </div>
+                    <h3 style="font-family: 'Cambria', serif; font-size: 1.1rem; font-weight: 700; color: #d63384; letter-spacing: 1px; margin-top: 5px; margin-bottom: 0;">
+                        AADHAAR DEMOGRAPHIC UPDATE CENTER
                     </h3>
-                    <div style="display: flex; gap: 18px; margin-top: 10px; font-size: 1.4rem;">
-                        <a href="https://wa.me/917007420882" target="_blank" style="color: white; transition: 0.3s;"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#" style="color: white; transition: 0.3s;"><i class="fab fa-facebook"></i></a>
-                        <a href="#" style="color: white; transition: 0.3s;"><i class="fab fa-instagram"></i></a>
-                    </div>
                 </div>
-
-                <div style="text-align: right;">
-                    <div style="background: rgba(255,255,255,0.1); padding: 8px 15px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.2); display: inline-block;">
-                        <span style="font-size: 0.65rem; text-transform: uppercase; display: block; margin-bottom: 4px; opacity: 0.9; font-weight: bold; letter-spacing: 1px;">Total Visitors</span>
-                        <img src="https://hitwebcounter.com/counter/counter.php?page=happyejaz786_final&style=0005&nbdigits=5&type=page&initCount=0&nocache=${uniqueTime}" 
-                             style="width: 100px; height: auto; display: block; margin: 0 auto;" alt="Visitor Counter">
-                    </div>
-                </div>
-                
             </div>
-        </footer>`;
+
+            <ul style="display:flex; list-style:none; gap:30px; margin:0; align-items: center;">
+                <li><a href="index.html" class="nav-link-bold">Home</a></li>
+                
+                <li class="dropdown" style="position: relative; padding: 10px 0;">
+                    <a href="Services.html" class="nav-link-bold">Services ▼</a>
+                    <div class="dropdown-content" style="display: none; position: absolute; background: white; min-width: 200px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); border-radius: 12px; padding: 10px; left: 0; top: 100%; border-top: 4px solid #007bff; z-index: 1000;">
+                        <div class="menu-columns">
+                            <a href="aadhaar.html">Aadhaar Update</a>
+                            <a href="Services.html">PVC Card Print</a>
+                            <a href="Services.html">PAN Card Service</a>
+                            <a href="Services.html">Scholarship Form</a>
+                            <a href="Services.html">Voter ID & More</a>
+                        </div>
+                    </div>
+                </li>
+                <li><a href="contact.html" class="nav-link-bold">Contact</a></li>
+            </ul>
+
+            <div class="cart-box" style="background: #003366; padding: 10px 20px; border-radius: 50px; transition: background 0.3s;">
+                <a href="checkout.html" style="font-weight: 800; text-decoration: none; color: white; display: flex; align-items: center; gap: 8px; font-size: 16px;">
+                    🛒 <span id="cart-count">0</span> ITEMS
+                </a>
+            </div>
+        </nav>
+        `;
     }
 }
 
-document.addEventListener('DOMContentLoaded', injectLayout);
+function loadFooter() {
+    const footer = document.getElementById("main-footer");
+    if (footer) {
+        footer.innerHTML = `
+        <div style="padding: 30px 8%; text-align: center; background: #f8f9fa; border-top: 1px solid #ddd; margin-top: 40px;">
+            <p style="color: #666; font-size: 1rem; font-weight: 500;">© 2026 YA GAREEBNAWAZ CSC Shahjahanpur. All Rights Reserved.</p>
+        </div>`;
+    }
+}
+
+function addToCart(name, price, qtyId) {
+    const qtyInput = document.getElementById(qtyId);
+    const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+    let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+    cart.push({ name, price, qty });
+    localStorage.setItem('cscCart', JSON.stringify(cart));
+    updateUI();
+    const toast = document.getElementById('toast');
+    if (toast) {
+        toast.style.display = 'block';
+        toast.innerText = name + " added to cart!";
+        setTimeout(() => { toast.style.display = 'none'; }, 2000);
+    } else { alert(name + " added to list!"); }
+}
+
+function updateUI() {
+    const cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+    const countDisplay = document.getElementById('cart-count');
+    if (countDisplay) countDisplay.innerText = cart.length;
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    loadHeader();
+    loadFooter();
+    updateUI(); 
+});
