@@ -4,60 +4,275 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aadhaar Services | Ya Gareebnawaz CSC</title>
+    
     <link rel="stylesheet" href="commonstyle.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
-        .service-detail-box { max-width: 800px; margin: 40px auto; padding: 40px; text-align: center; }
-        .service-detail-box img { width: 100%; height: 350px; object-fit: contain; background: #fff; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .btn-group { display: flex; gap: 20px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
-        .chat-btn { background: #25D366; color: white; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .chat-btn:hover { background: #1ebe57; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3); }
-        .call-btn { background: #007bff; color: white; padding: 15px 35px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 1.1rem; transition: 0.3s; display: flex; align-items: center; gap: 10px; }
-        .call-btn:hover { background: #0056b3; transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3); }
-        .info-section { text-align: left; background: rgba(255,255,255,0.8); padding: 25px; border-radius: 15px; border: 1px solid rgba(0,0,0,0.05); margin-bottom: 20px; }
-        .info-title { color: #007bff; font-size: 1.1rem; margin-top: 15px; margin-bottom: 5px; font-weight: bold; }
+        /* 1. CONTAINER KI WIDTH BADA DI HAI */
+        .detail-page-container {
+            max-width: 1300px !important;
+            padding: 40px 5% !important;
+        }
+
+        .product-wrapper {
+            display: flex;
+            gap: 50px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        .product-img-box {
+            flex: 0 0 40%; /* Left image box ab sirf 40% jagah lega */
+            max-width: 500px;
+        }
+
+        .product-content {
+            flex: 1; /* Baki ki saari jagah Right Content (Options) ko milegi */
+        }
+
+        /* 2. OPTION ROWS (CART ITEMS) KO PERFECTLY ALIGN KIYA HAI */
+        .option-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #eaeaea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .option-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+
+        .highlight-row {
+            background: #fdfaf2;
+            border: 1px solid #f2e2b3;
+        }
+
+        /* Text Left Side */
+        .opt-info {
+            display: flex;
+            flex-direction: column; /* Name upar, Price niche */
+            gap: 6px;
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .opt-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #003366;
+            line-height: 1.3;
+        }
+
+        .opt-price {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #d63384;
+        }
+
+        /* Buttons Right Side */
+        .opt-action {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0; /* Box ko pichakne nahi dega */
+        }
+
+        .qty-input {
+            width: 60px;
+            height: 42px;
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .qty-input:focus { border-color: #003366; }
+
+        .add-btn {
+            background: #003366;
+            color: white;
+            height: 42px;
+            padding: 0 25px;
+            border-radius: 25px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
+            white-space: nowrap; /* Button ka text break nahi hoga */
+        }
+
+        .add-btn:hover {
+            background: #007bff;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile View Adjustment */
+        @media(max-width: 900px) {
+            .product-wrapper { flex-direction: column; }
+            .product-img-box { max-width: 100%; width: 100%; }
+            .option-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .opt-action { width: 100%; justify-content: space-between; }
+        }
     </style>
 </head>
 <body>
     <div class="background-blobs"></div>
+
     <header id="main-header"></header>
 
-    <section style="padding: 20px 8%;">
-        <div class="glass-card service-detail-box">
-            <img src="images/n/1.jpg" alt="Aadhaar Service">
-            
-            <h1 style="color: #003366; margin-bottom: 15px; font-size: 2.5rem;">Aadhaar Services</h1>
-            <p style="color: #555; font-size: 1.1rem; margin-bottom: 25px;">UIDAI ke naye niyam anusar humaare yahan nimnlikhit Aadhaar suvidhayein uplabdh hain:</p>
-            
-            <div class="info-section">
-                <h3 style="color: #003366; border-bottom: 2px solid #007bff; padding-bottom: 8px;"><i class="fas fa-info-circle"></i> Service Details & Documents</h3>
+    <div class="detail-page-container">
+        <a href="Services.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Services</a>
+
+        <div class="product-wrapper">
+            <div class="product-img-box">
+                <div class="main-image-wrapper" 
+                     style="position: relative; background: white; border-radius: 20px; padding: 15px; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.05);"
+                     onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.2)';"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.05)';">
+                     
+                    <button class="nav-arrow left" onclick="prevImage()" 
+                            style="position:absolute; left:15px; top:50%; z-index:10; transform: translateY(-50%); background: rgba(255,255,255,0.7); border:none; width:45px; height:45px; border-radius:50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; color: #555; font-size: 18px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;"
+                            onmouseover="this.style.background='white'; this.style.color='#007bff'; this.style.transform='translateY(-50%) scale(1.1)';"
+                            onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.color='#555'; this.style.transform='translateY(-50%) scale(1.0)';">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div class="main-image-container">
+                        <img id="featured-image" src="images/aadhaar1.jpg" alt="Aadhaar Services Main">
+                    </div>
+
+                    <button class="nav-arrow right" onclick="nextImage()" 
+                            style="position:absolute; right:15px; top:50%; z-index:10; transform: translateY(-50%); background: rgba(255,255,255,0.7); border:none; width:45px; height:45px; border-radius:50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; color: #555; font-size: 18px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;"
+                            onmouseover="this.style.background='white'; this.style.color='#007bff'; this.style.transform='translateY(-50%) scale(1.1)';"
+                            onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.color='#555'; this.style.transform='translateY(-50%) scale(1.0)';">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
                 
-                <div class="info-title">📱 1. Mobile Number Update</div>
-                <p style="color: #444; font-size: 0.95rem; margin-bottom: 10px;">Demographic update mein filhaal sirf <strong>Mobile Number Update</strong> hi available hai.</p>
-
-                <div class="info-title">📄 2. Document Update (Mandatory)</div>
-                <p style="color: #444; font-size: 0.95rem; margin-bottom: 10px;">Valid Documents: Niwas Praman Patra, Voter ID, Driving License, Passport, (PAN Card aur Electricity Bill).</p>
-
-                <div class="info-title">🏠 3. Address Update</div>
-                <p style="color: #444; font-size: 0.95rem; margin-bottom: 10px;">Zaroori: Husband/Father ka Aadhaar Card + Applicant ka Aadhaar Card dono mandatory hain.</p>
-
-                <div class="info-title">📅 4. Other Updates</div>
-                <p style="color: #444; font-size: 0.95rem; color: #d9534f; font-weight: bold;">Baaki kisi bhi update (Name, DOB, Biometric) ke liye yahan se sirf Appointment diya jayega.</p>
+                <div class="thumbnail-slider" style="display:flex; gap:10px; margin-top:15px; justify-content:center; flex-wrap: wrap;">
+                    <img src="images/aadhaar1.jpg" class="thumb active" onclick="changeImage(this.src, 0)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/aadhaar2.jpg" class="thumb" onclick="changeImage(this.src, 1)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/aadhaar3.jpg" class="thumb" onclick="changeImage(this.src, 2)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/aadhaar4.jpg" class="thumb" onclick="changeImage(this.src, 3)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/aadhaar5.jpg" class="thumb" onclick="changeImage(this.src, 4)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                </div>
             </div>
 
-            <div class="btn-group">
-                <a href="https://wa.me/917007420882?text=Mujhe%20Aadhaar%20ki%20service%20chahiye" target="_blank" class="chat-btn">
-                    <i class="fab fa-whatsapp" style="font-size: 1.4rem;"></i> Chat Now
-                </a>
-                <a href="tel:+917007420882" class="call-btn">
-                    <i class="fas fa-phone-alt" style="font-size: 1.2rem;"></i> Call Now
-                </a>
+            <div class="product-content">
+                <h1 style="font-family:'Playfair Display'; font-size:3rem; margin-bottom:15px; color: #003366;">Aadhaar Services</h1>
+                <p style="color:#666; margin-bottom:30px; line-height:1.6;">Aadhaar card print, update aur demographic corrections ki sabhi suvidhayein ek hi jagah.</p>
+
+                <div class="option-row highlight-row">
+                    <div class="opt-info">
+                        <span class="opt-name">PVC Aadhaar Print</span>
+                        <span class="opt-price">₹70</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-a1" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('PVC Aadhaar Print', 70, 'qty-a1')">Add +</button>
+                    </div>
+                </div>
+
+                <div class="option-row">
+                    <div class="opt-info">
+                        <span class="opt-name">Demographic Update (Name/DOB/Add)</span>
+                        <span class="opt-price">₹50</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-a2" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('Aadhaar Update', 50, 'qty-a2')">Add +</button>
+                    </div>
+                </div>
+
+                <div class="option-row">
+                    <div class="opt-info">
+                        <span class="opt-name">Color Print (A4 Size)</span>
+                        <span class="opt-price">₹20</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-a3" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('Aadhaar Color Print', 20, 'qty-a3')">Add +</button>
+                    </div>
+                </div>
+
+                <div class="option-row">
+                    <div class="opt-info">
+                        <span class="opt-name">Find Aadhaar by Details</span>
+                        <span class="opt-price">₹50</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-a4" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('Find Aadhaar', 50, 'qty-a4')">Add +</button>
+                    </div>
+                </div>
+
             </div>
         </div>
-    </section>
+    </div>
+
+    <div id="toast" style="display:none; position:fixed; bottom:20px; right:20px; background:#003366; color:white; padding:15px 25px; border-radius:30px; font-weight:600; z-index:2000; box-shadow:0 5px 15px rgba(0,0,0,0.2);">Item added to cart!</div>
 
     <footer id="main-footer"></footer>
+
     <script src="logic.js"></script>
+    
+    <script>
+        var pageImages = ['images/aadhaar1.jpg', 'images/aadhaar2.jpg', 'images/aadhaar3.jpg', 'images/aadhaar4.jpg', 'images/aadhaar5.jpg'];
+        let currentIndex = 0;
+
+        function changeImage(src, index) {
+            document.getElementById('featured-image').src = src;
+            currentIndex = index;
+            updateThumbnails();
+        }
+
+        function prevImage() {
+            if (pageImages.length > 0) {
+                currentIndex = (currentIndex - 1 + pageImages.length) % pageImages.length;
+                document.getElementById('featured-image').src = pageImages[currentIndex];
+                updateThumbnails();
+            }
+        }
+
+        function nextImage() {
+            if (pageImages.length > 0) {
+                currentIndex = (currentIndex + 1) % pageImages.length;
+                document.getElementById('featured-image').src = pageImages[currentIndex];
+                updateThumbnails();
+            }
+        }
+
+        function updateThumbnails() {
+            let thumbs = document.getElementsByClassName('thumb');
+            for (let i = 0; i < thumbs.length; i++) {
+                thumbs[i].classList.remove('active');
+                if (i === currentIndex) thumbs[i].classList.add('active');
+            }
+        }
+
+        // Failsafe Execution
+        window.addEventListener('DOMContentLoaded', () => {
+            if(typeof loadHeader === 'function') loadHeader();
+            if(typeof loadFooter === 'function') loadFooter();
+            if(typeof updateUI === 'function') updateUI();
+        });
+    </script>
 </body>
 </html>
