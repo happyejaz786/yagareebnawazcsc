@@ -3,69 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services | Ya Gareebnawaz CSC</title>
+    <title>All Services | Ya Gareebnawaz CSC</title>
+    
     <link rel="stylesheet" href="commonstyle.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .item-card {
+            background: white;
+            border-radius: 20px;
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+
+        .img-container {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .item-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .qty-input {
+            width: 50px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            text-align: center;
+            margin-right: 5px;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #007bff;
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+
+        .add-btn {
+            background: #003366;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .add-btn:hover {
+            background: #007bff;
+        }
+    </style>
 </head>
 <body>
     <div class="background-blobs"></div>
     
     <header id="main-header"></header>
 
-    <section style="padding: 50px 8%;">
-        <h2 style="text-align: center; color: #003366; font-size: 2.5rem; margin-bottom: 40px; font-family: 'Playfair Display', serif;">
-            Hamaari <span style="color: #007bff;">Sevaayein</span>
-        </h2>
+    <div style="padding: 40px 8%;">
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h1 style="font-family: 'Playfair Display', serif; font-size: 3rem; color: #003366; margin-bottom: 10px;">Hamaari <span style="color: #007bff;">Pramukh</span> Sevaayein</h1>
+            <p style="color: #666; font-size: 1.1rem;">Aapki har digital zaroorat ka ek hi samadhan.</p>
+        </div>
 
         <div class="grid-container">
             
-            <div class="glass-card item-card">
-                <img src="images/n/1.jpg" alt="Aadhaar Seva">
-                <h3 style="margin: 15px 0; color: #003366;">Aadhaar Update</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Name, Address, DOB aur Mobile update ki suvidha.</p>
-                <button onclick="window.open('https://api.whatsapp.com/send?phone=917007420882&text=Aadhaar%20Service%20Query', '_blank')" class="add-btn">Apply Now</button>
+            <div class="item-card">
+                <div class="img-container"><img src="images/pvc.jpg" alt="PVC Card"></div>
+                <h3>PVC Card Print</h3>
+                <p class="price">₹70</p>
+                <div>
+                  <input type="number" class="qty-input" value="1" id="qty-1" min="1">
+                  <button class="add-btn" onclick="addToCart('PVC Card Print', 70, 'qty-1')">Add +</button>
+                </div>
             </div>
 
-            <div class="glass-card item-card">
-                <img src="images/pan.jpg" alt="PAN Card">
-                <h3 style="margin: 15px 0; color: #003366;">New PAN Card</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Naya PAN card banwayein ya purane mein correction karein.</p>
-                <button onclick="window.open('https://api.whatsapp.com/send?phone=917007420882&text=PAN%20Service%20Query', '_blank')" class="add-btn">Apply Now</button>
+            <div class="item-card">
+                <div class="img-container"><img src="images/certificate.jpg" alt="Aay Jati Niwas"></div>
+                <h3>Aay / Jati / Niwas</h3>
+                <p class="price">₹70</p>
+                <div>
+                  <input type="number" class="qty-input" value="1" id="qty-2" min="1">
+                  <button class="add-btn" onclick="addToCart('Aay / Jati / Niwas', 70, 'qty-2')">Add +</button>
+                </div>
             </div>
 
-            <div class="glass-card item-card">
-                <img src="images/voter.jpg" alt="Voter ID">
-                <h3 style="margin: 15px 0; color: #003366;">Voter ID Seva</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Naya Voter Card aur Correction ki digital suvidha.</p>
-                <button onclick="window.open('https://api.whatsapp.com/send?phone=917007420882&text=Voter%20ID%20Query', '_blank')" class="add-btn">Apply Now</button>
+            <div class="item-card">
+                <div class="img-container"><img src="images/scholarship.jpg" alt="Scholarship"></div>
+                <h3>Scholarship Form</h3>
+                <p class="price">₹100</p>
+                <div>
+                  <input type="number" class="qty-input" value="1" id="qty-3" min="1">
+                  <button class="add-btn" onclick="addToCart('Scholarship Form', 100, 'qty-3')">Add +</button>
+                </div>
             </div>
 
-            <div class="glass-card item-card">
-                <img src="images/banking.jpg" alt="Banking">
-                <h3 style="margin: 15px 0; color: #003366;">Digital Banking</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Cash Deposit, Withdrawal aur Money Transfer.</p>
-                <button onclick="window.open('https://api.whatsapp.com/send?phone=917007420882&text=Banking%20Query', '_blank')" class="add-btn">Apply Now</button>
+            <div class="item-card">
+                <div class="img-container"><img src="images/pan.jpg" alt="PAN Card"></div>
+                <h3>PAN Card Service</h3>
+                <p class="price">₹150</p>
+                <div>
+                  <input type="number" class="qty-input" value="1" id="qty-4" min="1">
+                  <button class="add-btn" onclick="addToCart('PAN Card Service', 150, 'qty-4')">Add +</button>
+                </div>
             </div>
 
-            <div class="glass-card item-card">
-                <img src="images/scholarship.jpg" alt="Scholarship">
-                <h3 style="margin: 15px 0; color: #003366;">UP Scholarship</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Class 9-12 aur Graduate courses ke online forms.</p>
-                <button onclick="window.open('https://wa.me/917007420882?text=Scholarship%20Query', '_blank')" class="add-btn">Apply Now</button>
+            <div class="item-card">
+                <div class="img-container"><img src="images/voter.jpg" alt="Voter ID"></div>
+                <h3>Voter ID Download</h3>
+                <p class="price">₹50</p>
+                <div>
+                  <input type="number" class="qty-input" value="1" id="qty-5" min="1">
+                  <button class="add-btn" onclick="addToCart('Voter ID Download', 50, 'qty-5')">Add +</button>
+                </div>
             </div>
 
-            <div class="glass-card item-card">
-                <img src="images/passport.jpg" alt="Passport">
-                <h3 style="margin: 15px 0; color: #003366;">Passport Seva</h3>
-                <p style="font-size: 0.9rem; color: #666; margin-bottom: 20px;">Naya Passport application aur Renewal correction.</p>
-                <button onclick="window.open('https://wa.me/917007420882?text=Passport%20Query', '_blank')" class="add-btn">Apply Now</button>
+            <div class="item-card">
+                <div class="img-container"><img src="images/passport.jpg" alt="Passport"></div>
+                <h3>Passport Apply</h3>
+                <p class="price">₹200</p>
+                <div>
+                  <input type="number" class="qty-input" value="1" id="qty-6" min="1">
+                  <button class="add-btn" onclick="addToCart('Passport Apply', 200, 'qty-6')">Add +</button>
+                </div>
             </div>
 
-        </div> </section>
+        </div>
+    </div>
+    
+    <div id="toast" style="display:none; position:fixed; bottom:20px; right:20px; background:#003366; color:white; padding:15px; border-radius:10px; z-index:2000; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">Added to Cart!</div>
 
     <footer id="main-footer"></footer>
-    
+
     <script src="logic.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof loadHeader === "function") { loadHeader(); }
+            if (typeof loadFooter === "function") { loadFooter(); }
+            if (typeof updateUI === "function") { updateUI(); }
+        });
+    </script>
 </body>
 </html>
