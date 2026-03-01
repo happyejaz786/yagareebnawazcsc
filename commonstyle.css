@@ -1,102 +1,169 @@
 /* ========================================
-   MASTER COMBINATION CSS - YA GAREEBNAWAZ CSC
-   (Final Professional Update with Borders)
+   MASTER COMBINATION CSS - FROSTY SPHERE
    ======================================== */
 
-* { 
-    margin: 0; 
-    padding: 0; 
-    box-sizing: border-box; 
-    font-family: 'Poppins', sans-serif; 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
 }
 
-body { 
-    background: #f0f4f8; 
-    color: #333; 
-    overflow-x: hidden; 
-    min-height: 100vh; 
+body {
+    background: #fdf0f6;
+    color: #333;
+    overflow-x: hidden;
+    min-height: 100vh;
 }
 
-/* Background Animated Blobs */
+/* Background Animated Blobs (From Index Design) */
 .background-blobs {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1; 
-    background: linear-gradient(135deg, #e0eaf5 0%, #c8d9eb 100%); 
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background: linear-gradient(45deg, #ff9a9e 0%, #fad0c4 99%);
     filter: blur(80px);
 }
 
-/* --- HEADER / NAVBAR --- */
-.navbar {
-    display: flex; justify-content: space-between; align-items: center; padding: 10px 10%;
-    background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(15px); 
-    border-bottom: 2px solid #003366; /* Match with screenshot border */
-    position: sticky; top: 0; z-index: 1000;
+/* --- INDEX PAGE SPECIFIC --- */
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 60px 10%;
+    height: 85vh;
 }
 
-.main-logo {
-    width: 50px !important; height: 50px !important; border-radius: 50%; object-fit: cover;
-    border: 2px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transition: 0.4s;
+.hero .glass-card {
+    background: rgba(255, 255, 255, 0.4);
+    backdrop-filter: blur(15px);
+    padding: 40px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    max-width: 500px;
 }
 
-.logo-wrapper:hover .main-logo { transform: rotate(360deg); }
-
-.logo-text { 
-    font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem; 
-    color: #003366; text-transform: uppercase; 
+.hero-image img {
+    width: 400px; height: 400px;
+    object-fit: cover;
+    border-radius: 50%; /* Circle look for Index */
+    border: 8px solid white;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
-.nav-menu { display: flex; list-style: none; gap: 30px; margin: 0; padding: 0; }
-.nav-menu a { 
-    text-decoration: none; color: #003366; font-weight: 800 !important; 
-    text-transform: uppercase; font-size: 16px; transition: 0.3s; 
-}
-.nav-menu a:hover { color: #007bff; }
-
-/* --- GRID & CARDS (IMAGE & BORDER FIX APPLIED) --- */
+/* --- FLAVOUR LIST PAGE (Grid) --- */
+.flavour-section { padding: 50px 8%; text-align: center; }
 .grid-container {
     display: grid;
-    /* Card width for 3-column professional layout */
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); 
-    gap: 30px; margin-top: 40px; max-width: 1200px; margin-inline: auto; padding: 20px 0;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
 }
 
-.glass-card {
-    background: rgba(255, 255, 255, 0.7); 
-    backdrop-filter: blur(15px); padding: 25px; border-radius: 20px;
-    border: 1px solid rgba(0, 51, 102, 0.1); box-shadow: 0 10px 30px rgba(0, 51, 102, 0.05);
-    transition: all 0.3s ease-in-out; display: flex; flex-direction: column; justify-content: space-between; height: 100%;
+/* --- DETAIL PAGE (Side-by-Side Combination) --- */
+.detail-page-container {
+    padding: 40px 8%;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.glass-card:hover {
-    transform: translateY(-10px); 
-    box-shadow: 0 15px 40px rgba(0, 51, 102, 0.1); 
-    border-color: #007bff;
+.product-wrapper {
+    display: flex; /* Image left, Content right */
+    gap: 50px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(15px);
+    padding: 30px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    align-items: flex-start;
 }
 
-/* Image with Blue Border & White BG as per screenshot */
-.glass-card img {
+.product-img-box { flex: 1; min-width: 400px; }
+.product-content { flex: 1; }
+
+.main-image-wrapper {
+    position: relative;
+    background: white;
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.main-image-container img {
+    width: 100%; height: 400px;
+    object-fit: contain; /* Product image circle nahi honi chahiye */
+}
+
+/* Amazon Style Rows */
+.option-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: white;
+    padding: 15px 20px;
+    border-radius: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+}
+.highlight-row { background: #fff9eb; border: 1px solid #ffeeba; }
+
+/* Global Buttons */
+.add-btn, .primary-btn {
+    background: #333; color: white;
+    padding: 12px 25px; border-radius: 30px;
+    border: none; cursor: pointer; font-weight: 600;
+}
+.add-btn:hover { background: #d63384; }
+
+.qty-input {
+    width: 55px; padding: 8px; border-radius: 10px;
+    border: 1px solid #ddd; text-align: center; margin-right: 10px;
+}
+
+.back-link {
+    text-decoration: none; color: #d63384;
+    font-weight: 600; display: inline-block; margin-bottom: 20px;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .product-wrapper, .hero { flex-direction: column; text-align: center; }
+    .product-img-box { min-width: 100%; }
+}
+
+.item-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Saare cards ek barabar height ke honge */
+}
+.item-card img {
+    width: 100%;       /* Card ki width ke barabar */
+    height: 220px;     /* Ek standard height fix kar di */
+    object-fit: cover; /* Magic line: image stretch nahi hogi */
+    border-radius: 15px;
+}
+
+.grid-container {
+    display: grid;
+    /* Isse columns screen ke hisaab se apne aap kam ya zyada honge */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+}
+
+img {
+    width: 100%;       /* Container ki poori width lega */
+    height: 300px;     /* Aap apne hisaab se height fix kar sakte hain */
+    object-fit: cover; /* Ye image ko container mein perfect fit karega */
+    display: block;    /* Extra space hatane ke liye */
+}
+
+/* Sabhi item cards ki images ke liye uniform style */
+.item-card img {
     width: 100%;
-    height: 220px; 
-    object-fit: contain; /* Professional poster fit */
-    background: #ffffff; /* White BG for posters */
-    border: 2px solid #003366; /* THEME BLUE BORDER */
-    border-radius: 12px; 
-    margin-bottom: 15px; 
-    display: block; 
-    transition: transform 0.5s ease;
-}
-
-.glass-card:hover img { transform: scale(1.02); }
-
-/* --- BUTTONS (Premium Rounded) --- */
-.add-btn {
-    background: #003366; color: white; padding: 15px 25px; border-radius: 50px; border: none;
-    cursor: pointer; font-weight: 700; width: 100%; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;
-}
-.add-btn:hover { background: #0056b3; box-shadow: 0 8px 15px rgba(0, 86, 179, 0.3); transform: scale(1.02); }
-
-/* --- FOOTER POSITION FIX --- */
-#main-footer {
-    width: 100%;
-    margin-top: auto;
+    height: 200px;      /* Sabhi images ki height ek barabar rahegi */
+    object-fit: cover;  /* Image stretch nahi hogi, auto-fit hogi */
+    border-radius: 15px;
+    margin-bottom: 15px;
+    display: block;
 }
