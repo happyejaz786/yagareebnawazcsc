@@ -52,7 +52,7 @@ function loadHeader() {
                         </div>
                     </div>
                 </li>
-                <li><a href="contact.html" class="nav-link-bold">Contact</a></li>
+                <li><a href="#" class="nav-link-bold">Contact</a></li>
             </ul>
 
             <div class="cart-box" style="background: #003366; padding: 10px 20px; border-radius: 50px; transition: background 0.3s;">
@@ -101,3 +101,4 @@ document.addEventListener("DOMContentLoaded", function () {
     loadFooter();
     updateUI(); 
 });
+
