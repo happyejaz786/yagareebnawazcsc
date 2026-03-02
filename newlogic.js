@@ -65,7 +65,7 @@ function loadFooter() {
                 </div>
             </div>
             <div style="text-align: center; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                Designed & Developed by: <span style="font-family: 'Cambria', serif; font-weight: bold; color: #007bff; font-size: 1.1rem;">E J A Z</span>
+                Designed & Developed by: <span style="font-family: 'Cambria', serif; font-weight: bold; color: #007bff; font-size: 1.1rem;">M O H A M M A D E J A Z K H A N</span>
             </div>
         </footer>
     `;
@@ -91,3 +91,4 @@ window.onload = function() {
     loadFooter(); 
     updateUI(); 
 };
+
