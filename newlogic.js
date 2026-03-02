@@ -10,8 +10,13 @@ function loadHeader() {
             .nav-link-bold:hover { color: #007bff; }
             .dropdown:hover .dropdown-content { display: block !important; }
             .menu-columns a { padding: 10px 15px; text-decoration: none; color: #555; font-weight: 700; display: block; }
+            
+            /* Mobile ke liye Menu Icon hide rahega Desktop par */
+            .menu-icon { display: none; font-size: 28px; cursor: pointer; color: #003366; font-weight: bold; }
         </style>
-        <nav style="display:flex; justify-content:space-between; align-items:center; padding:10px 5%; background: rgba(255,255,255,0.95); position:sticky; top:0; z-index:1000; border-bottom:1px solid #ddd; width:100%; box-sizing:border-box;">
+        
+        <nav style="display:flex; justify-content:space-between; align-items:center; padding:10px 5%; background: rgba(255,255,255,0.95); position:sticky; top:0; z-index:1000; border-bottom:1px solid #ddd; width:100%; box-sizing:border-box; flex-wrap: wrap;">
+            
             <div class="logo-wrapper" style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="location.href='index.html'">
                 <img src="images/logo.jpg" style="height:70px !important; width:70px !important; border-radius:50%; border:2px solid #003366; object-fit: cover;">
                 <div>
@@ -19,7 +24,10 @@ function loadHeader() {
                     <h3 style="font-family:'Cambria', serif; font-size:0.9rem; color:#d63384; margin:0;">AADHAAR DEMOGRAPHIC UPDATE CENTER</h3>
                 </div>
             </div>
-            <ul style="display:flex; list-style:none; gap:25px; margin:0; padding:0; align-items:center;">
+            
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+
+            <ul id="navLinks" style="display:flex; list-style:none; gap:25px; margin:0; padding:0; align-items:center;">
                 <li><a href="index.html" class="nav-link-bold">Home</a></li>
                 <li class="dropdown" style="position:relative;"><a href="Services.html" class="nav-link-bold">Services ▼</a>
                     <div class="dropdown-content" style="display:none; position:absolute; background:white; min-width:180px; box-shadow:0 8px 16px rgba(0,0,0,0.1); top:100%; left:0; z-index:1000; border-top:3px solid #007bff;">
@@ -28,23 +36,21 @@ function loadHeader() {
                 </li>
                 <li><a href="contact.html" class="nav-link-bold">Contact</a></li>
             </ul>
-            <div style="background:#003366; padding:8px 18px; border-radius:50px;"><a href="cart.html" style="color:white; text-decoration:none; font-weight:800;">🛒 <span id="cart-count">0</span> ITEMS</a></div>
+            
+            <div class="cart-box" style="background:#003366; padding:8px 18px; border-radius:50px;"><a href="cart.html" style="color:white; text-decoration:none; font-weight:800;">🛒 <span id="cart-count">0</span> ITEMS</a></div>
+            
         </nav>`;
     }
 }
 
 function loadFooter() {
     const oldFooter = document.querySelector('footer');
-    if (oldFooter) {
-        oldFooter.remove();
-    }
+    if (oldFooter) oldFooter.remove();
 
     const footerHTML = `
         <footer class="main-footer" style="background-color: #001f3f; color: white; padding: 15px 0; margin-top: 50px; border-top: 4px solid #007bff;">
             <div class="footer-container" style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 15px; flex-wrap: wrap; gap: 15px;">
-                
                 <p style="margin: 0; font-weight: bold; text-align: left; font-size: 0.95rem;">&copy; 2026 YA GAREEBNAWAZ CSC. All Rights Reserved.</p>
-                
                 <div style="display: flex; align-items: center; gap: 20px;">
                     <div style="display: flex; gap: 15px; font-size: 20px;">
                         <a href="#" style="color: #1877F2;"><i class="fab fa-facebook"></i></a>
@@ -53,25 +59,25 @@ function loadFooter() {
                     <div class="hit-counter" style="background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 5px; display: flex; align-items: center; border: 1px solid #444;">
                         <span style="font-size: 0.85rem; margin-right: 10px; color: #ddd;">Visitors:</span>
                         <a href="https://www.hitwebcounter.com/" target="_blank">
-                            <img src="https://hitwebcounter.com/counter/counter.php?page=21480154&style=0010&nbdigits=5&type=page&initCount=0" 
-                                 title="Free Tools" Alt="Free Tools" border="0" style="width: auto !important; height: auto !important; display: inline-block !important; margin: 0 !important; vertical-align: middle;" />
+                            <img src="https://hitwebcounter.com/counter/counter.php?page=21480154&style=0010&nbdigits=5&type=page&initCount=0" title="Free Tools" Alt="Free Tools" border="0" style="width: auto !important; height: auto !important; display: inline-block !important; margin: 0 !important; vertical-align: middle;" />
                         </a>
                     </div>
                 </div>
-
             </div>
             <div style="text-align: center; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px;">
-                Designed & Developed by: <span style="font-family: 'Cambria', serif; font-weight: bold; color: #007bff; font-size: 1.5rem;">MOHAMMAD EJAZ KHAN</span>
+                Designed & Developed by: <span style="font-family: 'Cambria', serif; font-weight: bold; color: #007bff; font-size: 1.1rem;">E J A Z</span>
             </div>
         </footer>
     `;
-
     document.body.insertAdjacentHTML('beforeend', footerHTML);
 }
 
+// Toggle Menu Logic
 function toggleMenu() {
-    const nav = document.getElementById("navLinks");
-    if (nav) nav.classList.toggle("active");
+    const navLinks = document.getElementById("navLinks");
+    if (navLinks) {
+        navLinks.classList.toggle("active");
+    }
 }
 
 function updateUI() {
