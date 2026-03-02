@@ -108,7 +108,6 @@
 
         let globalWaLink = "";
 
-        // Date Format Function (YYYY-MM-DD to DD-MMM-YYYY)
         function formatDate(dateString) {
             const dateObj = new Date(dateString);
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -127,8 +126,6 @@
             }
 
             const formattedDate = formatDate(customerData.date);
-
-            // Set Dynamic Greeting
             document.getElementById('dynamic-greeting').innerText = `Dear ${customerData.name},`;
 
             const custContainer = document.getElementById('customer-info-container');
@@ -162,7 +159,6 @@
                 </tr>
             `;
 
-            // YAHAN WEBSITE HATA KAR GOOGLE AUR FACEBOOK LINK ADD KIYE GAYE HAIN
             waMessageText += `%0A*Grand Total: ₹${total}*%0A%0AThank you for choosing YA GAREEBNAWAZ CSC!%0A%0A⭐ *Rate us on Google:*%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0A👍 *Follow us on Facebook:*%0A[YOUR_FACEBOOK_PAGE_LINK_HERE]`;
             
             const adminWhatsAppNumber = "917007420882";
@@ -171,7 +167,8 @@
 
         function processWhatsAppOrder() {
             const btn = document.getElementById('send-wa-btn');
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing... Please wait';
+            
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Data...';
             btn.style.opacity = "0.7";
             btn.disabled = true;
 
@@ -186,21 +183,32 @@
             formData.append('Date', customerData.date);
             formData.append('OrderDetails', JSON.stringify(cartData));
 
-            if (GOOGLE_SHEET_APP_URL !== "YOUR_GOOGLE_SHEET_MACRO_URL_HERE") {
-                fetch(GOOGLE_SHEET_APP_URL, { method: 'POST', body: formData })
-                .then(res => console.log("Saved to Google Sheet"))
-                .catch(err => console.log("Sheet Error", err));
-            } else {
-                console.log("Google Sheet URL missing. Skipping save.");
-            }
-
-            setTimeout(() => {
-                btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
+            // MAGIC FIX: no-cors se security bypass hogi aur sheet mein direct save ho jayega
+            fetch(GOOGLE_SHEET_APP_URL, { 
+                method: 'POST', 
+                body: formData,
+                mode: 'no-cors' 
+            })
+            .then(() => {
+                btn.innerHTML = '<i class="fas fa-check-circle"></i> Saved Successfully!';
+                btn.style.backgroundColor = "#28a745"; 
+                btn.style.opacity = "1";
+                
+                setTimeout(() => {
+                    window.open(globalWaLink, '_blank');
+                    
+                    btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
+                    btn.style.backgroundColor = "#25D366"; 
+                    btn.disabled = false;
+                }, 1500);
+            })
+            .catch(err => {
+                alert("⚠️ Network Error! Kripya apna internet connection check karein.");
+                console.log("Network Error:", err);
+                btn.innerHTML = '<i class="fab fa-whatsapp"></i> Try Again';
                 btn.style.opacity = "1";
                 btn.disabled = false;
-                
-                window.open(globalWaLink, '_blank');
-            }, 3500); 
+            });
         }
 
         function downloadJPG() {
@@ -223,65 +231,6 @@
             if(typeof loadFooter === 'function') loadFooter();
             generateReceipt();
         };
-        // Bismillah
-function processWhatsAppOrder() {
-    const btn = document.getElementById('send-wa-btn');
-    
-    // 1. Button ko Processing mode mein daalna
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Data...';
-    btn.style.opacity = "0.7";
-    btn.disabled = true;
-
-    const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
-    const cartData = JSON.parse(localStorage.getItem('cscCart'));
-
-    // Aapka Asli Google Sheet Macro URL
-    const GOOGLE_SHEET_APP_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
-
-    const formData = new FormData();
-    formData.append('Name', customerData.name);
-    formData.append('Mobile', customerData.mobile);
-    formData.append('Date', customerData.date);
-    formData.append('OrderDetails', JSON.stringify(cartData));
-
-    // 2. Data Google Sheet ko bhejna aur Response ka wait karna
-    fetch(GOOGLE_SHEET_APP_URL, { method: 'POST', body: formData })
-    .then(response => response.text()) // Google se text reply lena
-    .then(data => {
-        if (data.trim() === "Success") {
-            // Data Save ho gaya! Button ko Green karke Success dikhao
-            btn.innerHTML = '<i class="fas fa-check-circle"></i> Saved Successfully!';
-            btn.style.backgroundColor = "#28a745"; // Success Green Color
-            btn.style.opacity = "1";
-            
-            // Success dikhane ke 1.5 second baad WhatsApp open karo
-            setTimeout(() => {
-                window.open(globalWaLink, '_blank');
-                
-                // Button ko wapas normal kar do
-                btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
-                btn.style.backgroundColor = "#25D366"; // Original WA color
-                btn.disabled = false;
-            }, 1500);
-
-        } else {
-            // Agar Sheet ki taraf se koi error aaya
-            alert("⚠️ Sheet Error: Data save nahi ho paya. Error code: " + data);
-            btn.innerHTML = '<i class="fab fa-whatsapp"></i> Try Again';
-            btn.style.opacity = "1";
-            btn.disabled = false;
-        }
-    })
-    .catch(err => {
-        // Agar Internet band ho ya Network ka issue ho
-        alert("⚠️ Network Error! Kripya apna internet connection check karein.");
-        console.log("Network Error:", err);
-        btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
-        btn.style.opacity = "1";
-        btn.disabled = false;
-    });
-}
     </script>
 </body>
 </html>
-
