@@ -71,6 +71,19 @@ function loadFooter() {
     `;
     document.body.insertAdjacentHTML('beforeend', footerHTML);
 }
+// Bismillah
+function addToCart(name, price, qtyId) {
+    const qtyInput = document.getElementById(qtyId);
+    const qty = qtyInput ? parseInt(qtyInput.value) : 1;
+    let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+    
+    // Naya item cart me daalein
+    cart.push({ name, price, qty });
+    localStorage.setItem('cscCart', JSON.stringify(cart));
+    
+    // Header me cart count update karein
+    updateUI();
+}
 
 // Toggle Menu Logic
 function toggleMenu() {
@@ -91,4 +104,5 @@ window.onload = function() {
     loadFooter(); 
     updateUI(); 
 };
+
 
