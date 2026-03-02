@@ -33,7 +33,7 @@
         .btn-link { display: block; text-align: center; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; color: white; transition: 0.3s; cursor: pointer; border: none; font-size: 1rem; }
         .btn-link:hover { opacity: 0.9; transform: translateY(-2px); }
         .btn-wa { background: #25D366; }
-        .btn-jpg { background: #d63384; } /* Naya JPG Download Button */
+        .btn-jpg { background: #d63384; } 
         .btn-google { background: #db4437; }
         .btn-fb { background: #1877F2; }
         .btn-map { background: #4285F4; }
@@ -60,7 +60,7 @@
             <div class="receipt-body">
                 <div class="thank-you-msg">
                     <i class="fas fa-check-circle" style="font-size: 2rem; margin-bottom: 10px; display: block;"></i>
-                    Thank you for choosing our services!
+                    <span id="dynamic-greeting"></span> Thank you for choosing our services!
                 </div>
 
                 <div class="customer-info-box" id="customer-info-container"></div>
@@ -106,7 +106,15 @@
     <script>
         console.log("Bismillah");
 
-        let globalWaLink = ""; // WhatsApp link store karne ke liye
+        let globalWaLink = "";
+
+        // Date Format Function (YYYY-MM-DD to DD-MMM-YYYY)
+        function formatDate(dateString) {
+            const dateObj = new Date(dateString);
+            const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            const day = ("0" + dateObj.getDate()).slice(-2);
+            return `${day}-${months[dateObj.getMonth()]}-${dateObj.getFullYear()}`;
+        }
 
         function generateReceipt() {
             const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
@@ -118,16 +126,21 @@
                 return;
             }
 
+            const formattedDate = formatDate(customerData.date);
+
+            // Set Dynamic Greeting
+            document.getElementById('dynamic-greeting').innerText = `Dear ${customerData.name},`;
+
             const custContainer = document.getElementById('customer-info-container');
             custContainer.innerHTML = `
                 <p><strong>Customer Name:</strong> <span class="cust-name-highlight">${customerData.name}</span></p>
                 <p><strong>Mobile Number:</strong> +91 ${customerData.mobile}</p>
-                <p><strong>Appointment Date:</strong> ${customerData.date}</p>
+                <p><strong>Appointment Date:</strong> ${formattedDate}</p>
             `;
 
             const itemsContainer = document.getElementById('receipt-items');
             let total = 0;
-            let waMessageText = `*YA GAREEBNAWAZ CSC - Digital Receipt*%0A%0A*Customer:* ${customerData.name}%0A*Mobile:* ${customerData.mobile}%0A*Date:* ${customerData.date}%0A%0A*Services Details:*%0A`;
+            let waMessageText = `*YA GAREEBNAWAZ CSC - Digital Receipt*%0A%0A*Customer:* ${customerData.name}%0A*Mobile:* ${customerData.mobile}%0A*Date:* ${formattedDate}%0A%0A*Services Details:*%0A`;
 
             cartData.forEach(item => {
                 let subtotal = item.price * item.qty;
@@ -154,7 +167,6 @@
             globalWaLink = `https://wa.me/${adminWhatsAppNumber}?text=${waMessageText}`;
         }
 
-        // --- STEP 1: Google Sheet Save + Wait + WhatsApp Open ---
         function processWhatsAppOrder() {
             const btn = document.getElementById('send-wa-btn');
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing... Please wait';
@@ -164,17 +176,14 @@
             const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
             const cartData = JSON.parse(localStorage.getItem('cscCart'));
 
-            // YAHAN APNI GOOGLE SHEET SCRIPT URL DALEIN
             const GOOGLE_SHEET_APP_URL = "YOUR_GOOGLE_SHEET_MACRO_URL_HERE"; 
 
-            // Data format for Google Sheets
             const formData = new FormData();
             formData.append('Name', customerData.name);
             formData.append('Mobile', customerData.mobile);
             formData.append('Date', customerData.date);
             formData.append('OrderDetails', JSON.stringify(cartData));
 
-            // Agar aapke paas Google Sheet URL hai, toh ye fetch chalega
             if (GOOGLE_SHEET_APP_URL !== "YOUR_GOOGLE_SHEET_MACRO_URL_HERE") {
                 fetch(GOOGLE_SHEET_APP_URL, { method: 'POST', body: formData })
                 .then(res => console.log("Saved to Google Sheet"))
@@ -183,7 +192,6 @@
                 console.log("Google Sheet URL missing. Skipping save.");
             }
 
-            // EXACTLY 3.5 SECONDS BAAD WHATSAPP KHULEGA
             setTimeout(() => {
                 btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
                 btn.style.opacity = "1";
@@ -193,7 +201,6 @@
             }, 3500); 
         }
 
-        // --- STEP 2: Download as JPG Function ---
         function downloadJPG() {
             const printArea = document.getElementById('print-area');
             html2canvas(printArea).then(canvas => {
