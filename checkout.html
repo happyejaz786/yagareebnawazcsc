@@ -91,7 +91,7 @@
             <a href="https://g.page/r/CaSbnIdP3_saEBE/review" class="btn-link btn-google" target="_blank">
                 <i class="fab fa-google"></i> Google Review
             </a>
-            <a href="#" class="btn-link btn-fb" target="_blank">
+            <a href="YOUR_FACEBOOK_PAGE_LINK_HERE" class="btn-link btn-fb" target="_blank">
                 <i class="fab fa-facebook"></i> Facebook Page
             </a>
             <a href="index.html" class="btn-link btn-web" onclick="clearCart()">
@@ -162,7 +162,9 @@
                 </tr>
             `;
 
-            waMessageText += `%0A*Grand Total: ₹${total}*%0A%0AThank you for choosing YA GAREEBNAWAZ CSC!%0AWebsite: www.yagareebnawazcsc.com`;
+            // YAHAN WEBSITE HATA KAR GOOGLE AUR FACEBOOK LINK ADD KIYE GAYE HAIN
+            waMessageText += `%0A*Grand Total: ₹${total}*%0A%0AThank you for choosing YA GAREEBNAWAZ CSC!%0A%0A⭐ *Rate us on Google:*%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0A👍 *Follow us on Facebook:*%0A[YOUR_FACEBOOK_PAGE_LINK_HERE]`;
+            
             const adminWhatsAppNumber = "917007420882";
             globalWaLink = `https://wa.me/${adminWhatsAppNumber}?text=${waMessageText}`;
         }
@@ -176,7 +178,7 @@
             const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
             const cartData = JSON.parse(localStorage.getItem('cscCart'));
 
-            const GOOGLE_SHEET_APP_URL = "YOUR_GOOGLE_SHEET_MACRO_URL_HERE"; 
+            const GOOGLE_SHEET_APP_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
 
             const formData = new FormData();
             formData.append('Name', customerData.name);
