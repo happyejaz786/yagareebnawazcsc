@@ -223,6 +223,65 @@
             if(typeof loadFooter === 'function') loadFooter();
             generateReceipt();
         };
+        // Bismillah
+function processWhatsAppOrder() {
+    const btn = document.getElementById('send-wa-btn');
+    
+    // 1. Button ko Processing mode mein daalna
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Data...';
+    btn.style.opacity = "0.7";
+    btn.disabled = true;
+
+    const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
+    const cartData = JSON.parse(localStorage.getItem('cscCart'));
+
+    // Aapka Asli Google Sheet Macro URL
+    const GOOGLE_SHEET_APP_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
+
+    const formData = new FormData();
+    formData.append('Name', customerData.name);
+    formData.append('Mobile', customerData.mobile);
+    formData.append('Date', customerData.date);
+    formData.append('OrderDetails', JSON.stringify(cartData));
+
+    // 2. Data Google Sheet ko bhejna aur Response ka wait karna
+    fetch(GOOGLE_SHEET_APP_URL, { method: 'POST', body: formData })
+    .then(response => response.text()) // Google se text reply lena
+    .then(data => {
+        if (data.trim() === "Success") {
+            // Data Save ho gaya! Button ko Green karke Success dikhao
+            btn.innerHTML = '<i class="fas fa-check-circle"></i> Saved Successfully!';
+            btn.style.backgroundColor = "#28a745"; // Success Green Color
+            btn.style.opacity = "1";
+            
+            // Success dikhane ke 1.5 second baad WhatsApp open karo
+            setTimeout(() => {
+                window.open(globalWaLink, '_blank');
+                
+                // Button ko wapas normal kar do
+                btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
+                btn.style.backgroundColor = "#25D366"; // Original WA color
+                btn.disabled = false;
+            }, 1500);
+
+        } else {
+            // Agar Sheet ki taraf se koi error aaya
+            alert("⚠️ Sheet Error: Data save nahi ho paya. Error code: " + data);
+            btn.innerHTML = '<i class="fab fa-whatsapp"></i> Try Again';
+            btn.style.opacity = "1";
+            btn.disabled = false;
+        }
+    })
+    .catch(err => {
+        // Agar Internet band ho ya Network ka issue ho
+        alert("⚠️ Network Error! Kripya apna internet connection check karein.");
+        console.log("Network Error:", err);
+        btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
+        btn.style.opacity = "1";
+        btn.disabled = false;
+    });
+}
     </script>
 </body>
 </html>
+
