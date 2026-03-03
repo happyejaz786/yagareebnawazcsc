@@ -41,14 +41,14 @@ function loadHeader() {
                 <li><a href="index.html" class="nav-link-bold">Home</a></li>
                 
                 <li class="dropdown" style="position: relative; padding: 10px 0;">
-                    <a href="Services.html" class="nav-link-bold">Services ▼</a>
+                    <a href="services.html" class="nav-link-bold">Services ▼</a>
                     <div class="dropdown-content" style="display: none; position: absolute; background: white; min-width: 200px; box-shadow: 0 15px 35px rgba(0,0,0,0.15); border-radius: 12px; padding: 10px; left: 0; top: 100%; border-top: 4px solid #007bff; z-index: 1000;">
                         <div class="menu-columns">
                             <a href="aadhaar.html">Aadhaar Update</a>
-                            <a href="Services.html">PVC Card Print</a>
-                            <a href="Services.html">PAN Card Service</a>
-                            <a href="Services.html">Scholarship Form</a>
-                            <a href="Services.html">Voter ID & More</a>
+                            <a href="services.html">PVC Card Print</a>
+                            <a href="services.html">PAN Card Service</a>
+                            <a href="services.html">Scholarship Form</a>
+                            <a href="services.html">Voter ID & More</a>
                         </div>
                     </div>
                 </li>
@@ -101,4 +101,5 @@ document.addEventListener("DOMContentLoaded", function () {
     loadFooter();
     updateUI(); 
 });
+
 
