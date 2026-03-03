@@ -4,316 +4,134 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Your Cart | YA GAREEBNAWAZ CSC</title>
-    
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
     <link rel="stylesheet" href="commonstyle.css">
     <link rel="stylesheet" href="responsive.css">
-
     <style>
-        .cart-wrapper {
-            max-width: 1000px;
-            margin: 40px auto;
-            padding: 0 20px;
-            position: relative;
-            z-index: 10;
-        }
-
-        h2.page-title {
-            color: #003366;
-            font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            margin-bottom: 30px;
-        }
-
-        /* Top Section: Cart Items */
-        .cart-items-box {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(15px);
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid rgba(255,255,255,0.6);
-            margin-bottom: 30px;
-        }
-
-        .cart-header {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            color: #d63384;
-            font-weight: 700;
-            font-size: 1.1rem;
-        }
-
-        .cart-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr;
-            align-items: center;
-            padding: 20px 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .cart-row:last-child { border-bottom: none; padding-bottom: 0; }
-        
-        .item-name { font-weight: 600; color: #333; }
-        .item-price, .item-total { color: #555; font-weight: 600; }
-        .item-total { color: #d63384; }
-
-        .qty-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .qty-btn {
-            background: white; border: 1px solid #d63384; color: #d63384;
-            width: 28px; height: 28px; border-radius: 50%;
-            cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center;
-        }
-
-        .remove-btn {
-            background: #ffe6e6; color: #ff4d4d; border: none;
-            padding: 8px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s;
-        }
-        .remove-btn:hover { background: #ff4d4d; color: white; }
-
-        /* Bottom Section: Form & Summary */
-        .checkout-grid {
-            display: flex;
-            gap: 30px;
-        }
-
-        .customer-card, .summary-card {
-            background: white;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            flex: 1;
-        }
-
-        .customer-card h3, .summary-card h3 {
-            color: #333;
-            margin-bottom: 25px;
-            font-size: 1.3rem;
-            border-bottom: 2px solid #f0f0f0;
-            padding-bottom: 15px;
-        }
-
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; font-weight: 600; margin-bottom: 8px; color: #555; font-size: 0.95rem;}
-        .input-group input { 
-            width: 100%; padding: 12px 15px; border: 1px solid #ddd; 
-            border-radius: 10px; outline: none; font-size: 1rem;
-            box-sizing: border-box; transition: 0.3s;
-        }
-        .input-group input:focus { border-color: #007bff; box-shadow: 0 0 0 3px rgba(0,123,255,0.1); }
-        .help-text { font-size: 0.8rem; color: #888; margin-top: 5px; display: block; }
-
-        .summary-line {
-            display: flex; justify-content: space-between;
-            margin-bottom: 15px; color: #555; font-size: 1.1rem;
-        }
-        .summary-total {
-            display: flex; justify-content: space-between;
-            margin-top: 20px; padding-top: 20px; border-top: 2px dashed #ddd;
-            font-size: 1.5rem; font-weight: 800; color: #333;
-        }
-
-        .place-order-btn {
-            width: 100%; background: #333; color: white;
-            border: none; padding: 18px; border-radius: 12px;
-            font-size: 1.2rem; font-weight: bold; margin-top: 30px;
-            cursor: pointer; transition: 0.3s; box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
+        .cart-wrapper { max-width: 1100px; margin: 40px auto; padding: 0 20px; position: relative; z-index: 10; }
+        .cart-items-box { background: rgba(255,255,255,0.9); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 30px; }
+        .cart-header, .cart-row { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 0.5fr; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .cart-header { font-weight: bold; color: #003366; border-bottom: 2px solid #003366; }
+        .qty-controls { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { width: 30px; height: 30px; border-radius: 50%; border: 1px solid #003366; cursor: pointer; background: white; font-weight: bold; }
+        .checkout-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; }
+        .customer-card, .summary-card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; font-weight: 600; margin-bottom: 5px; color: #444; }
+        .input-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 1rem; }
+        .summary-line { display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 1.1rem; color: #555; }
+        .summary-total { font-size: 1.6rem; font-weight: 800; border-top: 2px dashed #ddd; padding-top: 15px; margin-top: 10px; color: #003366; }
+        .place-order-btn { width: 100%; background: #003366; color: white; padding: 18px; border: none; border-radius: 12px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: 0.3s; }
         .place-order-btn:hover { background: #000; transform: translateY(-3px); }
-
-        /* Empty Cart State */
-        .empty-cart { text-align: center; padding: 50px 0; }
-        .empty-cart i { font-size: 4rem; color: #ccc; margin-bottom: 20px; }
-        .empty-cart h3 { color: #666; margin-bottom: 15px; }
-
-        @media (max-width: 850px) {
-            .checkout-grid { flex-direction: column; }
-            .cart-header { display: none; } /* Hide table header on mobile */
-            .cart-row { 
-                grid-template-columns: 1fr; gap: 10px; 
-                text-align: center; background: #f9f9f9; 
-                padding: 15px; border-radius: 10px; margin-bottom: 10px;
-            }
-            .qty-controls { justify-content: center; margin: 10px 0; }
-        }
+        @media (max-width: 850px) { .checkout-grid { grid-template-columns: 1fr; } .cart-header { display: none; } .cart-row { grid-template-columns: 1fr; text-align: center; gap: 10px; padding: 20px; background: #f9f9f9; border-radius: 15px; margin-bottom: 10px; } .qty-controls { justify-content: center; } }
     </style>
 </head>
 <body>
-
     <div class="background-blobs"></div>
     <header id="main-header"></header>
 
     <div class="cart-wrapper">
-        <h2 class="page-title">Your Shopping Cart 🛒</h2>
+        <h2 style="font-family:'Playfair Display'; font-size: 2.8rem; color:#003366; margin-bottom: 30px;">Your Cart 🛒</h2>
         
-        <div class="cart-items-box">
-            <div id="cart-content">
-                </div>
-        </div>
+        <div class="cart-items-box" id="cart-display"></div>
 
-        <div class="checkout-grid" id="checkout-section" style="display: none;">
-            
+        <div class="checkout-grid" id="checkout-section">
             <div class="customer-card">
                 <h3>Customer Details</h3>
-                <div class="input-group">
-                    <label>Full Name</label>
-                    <input type="text" id="cust-name" placeholder="Enter your full name" required>
-                </div>
-                <div class="input-group">
-                    <label>Mobile Number</label>
-                    <input type="tel" id="cust-mobile" placeholder="10-digit mobile number" maxlength="10" required>
-                    <span class="help-text">We'll use this to contact you regarding your application.</span>
-                </div>
-                <div class="input-group">
-                    <label>Appointment / Submission Date</label>
-                    <input type="date" id="cust-date" required>
-                </div>
+                <div class="input-group"><label>Full Name</label><input type="text" id="cust-name" placeholder="Enter Name"></div>
+                <div class="input-group"><label>Mobile Number</label><input type="tel" id="cust-mobile" maxlength="10" placeholder="10 Digit Mobile"></div>
+                <div class="input-group"><label>Appointment Date</label><input type="date" id="cust-date"></div>
             </div>
 
             <div class="summary-card">
                 <h3>Order Summary</h3>
-                <div class="summary-line">
-                    <span>Subtotal:</span>
-                    <span id="summary-subtotal">₹0</span>
+                <div class="input-group">
+                    <label style="color:#003366;">Manual Discount (₹)</label>
+                    <input type="number" id="manual-discount" value="0" oninput="renderCartPage()" placeholder="0">
                 </div>
-                <div class="summary-total">
-                    <span>Total Payable:</span>
-                    <span id="summary-total">₹0</span>
-                </div>
-                <button class="place-order-btn" onclick="processOrder()">Place Order ✨</button>
+                
+                <div class="summary-line"><span>Total Amount:</span> <span id="summary-subtotal">₹0</span></div>
+                <div class="summary-line" style="color: #28a745;"><span>Discount:</span> <span id="summary-discount">-₹0</span></div>
+                <div class="summary-total"><span>Final Payable:</span> <span id="summary-total">₹0</span></div>
+                <button class="place-order-btn" onclick="processOrder()">Confirm & Generate Receipt ✨</button>
             </div>
-
         </div>
     </div>
-
+	<script src="logic.js"></script>
     <script src="newlogic.js"></script>
     <script>
-        // Bismillah
-        
         function renderCartPage() {
             let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
-            const cartContent = document.getElementById('cart-content');
-            const checkoutSection = document.getElementById('checkout-section');
-            let total = 0;
+            let display = document.getElementById('cart-display');
+            let totalAmount = 0;
 
             if (cart.length === 0) {
-                cartContent.innerHTML = `
-                    <div class="empty-cart">
-                        <i class="fas fa-shopping-basket"></i>
-                        <h3>Your cart is empty</h3>
-                        <a href="Services.html" style="color:#007bff; text-decoration:none; font-weight:bold;">Browse Services</a>
-                    </div>`;
-                checkoutSection.style.display = 'none';
+                display.innerHTML = "<div style='text-align:center; padding:40px;'><h3>Your cart is empty!</h3><a href='Services.html'>Add Services</a></div>";
+                document.getElementById('checkout-section').style.display = 'none';
                 return;
             }
 
-            checkoutSection.style.display = 'flex'; // Show form if items exist
-
-            // Build Table Header
-            let html = `
-                <div class="cart-header">
-                    <div>Item</div>
-                    <div>Price</div>
-                    <div>Quantity</div>
-                    <div>Total</div>
-                    <div>Action</div>
-                </div>
-            `;
-
-            // Build Rows
+            document.getElementById('checkout-section').style.display = 'grid';
+            let html = `<div class="cart-header"><div>Service</div><div>Rate</div><div>Qty</div><div>Total</div><div>Action</div></div>`;
+            
             cart.forEach((item, index) => {
-                let subtotal = item.price * item.qty;
-                total += subtotal;
-                
-                html += `
-                <div class="cart-row">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-price">₹${item.price}</div>
+                let rowTotal = item.basePrice * item.qty;
+                totalAmount += rowTotal;
+
+                html += `<div class="cart-row">
+                    <div style="font-weight:600;">${item.name}</div>
+                    <div>₹${item.basePrice}</div>
                     <div class="qty-controls">
                         <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
                         <span>${item.qty}</span>
                         <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
                     </div>
-                    <div class="item-total">₹${subtotal}</div>
-                    <div>
-                        <button class="remove-btn" onclick="removeItem(${index})"><i class="fas fa-trash-alt"></i></button>
-                    </div>
+                    <div style="font-weight:bold; color:#d63384;">₹${rowTotal}</div>
+                    <div><button onclick="removeItem(${index})" style="color:#ff4d4d; border:none; background:none; cursor:pointer;"><i class="fas fa-trash"></i></button></div>
                 </div>`;
             });
+            display.innerHTML = html;
 
-            cartContent.innerHTML = html;
+            let manualOff = parseFloat(document.getElementById('manual-discount').value) || 0;
+            let finalBill = totalAmount - manualOff;
             
-            // Update Summary Box
-            document.getElementById('summary-subtotal').innerText = '₹' + total;
-            document.getElementById('summary-total').innerText = '₹' + total;
+            document.getElementById('summary-subtotal').innerText = '₹' + totalAmount;
+            document.getElementById('summary-discount').innerText = '-₹' + manualOff;
+            document.getElementById('summary-total').innerText = '₹' + (finalBill < 0 ? 0 : finalBill);
+
+            localStorage.setItem('cscFinalBill', JSON.stringify({
+                base: totalAmount, manual: manualOff, grandTotal: (finalBill < 0 ? 0 : finalBill)
+            }));
         }
 
         function updateQty(index, change) {
-            let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
-            if (cart[index].qty + change > 0) {
-                cart[index].qty += change;
-                localStorage.setItem('cscCart', JSON.stringify(cart));
-                renderCartPage();
-                if(typeof updateUI === 'function') updateUI();
-            }
+            let cart = JSON.parse(localStorage.getItem('cscCart'));
+            cart[index].qty += change;
+            if (cart[index].qty < 1) cart[index].qty = 1;
+            localStorage.setItem('cscCart', JSON.stringify(cart));
+            renderCartPage();
         }
 
         function removeItem(index) {
-            let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+            let cart = JSON.parse(localStorage.getItem('cscCart'));
             cart.splice(index, 1);
             localStorage.setItem('cscCart', JSON.stringify(cart));
             renderCartPage();
-            if(typeof updateUI === 'function') updateUI();
         }
 
-        // Validate Form and Move to Checkout Page
         function processOrder() {
-            const name = document.getElementById('cust-name').value.trim();
-            const mobile = document.getElementById('cust-mobile').value.trim();
-            const date = document.getElementById('cust-date').value;
-
-            if (!name) {
-                alert("Please enter your Full Name.");
-                document.getElementById('cust-name').focus();
-                return;
-            }
-            if (!mobile || mobile.length !== 10 || isNaN(mobile)) {
-                alert("Please enter a valid 10-digit Mobile Number.");
-                document.getElementById('cust-mobile').focus();
-                return;
-            }
-            if (!date) {
-                alert("Please select an Appointment Date.");
-                document.getElementById('cust-date').focus();
-                return;
-            }
-
-            // Save customer info to use on receipt page
-            const customerDetails = { name: name, mobile: mobile, date: date };
-            localStorage.setItem('cscCustomer', JSON.stringify(customerDetails));
-
-            // Redirect to final receipt/checkout page
+            const customer = {
+                name: document.getElementById('cust-name').value,
+                mobile: document.getElementById('cust-mobile').value,
+                date: document.getElementById('cust-date').value
+            };
+            if(!customer.name || !customer.mobile || !customer.date) { alert("Bhai, saari details bhariye!"); return; }
+            localStorage.setItem('cscCustomer', JSON.stringify(customer));
             window.location.href = "checkout.html";
         }
 
-        // Set today's date as minimum date for the date picker
-        window.onload = function() {
-            if(typeof loadHeader === 'function') loadHeader();
-            if(typeof updateUI === 'function') updateUI();
-            renderCartPage();
-            
-            let today = new Date().toISOString().split('T')[0];
-            document.getElementById("cust-date").setAttribute('min', today);
-        };
+        window.onload = renderCartPage;
     </script>
 </body>
 </html>
