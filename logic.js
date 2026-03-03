@@ -21,7 +21,7 @@ function loadHeader() {
             </div>
             <ul style="display:flex; list-style:none; gap:25px; margin:0; padding:0; align-items:center;">
                 <li><a href="index.html" class="nav-link-bold">Home</a></li>
-                <li class="dropdown" style="position:relative;"><a href="Services.html" class="nav-link-bold">Services ▼</a>
+                <li class="dropdown" style="position:relative;"><a href="services.html" class="nav-link-bold">Services ▼</a>
                     <div class="dropdown-content" style="display:none; position:absolute; background:white; min-width:180px; box-shadow:0 8px 16px rgba(0,0,0,0.1); top:100%; left:0; z-index:1000; border-top:3px solid #007bff;">
                         <div class="menu-columns"><a href="aadhaar.html">Aadhaar Update</a><a href="Services.html">All Services</a></div>
                     </div>
@@ -84,4 +84,5 @@ window.onload = function() {
     loadHeader(); 
     loadFooter(); 
     updateUI(); 
+
 };
