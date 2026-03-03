@@ -61,65 +61,60 @@
 	<script src="logic.js"></script>
     <script src="newlogic.js"></script>
     <script>
-        function renderCartPage() {
-            let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
-            let display = document.getElementById('cart-display');
-            let totalAmount = 0;
+	       function renderCartPage() {
+    let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+    const cartContent = document.getElementById('cart-content');
+    const checkoutSection = document.getElementById('checkout-section');
+    let total = 0;
 
-            if (cart.length === 0) {
-                display.innerHTML = "<div style='text-align:center; padding:40px;'><h3>Your cart is empty!</h3><a href='services.html'>Add Services</a></div>";
-                document.getElementById('checkout-section').style.display = 'none';
-                return;
-            }
+    if (cart.length === 0) {
+        cartContent.innerHTML = `<div class="empty-cart"><h3>Aapka cart khali hai</h3><a href="Services.html">Services Dekhein</a></div>`;
+        checkoutSection.style.display = 'none';
+        return;
+    }
 
-            document.getElementById('checkout-section').style.display = 'grid';
-            let html = `<div class="cart-header"><div>Service</div><div>Rate</div><div>Qty</div><div>Total</div><div>Action</div></div>`;
-            
-            cart.forEach((item, index) => {
-                let rowTotal = item.basePrice * item.qty;
-                totalAmount += rowTotal;
+    checkoutSection.style.display = 'flex';
+    let html = `<div class="cart-header"><div>Item</div><div>Price</div><div>Qty</div><div>Total</div><div>Action</div></div>`;
 
-                html += `<div class="cart-row">
-                    <div style="font-weight:600;">${item.name}</div>
-                    <div>₹${item.basePrice}</div>
-                    <div class="qty-controls">
-                        <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
-                        <span>${item.qty}</span>
-                        <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
-                    </div>
-                    <div style="font-weight:bold; color:#d63384;">₹${rowTotal}</div>
-                    <div><button onclick="removeItem(${index})" style="color:#ff4d4d; border:none; background:none; cursor:pointer;"><i class="fas fa-trash"></i></button></div>
-                </div>`;
-            });
-            display.innerHTML = html;
+    cart.forEach((item, index) => {
+        let subtotal = item.price * item.qty;
+        total += subtotal;
+        html += `
+        <div class="cart-row">
+            <div class="item-name">${item.name}</div>
+            <div class="item-price">₹${item.price}</div>
+            <div class="qty-controls">
+                <button class="qty-btn" onclick="updateQty(${index}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button class="qty-btn" onclick="updateQty(${index}, 1)">+</button>
+            </div>
+            <div class="item-total">₹${subtotal}</div>
+            <div><button class="remove-btn" onclick="removeItem(${index})">🗑️</button></div>
+        </div>`;
+    });
 
-            let manualOff = parseFloat(document.getElementById('manual-discount').value) || 0;
-            let finalBill = totalAmount - manualOff;
-            
-            document.getElementById('summary-subtotal').innerText = '₹' + totalAmount;
-            document.getElementById('summary-discount').innerText = '-₹' + manualOff;
-            document.getElementById('summary-total').innerText = '₹' + (finalBill < 0 ? 0 : finalBill);
+    cartContent.innerHTML = html;
+    document.getElementById('summary-subtotal').innerText = '₹' + total;
+    document.getElementById('summary-total').innerText = '₹' + total;
+}
 
-            localStorage.setItem('cscFinalBill', JSON.stringify({
-                base: totalAmount, manual: manualOff, grandTotal: (finalBill < 0 ? 0 : finalBill)
-            }));
-        }
+function updateQty(index, change) {
+    let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+    if (cart[index].qty + change > 0) {
+        cart[index].qty += change;
+        localStorage.setItem('cscCart', JSON.stringify(cart));
+        renderCartPage();
+        updateUI();
+    }
+}
 
-        function updateQty(index, change) {
-            let cart = JSON.parse(localStorage.getItem('cscCart'));
-            cart[index].qty += change;
-            if (cart[index].qty < 1) cart[index].qty = 1;
-            localStorage.setItem('cscCart', JSON.stringify(cart));
-            renderCartPage();
-        }
-
-        function removeItem(index) {
-            let cart = JSON.parse(localStorage.getItem('cscCart'));
-            cart.splice(index, 1);
-            localStorage.setItem('cscCart', JSON.stringify(cart));
-            renderCartPage();
-        }
-
+function removeItem(index) {
+    let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+    cart.splice(index, 1);
+    localStorage.setItem('cscCart', JSON.stringify(cart));
+    renderCartPage();
+    updateUI();
+}
         function processOrder() {
             const customer = {
                 name: document.getElementById('cust-name').value,
@@ -135,4 +130,5 @@
     </script>
 </body>
 </html>
+
 
