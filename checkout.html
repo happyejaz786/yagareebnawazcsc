@@ -114,42 +114,29 @@
             const day = ("0" + dateObj.getDate()).slice(-2);
             return `${day}-${months[dateObj.getMonth()]}-${dateObj.getFullYear()}`;
         }
-
         function generateReceipt() {
-            const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
-            const cartData = JSON.parse(localStorage.getItem('cscCart'));
+    const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
+    const cartData = JSON.parse(localStorage.getItem('cscCart'));
 
-            if (!customerData || !cartData || cartData.length === 0) {
-                alert("No order found! Redirecting to home.");
-                window.location.href = "index.html";
-                return;
-            }
+    if (!customerData || !cartData) {
+        window.location.href = "index.html";
+        return;
+    }
 
-            const formattedDate = formatDate(customerData.date);
-            document.getElementById('dynamic-greeting').innerText = `Dear ${customerData.name},`;
-
-            const custContainer = document.getElementById('customer-info-container');
-            custContainer.innerHTML = `
-                <p><strong>Customer Name:</strong> <span class="cust-name-highlight">${customerData.name}</span></p>
-                <p><strong>Mobile Number:</strong> +91 ${customerData.mobile}</p>
-                <p><strong>Appointment Date:</strong> ${formattedDate}</p>
-            `;
-
-            const itemsContainer = document.getElementById('receipt-items');
-            let total = 0;
-            let waMessageText = `*YA GAREEBNAWAZ CSC - Digital Receipt*%0A%0A*Customer:* ${customerData.name}%0A*Mobile:* ${customerData.mobile}%0A*Date:* ${formattedDate}%0A%0A*Services Details:*%0A`;
-
-            cartData.forEach(item => {
-                let subtotal = item.price * item.qty;
-                total += subtotal;
-                itemsContainer.innerHTML += `
-                    <tr>
-                        <td>${item.name} <br><small style="color:#888;">₹${item.price} each</small></td>
-                        <td style="text-align: center;">${item.qty}</td>
-                        <td style="text-align: right; font-weight: bold;">₹${subtotal}</td>
-                    </tr>
-                `;
-                waMessageText += `▪️ ${item.name} (x${item.qty}) - ₹${subtotal}%0A`;
+    const itemsContainer = document.getElementById('receipt-items');
+    let total = 0;
+    
+    // Yahan item.price use hoga (item.basePrice nahi)
+    cartData.forEach(item => {
+        let subtotal = item.price * item.qty;
+        total += subtotal;
+        itemsContainer.innerHTML += `
+            <tr>
+                <td>${item.name}</td>
+                <td style="text-align:center;">${item.qty}</td>
+                <td style="text-align:right;">₹${subtotal}</td>
+            </tr>`;
+    waMessageText += `▪️ ${item.name} (x${item.qty}) - ₹${subtotal}%0A`;
             });
 
             itemsContainer.innerHTML += `
@@ -234,4 +221,5 @@
     </script>
 </body>
 </html>
+
 
