@@ -23,7 +23,7 @@ function loadHeader() {
                 <li><a href="index.html" class="nav-link-bold">Home</a></li>
                 <li class="dropdown" style="position:relative;"><a href="services.html" class="nav-link-bold">Services ▼</a>
                     <div class="dropdown-content" style="display:none; position:absolute; background:white; min-width:180px; box-shadow:0 8px 16px rgba(0,0,0,0.1); top:100%; left:0; z-index:1000; border-top:3px solid #007bff;">
-                        <div class="menu-columns"><a href="aadhaar.html">Aadhaar Update</a><a href="Services.html">All Services</a></div>
+                        <div class="menu-columns"><a href="aadhaar.html">Aadhaar Update</a><a href="services.html">All Services</a></div>
                     </div>
                 </li>
                 <li><a href="contact.html" class="nav-link-bold">Contact</a></li>
@@ -86,3 +86,4 @@ window.onload = function() {
     updateUI(); 
 
 };
+
