@@ -95,7 +95,7 @@
             
             let itemsHtml = "";
             cart.forEach(item => {
-                let rate = parseFloat(item.basePrice) || 0;
+                let rate = parseFloat(item.Price) || 0;
                 let q = parseInt(item.qty) || 0;
                 itemsHtml += `<tr><td>${item.name}</td><td align="center">${q}</td><td align="right">₹${rate * q}</td></tr>`;
             });
@@ -140,4 +140,5 @@
         }
     </script>
 </body>
+
 </html>
