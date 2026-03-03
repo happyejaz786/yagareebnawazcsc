@@ -38,11 +38,6 @@
         .btn-fb { background: #1877F2; }
         .btn-map { background: #4285F4; }
         .btn-web { background: #333; }
-
-        @media (max-width: 600px) {
-            .receipt-body { padding: 20px; }
-            .receipt-table th, .receipt-table td { padding: 10px 5px; font-size: 0.9rem; }
-        }
     </style>
 </head>
 <body>
@@ -85,14 +80,11 @@
             <button class="btn-link btn-jpg" onclick="downloadJPG()">
                 <i class="fas fa-download"></i> Download Receipt (JPG)
             </button>
-            <a href="https://maps.google.com/?daddr=National+CSC+Digital+Seva+Kendra+Shahjahanpur+242001" class="btn-link btn-map" target="_blank">
+            <a href="https://www.google.com/maps?q=Shahjahanpur" class="btn-link btn-map" target="_blank">
                 <i class="fas fa-directions"></i> Get Directions
             </a>
             <a href="https://g.page/r/CaSbnIdP3_saEBE/review" class="btn-link btn-google" target="_blank">
                 <i class="fab fa-google"></i> Google Review
-            </a>
-            <a href="YOUR_FACEBOOK_PAGE_LINK_HERE" class="btn-link btn-fb" target="_blank">
-                <i class="fab fa-facebook"></i> Facebook Page
             </a>
             <a href="index.html" class="btn-link btn-web" onclick="clearCart()">
                 <i class="fas fa-globe"></i> Return to Website
@@ -102,41 +94,52 @@
 
     <footer id="main-footer"></footer>
 
-    <script src="newlogic.js"></script>
+    <script src="logic.js"></script>
     <script>
-        console.log("Bismillah");
-
         let globalWaLink = "";
 
         function formatDate(dateString) {
             const dateObj = new Date(dateString);
             const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-            const day = ("0" + dateObj.getDate()).slice(-2);
-            return `${day}-${months[dateObj.getMonth()]}-${dateObj.getFullYear()}`;
+            return `${dateObj.getDate()}-${months[dateObj.getMonth()]}-${dateObj.getFullYear()}`;
         }
+
         function generateReceipt() {
-    const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
-    const cartData = JSON.parse(localStorage.getItem('cscCart'));
+            const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
+            const cartData = JSON.parse(localStorage.getItem('cscCart'));
 
-    if (!customerData || !cartData) {
-        window.location.href = "index.html";
-        return;
-    }
+            if (!customerData || !cartData) {
+                window.location.href = "index.html";
+                return;
+            }
 
-    const itemsContainer = document.getElementById('receipt-items');
-    let total = 0;
-    
-    // Yahan item.price use hoga (item.basePrice nahi)
-    cartData.forEach(item => {
-        let subtotal = item.price * item.qty;
-        total += subtotal;
-        itemsContainer.innerHTML += `
-            <tr>
-                <td>${item.name}</td>
-                <td style="text-align:center;">${item.qty}</td>
-                <td style="text-align:right;">₹${subtotal}</td>
-            </tr>`;
-    waMessageText += `▪️ ${item.name} (x${item.qty}) - ₹${subtotal}%0A`;
+            const formattedDate = formatDate(customerData.date);
+            document.getElementById('dynamic-greeting').innerText = `Dear ${customerData.name},`;
+
+            // Display Customer Info
+            const custContainer = document.getElementById('customer-info-container');
+            custContainer.innerHTML = `
+                <p><strong>Customer Name:</strong> <span class="cust-name-highlight">${customerData.name}</span></p>
+                <p><strong>Mobile Number:</strong> +91 ${customerData.mobile}</p>
+                <p><strong>Appointment Date:</strong> ${formattedDate}</p>
+            `;
+
+            const itemsContainer = document.getElementById('receipt-items');
+            let total = 0;
+            
+            // Fix: Initialize waMessageText before loop
+            let waMessageText = `*YA GAREEBNAWAZ CSC - Digital Receipt*%0A%0A*Customer:* ${customerData.name}%0A*Mobile:* ${customerData.mobile}%0A*Date:* ${formattedDate}%0A%0A*Services Details:*%0A`;
+
+            cartData.forEach(item => {
+                let subtotal = item.price * item.qty;
+                total += subtotal;
+                itemsContainer.innerHTML += `
+                    <tr>
+                        <td>${item.name} <br><small style="color:#888;">₹${item.price} each</small></td>
+                        <td style="text-align: center;">${item.qty}</td>
+                        <td style="text-align: right; font-weight: bold;">₹${subtotal}</td>
+                    </tr>`;
+                waMessageText += `▪️ ${item.name} (x${item.qty}) - ₹${subtotal}%0A`;
             });
 
             itemsContainer.innerHTML += `
@@ -146,7 +149,7 @@
                 </tr>
             `;
 
-            waMessageText += `%0A*Grand Total: ₹${total}*%0A%0AThank you for choosing YA GAREEBNAWAZ CSC!%0A%0A⭐ *Rate us on Google:*%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0A👍 *Follow us on Facebook:*%0A[YOUR_FACEBOOK_PAGE_LINK_HERE]`;
+            waMessageText += `%0A*Grand Total: ₹${total}*%0A%0AThank you for choosing YA GAREEBNAWAZ CSC!`;
             
             const adminWhatsAppNumber = "917007420882";
             globalWaLink = `https://wa.me/${adminWhatsAppNumber}?text=${waMessageText}`;
@@ -154,14 +157,11 @@
 
         function processWhatsAppOrder() {
             const btn = document.getElementById('send-wa-btn');
-            
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving Data...';
-            btn.style.opacity = "0.7";
             btn.disabled = true;
 
             const customerData = JSON.parse(localStorage.getItem('cscCustomer'));
             const cartData = JSON.parse(localStorage.getItem('cscCart'));
-
             const GOOGLE_SHEET_APP_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
 
             const formData = new FormData();
@@ -170,30 +170,19 @@
             formData.append('Date', customerData.date);
             formData.append('OrderDetails', JSON.stringify(cartData));
 
-            // MAGIC FIX: no-cors se security bypass hogi aur sheet mein direct save ho jayega
-            fetch(GOOGLE_SHEET_APP_URL, { 
-                method: 'POST', 
-                body: formData,
-                mode: 'no-cors' 
-            })
+            fetch(GOOGLE_SHEET_APP_URL, { method: 'POST', body: formData, mode: 'no-cors' })
             .then(() => {
                 btn.innerHTML = '<i class="fas fa-check-circle"></i> Saved Successfully!';
                 btn.style.backgroundColor = "#28a745"; 
-                btn.style.opacity = "1";
-                
                 setTimeout(() => {
                     window.open(globalWaLink, '_blank');
-                    
                     btn.innerHTML = '<i class="fab fa-whatsapp"></i> Checkout via WhatsApp';
                     btn.style.backgroundColor = "#25D366"; 
                     btn.disabled = false;
                 }, 1500);
             })
-            .catch(err => {
-                alert("⚠️ Network Error! Kripya apna internet connection check karein.");
-                console.log("Network Error:", err);
-                btn.innerHTML = '<i class="fab fa-whatsapp"></i> Try Again';
-                btn.style.opacity = "1";
+            .catch(() => {
+                alert("Network Error!");
                 btn.disabled = false;
             });
         }
@@ -214,12 +203,8 @@
         }
 
         window.onload = function() {
-            if(typeof loadHeader === 'function') loadHeader();
-            if(typeof loadFooter === 'function') loadFooter();
             generateReceipt();
         };
     </script>
 </body>
 </html>
-
-
