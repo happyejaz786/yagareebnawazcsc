@@ -1,64 +1,66 @@
-// Bismillah - Centralized Logic
+// Bismillah - YA GAREEBNAWAZ CSC Global Logic
+
 function loadHeader() {
     const header = document.getElementById("main-header");
     if (header) {
         header.innerHTML = `
-        <nav style="display:flex; justify-content:space-between; align-items:center; padding:12px 8%; background: rgba(255,255,255,0.85); backdrop-filter: blur(15px); position:sticky; top:0; z-index:1000; border-bottom:1px solid #ddd; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
-            <div class="logo-wrapper" style="display:flex; align-items:center; gap:15px; cursor: pointer;" onclick="window.location.href='index.html'">
-                <img src="images/logo.jpg" alt="Logo" style="height:60px; width:60px; border-radius:50%; border: 2px solid #003366;">
-                <div>
-                    <div style="font-family: 'Playfair Display', serif; font-weight:900; font-size:1.5rem; color:#003366;">YA GAREEBNAWAZ CSC</div>
-                </div>
+        <nav style="display:flex; justify-content:space-between; align-items:center; padding:12px 8%; background: white; position:sticky; top:0; z-index:1000; border-bottom:1px solid #ddd; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+            <div style="display:flex; align-items:center; gap:10px; cursor:pointer;" onclick="window.location.href='index.html'">
+                <img src="images/logo.jpg" alt="Logo" style="height:50px; border-radius:50%;">
+                <div style="font-weight:900; font-size:1.2rem; color:#003366;">YA GAREEBNAWAZ CSC</div>
             </div>
-            <ul style="display:flex; list-style:none; gap:25px; margin:0; font-weight:700;">
-                <li><a href="index.html" style="text-decoration:none; color:#333;">Home</a></li>
-                <li><a href="services.html" style="text-decoration:none; color:#333;">Services</a></li>
+            <ul style="display:flex; list-style:none; gap:20px; margin:0;">
+                <li><a href="index.html" style="text-decoration:none; color:#333; font-weight:700;">Home</a></li>
+                <li><a href="services.html" style="text-decoration:none; color:#333; font-weight:700;">Services</a></li>
             </ul>
-            <div style="background: #003366; padding: 10px 20px; border-radius: 50px;">
-                <a href="cart.html" style="text-decoration: none; color: white; font-weight: 800;">
-                    🛒 <span id="cart-count">0</span> ITEMS
+            <div style="background: #003366; padding: 8px 15px; border-radius: 20px;">
+                <a href="cart.html" style="text-decoration: none; color: white; font-weight: bold;">
+                    🛒 CART (<span id="cart-count">0</span>)
                 </a>
             </div>
         </nav>`;
-        updateUI();
     }
 }
 
 function loadFooter() {
     const footer = document.getElementById("main-footer");
     if (footer) {
-        footer.innerHTML = `<footer style="text-align:center; padding:20px; background:#f8f9fa; margin-top:40px;">© 2026 YA GAREEBNAWAZ CSC</footer>`;
+        footer.innerHTML = `
+        <div style="padding: 20px; text-align: center; background: #f8f9fa; border-top: 1px solid #ddd; margin-top: 50px;">
+            <p>© 2026 YA GAREEBNAWAZ CSC Shahjahanpur</p>
+        </div>`;
     }
-}
-
-function addToCart(serviceName, price, qtyId) {
-    let qtyInput = document.getElementById(qtyId);
-    let qty = qtyInput ? parseInt(qtyInput.value) : 1;
-    let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
-
-    let existingItemIndex = cart.findIndex(item => item.name === serviceName);
-    if (existingItemIndex > -1) {
-        cart[existingItemIndex].qty += qty;
-    } else {
-        cart.push({ name: serviceName, price: price, qty: qty });
-    }
-
-    localStorage.setItem('cscCart', JSON.stringify(cart));
-    updateUI();
-    alert(serviceName + " Cart mein add ho gaya hai!");
 }
 
 function updateUI() {
     let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
-    let countDisplay = document.getElementById('cart-count');
-    if (countDisplay) {
-        countDisplay.innerText = cart.reduce((acc, item) => acc + item.qty, 0);
-    }
+    let count = cart.reduce((total, item) => total + item.qty, 0);
+    let display = document.getElementById('cart-count');
+    if (display) display.innerText = count;
 }
 
-// Initialize on every page
-document.addEventListener("DOMContentLoaded", () => {
+function addToCart(name, price, qtyId) {
+    let qtyInput = document.getElementById(qtyId);
+    let qty = qtyInput ? parseInt(qtyInput.value) : 1;
+    let cart = JSON.parse(localStorage.getItem('cscCart')) || [];
+
+    let index = cart.findIndex(item => item.name === name);
+    if (index > -1) {
+        cart[index].qty += qty;
+    } else {
+        cart.push({ name: name, price: price, qty: qty });
+    }
+
+    localStorage.setItem('cscCart', JSON.stringify(cart));
+    updateUI();
+    alert(name + " add ho gaya hai!");
+}
+
+// Ye line header/footer ko har page par load karegi
+window.onload = function() {
     loadHeader();
     loadFooter();
     updateUI();
-});
+    if (typeof renderCartPage === 'function') renderCartPage();
+    if (typeof generateReceipt === 'function') generateReceipt();
+};
