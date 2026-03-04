@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAN Card Services | YA GAREEBNAWAZ CSC</title>
+    
+    <link rel="stylesheet" href="commonstyle.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="responsive.css">
+
+    <style>
+        .detail-page-container {
+            max-width: 1300px !important;
+            padding: 40px 5% !important;
+        }
+        .product-wrapper {
+            display: flex;
+            gap: 50px;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .product-img-box {
+            flex: 0 0 40%; 
+            max-width: 500px;
+        }
+        .product-content {
+            flex: 1; 
+        }
+        .option-row {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+            padding: 20px 25px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border: 1px solid #eaeaea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .option-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .highlight-row {
+            background: #fdfaf2;
+            border: 1px solid #f2e2b3;
+        }
+        .opt-info {
+            display: flex;
+            flex-direction: column; 
+            gap: 6px;
+            flex: 1;
+            padding-right: 20px;
+        }
+        .opt-name {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #003366;
+            line-height: 1.3;
+        }
+        .opt-price {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #d63384;
+        }
+        .opt-action {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-shrink: 0; 
+        }
+        .qty-input {
+            width: 60px;
+            height: 42px;
+            padding: 5px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+        }
+        .qty-input:focus { border-color: #003366; }
+        .add-btn {
+            background: #003366;
+            color: white;
+            height: 42px;
+            padding: 0 25px;
+            border-radius: 25px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 51, 102, 0.2);
+            white-space: nowrap; 
+        }
+        .add-btn:hover {
+            background: #007bff;
+            transform: translateY(-2px);
+        }
+        @media(max-width: 900px) {
+            .product-wrapper { flex-direction: column; }
+            .product-img-box { max-width: 100%; width: 100%; }
+            .option-row { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .opt-action { width: 100%; justify-content: space-between; }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-blobs"></div>
+
+    <header id="main-header"></header>
+
+    <div class="detail-page-container">
+        <a href="Services.html" class="back-link" style="display:inline-block; margin-bottom:20px; text-decoration:none; color:#003366; font-weight:600;"><i class="fas fa-arrow-left"></i> Back to Services</a>
+
+        <div class="product-wrapper">
+            <div class="product-img-box">
+                <div class="main-image-wrapper" 
+                     style="position: relative; background: white; border-radius: 20px; padding: 15px; transition: all 0.3s ease; box-shadow: 0 10px 20px rgba(0,0,0,0.05);"
+                     onmouseover="this.style.transform='translateY(-8px)'; this.style.boxShadow='0 20px 40px rgba(0,0,0,0.2)';"
+                     onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.05)';">
+                     
+                    <button class="nav-arrow left" onclick="prevImage()" 
+                            style="position:absolute; left:15px; top:50%; z-index:10; transform: translateY(-50%); background: rgba(255,255,255,0.7); border:none; width:45px; height:45px; border-radius:50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; color: #555; font-size: 18px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;"
+                            onmouseover="this.style.background='white'; this.style.color='#007bff'; this.style.transform='translateY(-50%) scale(1.1)';"
+                            onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.color='#555'; this.style.transform='translateY(-50%) scale(1.0)';">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+
+                    <div class="main-image-container">
+                        <img id="featured-image" src="images/pan1.jpg" alt="PAN Card Services" style="width:100%; border-radius:10px;">
+                    </div>
+
+                    <button class="nav-arrow right" onclick="nextImage()" 
+                            style="position:absolute; right:15px; top:50%; z-index:10; transform: translateY(-50%); background: rgba(255,255,255,0.7); border:none; width:45px; height:45px; border-radius:50%; box-shadow: 0 5px 15px rgba(0,0,0,0.1); cursor: pointer; color: #555; font-size: 18px; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center;"
+                            onmouseover="this.style.background='white'; this.style.color='#007bff'; this.style.transform='translateY(-50%) scale(1.1)';"
+                            onmouseout="this.style.background='rgba(255,255,255,0.7)'; this.style.color='#555'; this.style.transform='translateY(-50%) scale(1.0)';">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                
+                <div class="thumbnail-slider" style="display:flex; gap:10px; margin-top:15px; justify-content:center; flex-wrap: wrap;">
+                    <img src="images/pan1.jpg" class="thumb active" onclick="changeImage(this.src, 0)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/pan2.jpg" class="thumb" onclick="changeImage(this.src, 1)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/pan3.jpg" class="thumb" onclick="changeImage(this.src, 2)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/pan4.jpg" class="thumb" onclick="changeImage(this.src, 3)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                    <img src="images/pan5.jpg" class="thumb" onclick="changeImage(this.src, 4)" style="width:70px; height:70px; cursor:pointer; border-radius:10px; border:2px solid transparent;">
+                </div>
+            </div>
+
+            <div class="product-content">
+                <h1 style="font-family:'Playfair Display'; font-size:3rem; margin-bottom:15px; color: #003366;">PAN Card Services</h1>
+                <p style="color:#666; margin-bottom:30px; line-height:1.6; font-size:1.1rem;">NSDL aur UTI ke madhyam se naya PAN card, instant e-PAN, correction aur minor to major update ki sabhi suvidhayein.</p>
+
+                <div class="option-row highlight-row">
+                    <div class="opt-info">
+                        <span class="opt-name">New PAN Card (Physical)</span>
+                        <span class="opt-price">₹200</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-p1" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('New PAN Card (Physical)', 200, 'qty-p1'); window.location.href='cart.html';">Add +</button>
+                    </div>
+                </div>
+
+                <div class="option-row">
+                    <div class="opt-info">
+                        <span class="opt-name">Instant e-PAN</span>
+                        <span class="opt-price">₹100</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-p2" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('Instant e-PAN', 100, 'qty-p2'); window.location.href='cart.html';">Add +</button>
+                    </div>
+                </div>
+
+                <div class="option-row">
+                    <div class="opt-info">
+                        <span class="opt-name">PAN Correction/Update</span>
+                        <span class="opt-price">₹150</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-p3" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('PAN Correction', 150, 'qty-p3'); window.location.href='cart.html';">Add +</button>
+                    </div>
+                </div>
+
+                <div class="option-row">
+                    <div class="opt-info">
+                        <span class="opt-name">Minor to Major Update</span>
+                        <span class="opt-price">₹150</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-p4" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('Minor to Major PAN Update', 150, 'qty-p4'); window.location.href='cart.html';">Add +</button>
+                    </div>
+                </div>
+
+                <div class="option-row">
+                    <div class="opt-info">
+                        <span class="opt-name">Reprint Lost PAN</span>
+                        <span class="opt-price">₹120</span>
+                    </div>
+                    <div class="opt-action">
+                        <input type="number" id="qty-p5" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('Reprint Lost PAN', 120, 'qty-p5'); window.location.href='cart.html';">Add +</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer id="main-footer"></footer>
+	<script src="logic.js"></script>
+    <script src="newlogic.js"></script>
+    
+    <script>
+        // Array updated for PAN images
+        var pageImages = ['images/pan1.jpg', 'images/pan2.jpg', 'images/pan3.jpg', 'images/pan4.jpg', 'images/pan5.jpg'];
+        let currentIndex = 0;
+
+        function changeImage(src, index) {
+            document.getElementById('featured-image').src = src;
+            currentIndex = index;
+            updateThumbnails();
+        }
+
+        function prevImage() {
+            if (pageImages.length > 0) {
+                currentIndex = (currentIndex - 1 + pageImages.length) % pageImages.length;
+                document.getElementById('featured-image').src = pageImages[currentIndex];
+                updateThumbnails();
+            }
+        }
+
+        function nextImage() {
+            if (pageImages.length > 0) {
+                currentIndex = (currentIndex + 1) % pageImages.length;
+                document.getElementById('featured-image').src = pageImages[currentIndex];
+                updateThumbnails();
+            }
+        }
+
+        function updateThumbnails() {
+            let thumbs = document.getElementsByClassName('thumb');
+            for (let i = 0; i < thumbs.length; i++) {
+                thumbs[i].classList.remove('active');
+                if (i === currentIndex) thumbs[i].classList.add('active');
+            }
+        }
+    </script>
+</body>
+</html>
