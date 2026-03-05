@@ -54,12 +54,12 @@ function loadHeader() {
                 <li><a href="index.html">Home</a></li>
                 
                 <li class="dropdown">
-                    <a href="Services.html">Services ▼</a>
+                    <a href="#">Services ▼</a>
                     <div class="dropdown-content">
                         <a href="voter.html"><i class="fas fa-id-card"></i> Voter Services</a>
                         <a href="pan.html"><i class="fas fa-credit-card"></i> Pan Services</a>
                         <a href="aadhaar.html"><i class="fas fa-fingerprint"></i> Aadhaar Update</a>
-                        <a href="Services.html"><i class="fas fa-list"></i> All Services</a>
+                        <a href="services.html"><i class="fas fa-list"></i> All Services</a>
                     </div>
                 </li>
                 
@@ -167,4 +167,5 @@ window.addEventListener('DOMContentLoaded', () => {
     loadHeader();
     loadFooter();
     updateUI();
+
 });
