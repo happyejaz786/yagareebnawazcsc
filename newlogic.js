@@ -98,8 +98,7 @@ function downloadJPG() {
         btn.disabled = false;
     });
 }
-
-// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function
+// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function (FIXED FOR GOOGLE SHEETS)
 function processWhatsAppOrder() {
     const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toISOString() };
     const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0 };
@@ -112,19 +111,26 @@ function processWhatsAppOrder() {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
     btn.disabled = true;
 
-    const formData = new FormData();
-    formData.append('Name', customer.name);
-    formData.append('Mobile', customer.mobile);
+    // YAHAN FIX KIYA GAYA HAI: FormData ki jagah URLSearchParams use kiya hai
+    const urlParams = new URLSearchParams();
+    urlParams.append('Name', customer.name);
+    urlParams.append('Mobile', customer.mobile);
     
-    // Sheet mein bhi DD-MMM-YYYY format bhejna
     const sheetDate = typeof formatToDDMMMYYYY === 'function' ? formatToDDMMMYYYY(customer.date || new Date()) : customer.date;
-    formData.append('Date', sheetDate);
-    formData.append('OrderDetails', `Total Bill: ₹${bill.grandTotal}`);
+    urlParams.append('Date', sheetDate);
+    urlParams.append('OrderDetails', `Total Bill: ₹${bill.grandTotal}`);
 
-    fetch(GOOGLE_SHEET_URL, { method: 'POST', body: formData, mode: 'no-cors' })
+    // Headers me application/x-www-form-urlencoded add kiya hai taaki Google Apps Script aasaani se padh sake
+    fetch(GOOGLE_SHEET_URL, { 
+        method: 'POST', 
+        body: urlParams, 
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        mode: 'no-cors' 
+    })
     .then(() => {
         alert("✅ Data Google Sheet Par Save Ho Gaya!");
-        // WhatsApp ke liye Message Format
         let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}`;
         window.open(`https://wa.me/917007420882?text=${waMsg}`, '_blank');
     }).catch((err) => {
