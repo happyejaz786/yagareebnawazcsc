@@ -133,6 +133,11 @@ function processWhatsAppOrder() {
     })
     .then(() => {
         alert("✅ Data Google Sheet Par Save Ho Gaya!");
+        
+        localStorage.removeItem('cscCart');
+        localStorage.removeItem('cscFinalBill');
+        localStorage.removeItem('cscCustomer');
+        
         let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}`;
         window.open(`https://wa.me/917007420882?text=${waMsg}`, '_blank');
     }).catch((err) => {
@@ -143,3 +148,4 @@ function processWhatsAppOrder() {
         btn.disabled = false;
     });
 }
+
