@@ -98,12 +98,14 @@ function downloadJPG() {
         btn.disabled = false;
     });
 }
-// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function (FIXED FOR GOOGLE SHEETS)
+// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function (FINAL FIX)
 function processWhatsAppOrder() {
     const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toISOString() };
     const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0 };
     
-    // Aapka Google Sheet Link
+    // YAHAN FIX HAI 1: Cart ka data nikala
+    const cart = JSON.parse(localStorage.getItem('cscCart')) || []; 
+
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
 
     const btn = document.getElementById('btn-wa');
@@ -111,16 +113,16 @@ function processWhatsAppOrder() {
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
     btn.disabled = true;
 
-    // YAHAN FIX KIYA GAYA HAI: FormData ki jagah URLSearchParams use kiya hai
     const urlParams = new URLSearchParams();
     urlParams.append('Name', customer.name);
     urlParams.append('Mobile', customer.mobile);
     
     const sheetDate = typeof formatToDDMMMYYYY === 'function' ? formatToDDMMMYYYY(customer.date || new Date()) : customer.date;
     urlParams.append('Date', sheetDate);
-    urlParams.append('OrderDetails', `Total Bill: ₹${bill.grandTotal}`);
+    
+    // YAHAN FIX HAI 2: Total Bill text ki jagah pura Cart bhej rahe hain
+    urlParams.append('OrderDetails', JSON.stringify(cart));
 
-    // Headers me application/x-www-form-urlencoded add kiya hai taaki Google Apps Script aasaani se padh sake
     fetch(GOOGLE_SHEET_URL, { 
         method: 'POST', 
         body: urlParams, 
