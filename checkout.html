@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Working Receipt | YA GAREEBNAWAZ CSC</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+    <header id="main-header"></header>
+
+    <div class="receipt-wrapper">
+        <div class="receipt-card" id="print-area">
+            <div class="receipt-header">
+                <img src="images/logo.jpg" alt="Logo" class="shop-logo" id="shop-logo" onerror="this.style.display='none'">
+                <div class="shop-details">
+                    <h1>YA GAREEBNAWAZ CSC</h1>
+                    <p>Prop: Mohammad Ejaz Khan</p>
+                    <p>Mohalla Alizai near National Girls Inter College Shahjahanpur</p>
+                    <p>Contact: +91 7007420882</p>
+                </div>
+            </div>
+            <div class="receipt-body">
+                <div class="customer-info-box">
+                    <div id="cust-left"></div>
+                    <div id="cust-right" class="text-right"></div>
+                </div>
+                <table class="receipt-table">
+                    <thead>
+                        <tr>
+                            <th>Service</th>
+                            <th class="text-center">Qty</th>
+                            <th class="text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="receipt-items"></tbody>
+                </table>
+                <div class="summary-section">
+                    <div class="summary-row">
+                        <div class="summary-label">Subtotal:</div>
+                        <div class="summary-value" id="sub-total"></div>
+                    </div>
+                    <div class="summary-row savings-text">
+                        <div class="summary-label">Total Savings:</div>
+                        <div class="summary-value" id="save-total"></div>
+                    </div>
+                    <div class="grand-total-box">
+                        <div class="grand-total-label">Grand Total:</div>
+                        <div class="grand-total-amount" id="grand-total"></div>
+                    </div>
+                </div>
+                <p class="thank-you-text">हमारी सेवाएँ लेने के लिए धन्यवाद, दोबारा सेवा का अवसर दें</p>
+            </div>
+        </div>
+
+        <div class="action-links">
+            <button class="btn-link btn-wa" id="btn-wa" onclick="processWhatsAppOrder()"><i class="fab fa-whatsapp"></i> Save & WhatsApp</button>
+            <button class="btn-link btn-jpg" id="btn-jpg" onclick="downloadJPG()"><i class="fas fa-download"></i> Download JPG</button>
+            <a href="https://www.google.com/maps/dir/27.8730403,79.9066366/National+CSC+AADHAAR+UPDATE+CENTER,+Alizai,+near+badi+masjid,+Shahjahanpur,+Uttar+Pradesh+242001,+India/@27.8732635,79.9042067,17z/data=!3m1!4b1!4m17!1m7!3m6!1s0x399fbd97a351e0e3:0x1afbdf4f879c9ba4!2sNational+CSC+AADHAAR+UPDATE+CENTER!8m2!3d27.8731395!4d79.9068512!16s%2Fg%2F11spdq9db0!4m8!1m1!4e1!1m5!1m1!1s0x399fbd97a351e0e3:0x1afbdf4f879c9ba4!2m2!1d79.9068512!2d27.8731395?entry=ttu&g_ep=EgoyMDI2MDIyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-link btn-map"><i class="fas fa-directions"></i> Location</a>
+            <a href="https://g.page/r/CaSbnIdP3_saEBE/review" target="_blank" class="btn-link btn-google"><i class="fab fa-google"></i> Review</a>
+            <a href="https://facebook.com/Nationalcscdigitalsevakendra" target="_blank" class="btn-link btn-fb"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="index.html" class="btn-link btn-web"><i class="fas fa-home"></i> Home</a>
+        </div>
+    </div>
+
+    <footer id="main-footer"></footer>
+
+    <script src="logic.js"></script>
+    <script src="newlogic.js"></script>
+</body>
+</html>

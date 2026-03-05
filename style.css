@@ -1,0 +1,304 @@
+/* ========================================
+   MASTER CSS - YA GAREEBNAWAZ CSC
+   ======================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Cambria', serif;
+}
+
+body {
+    background: #fdf0f6; /* Aapke reference ke hisaab se frosty background */
+    color: #333;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* --- DYNAMIC HEADER & NAVIGATION --- */
+.main-header-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 5%;
+    background: rgba(255, 255, 255, 0.95);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.logo-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+}
+
+.logo-wrapper img {
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    border: 2px solid #003366;
+    object-fit: cover;
+}
+
+.logo-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: #003366;
+    margin: 0;
+    line-height: 1.1;
+}
+
+.logo-text h3 {
+    font-size: 0.8rem;
+    color: #d63384;
+    margin: 0;
+}
+
+/* Hamburger Menu (3 Bars) */
+.hamburger {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: #003366;
+}
+
+/* Desktop Nav Links */
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+    align-items: center;
+}
+
+.nav-links a {
+    text-decoration: none;
+    font-weight: 700;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 16px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: #007bff;
+}
+
+.cart-btn-container {
+    background: #003366;
+    padding: 8px 18px;
+    border-radius: 50px;
+    transition: background 0.3s;
+}
+
+.cart-btn-container:hover {
+    background: #d63384;
+}
+
+.cart-btn-container a {
+    color: white;
+    text-decoration: none;
+    font-weight: 800;
+}
+
+/* --- RECEIPT DESIGN --- */
+.receipt-wrapper {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.receipt-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border: 2px solid #000;
+    overflow: hidden;
+}
+
+.receipt-header {
+    background: #003366;
+    color: white;
+    padding: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border-bottom: 4px solid #d63384;
+}
+
+.shop-logo {
+    width: 85px;
+    height: 85px;
+    object-fit: cover;
+    border-radius: 5px;
+    background: white;
+}
+
+.shop-details { text-align: left; }
+.shop-details h1 { margin: 0; font-size: 1.8rem; }
+.shop-details p { margin: 3px 0; font-size: 0.9rem; }
+
+.receipt-body { padding: 30px; }
+
+.customer-info-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #fdfaf2;
+    border: 1px solid #000;
+    padding: 15px;
+    border-radius: 5px;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+}
+
+.text-right { text-align: right; }
+.text-center { text-align: center; }
+
+.receipt-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.receipt-table th, .receipt-table td {
+    border: 1px solid #000;
+    padding: 12px;
+}
+
+.receipt-table th { background: #f4f4f4; }
+
+.summary-section {
+    width: 100%;
+    border-top: 2px solid #000;
+    padding-top: 10px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: flex-end;
+    padding: 5px 0;
+    font-size: 1.1rem;
+}
+
+.savings-text { color: green; font-weight: bold; }
+
+.summary-label {
+    width: 200px;
+    text-align: right;
+    padding-right: 40px;
+}
+
+.summary-value {
+    width: 120px;
+    text-align: right;
+}
+
+.grand-total-box {
+    background: #fff9eb;
+    padding: 15px;
+    display: flex;
+    justify-content: flex-end;
+    border: 2px solid #000;
+    margin-top: 10px;
+}
+
+.grand-total-label, .grand-total-amount {
+    font-size: 1.4rem;
+    color: #d63384;
+    font-weight: 900;
+}
+
+.grand-total-label { padding-right: 40px; }
+
+.thank-you-text {
+    text-align: center;
+    margin-top: 25px;
+    font-weight: bold;
+    color: #003366;
+    font-size: 1.1rem;
+}
+
+/* --- ACTION BUTTONS --- */
+.action-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+    padding-bottom: 40px;
+}
+
+.btn-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+    transition: opacity 0.3s;
+}
+
+.btn-link:hover { opacity: 0.85; }
+.btn-wa { background: #25D366; } 
+.btn-jpg { background: #d63384; } 
+.btn-map { background: #4285F4; }
+.btn-google { background: #db4437; } 
+.btn-fb { background: #1877F2; } 
+.btn-web { background: #333; }
+
+/* --- FOOTER --- */
+.main-footer {
+    background-color: #001f3f;
+    color: white;
+    padding: 20px 0;
+    margin-top: 50px;
+    border-top: 4px solid #007bff;
+}
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 992px) {
+    /* Header Re-arrangement for Mobile */
+    .hamburger { display: block; order: 1; } /* Top Left Menu Icon */
+    .logo-wrapper { order: 2; margin: 0 auto; text-align: center; }
+    .cart-btn-container { order: 3; }
+    
+    .logo-text h2 { font-size: 1.2rem; }
+    
+    .nav-links {
+        display: none; /* Hidden by default */
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        padding: 15px 0;
+    }
+    
+    .nav-links.active {
+        display: flex; /* Shown when clicked */
+    }
+
+    .nav-links li { width: 100%; text-align: center; }
+    .nav-links a { display: block; padding: 10px; }
+
+    /* Receipt & Buttons Mobile Layout */
+    .receipt-header { flex-direction: column; text-align: center; }
+    .shop-details { text-align: center; }
+    .customer-info-box { flex-direction: column; gap: 15px; }
+    .text-right { text-align: left; }
+    .action-links { grid-template-columns: 1fr; }
+}
