@@ -1,5 +1,5 @@
 // ==========================================
-// NEWLOGIC.JS - CHECKOUT & CART RECEIPT LOGIC
+// NEWLOGIC.JS - CHECKOUT, CART RECEIPT & WHATSAPP LOGIC (FINAL VERSION)
 // ==========================================
 
 // 1. Date Format ko DD-MMM-YYYY me convert karne ka function
@@ -15,7 +15,6 @@ function formatToDDMMMYYYY(dateStr) {
 
 // 2. Page load hote hi Receipt generate karne ka kaam
 window.addEventListener('DOMContentLoaded', () => {
-    // LocalStorage se data nikalna ( || {} lagaya hai taaki empty hone par page crash na ho)
     const customer = JSON.parse(localStorage.getItem('cscCustomer')) || {};
     const cart = JSON.parse(localStorage.getItem('cscCart')) || [];
     const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || {};
@@ -40,7 +39,6 @@ window.addEventListener('DOMContentLoaded', () => {
         itemsHtml = `<tr><td colspan="3" class="text-center">No items in cart</td></tr>`;
     } else {
         cart.forEach(item => {
-            // YAHAN BUG FIX HUA HAI: Ab ye basePrice aur price dono ko check karega, isliye ₹0 nahi aayega!
             let rate = parseFloat(item.basePrice || item.price || item.Price || item.rate || item.amount) || 0;
             let q = parseInt(item.qty || item.quantity) || 1;
             
@@ -71,7 +69,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // 3. JPG Image Download karne ka Function
 function downloadJPG() {
-    window.scrollTo(0, 0); // Image katne se bachane ke liye page ko top par scroll karna
+    window.scrollTo(0, 0); 
     
     const btn = document.getElementById('btn-jpg');
     const originalText = btn.innerHTML;
@@ -98,12 +96,11 @@ function downloadJPG() {
         btn.disabled = false;
     });
 }
-// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function (FINAL FIX)
+
+// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function
 function processWhatsAppOrder() {
     const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toISOString() };
     const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0 };
-    
-    // YAHAN FIX HAI 1: Cart ka data nikala
     const cart = JSON.parse(localStorage.getItem('cscCart')) || []; 
 
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
@@ -119,8 +116,6 @@ function processWhatsAppOrder() {
     
     const sheetDate = typeof formatToDDMMMYYYY === 'function' ? formatToDDMMMYYYY(customer.date || new Date()) : customer.date;
     urlParams.append('Date', sheetDate);
-    
-    // YAHAN FIX HAI 2: Total Bill text ki jagah pura Cart bhej rahe hain
     urlParams.append('OrderDetails', JSON.stringify(cart));
 
     fetch(GOOGLE_SHEET_URL, { 
@@ -134,11 +129,14 @@ function processWhatsAppOrder() {
     .then(() => {
         alert("✅ Data Google Sheet Par Save Ho Gaya!");
         
+        // Order complete hone par memory saaf karna
         localStorage.removeItem('cscCart');
         localStorage.removeItem('cscFinalBill');
         localStorage.removeItem('cscCustomer');
+
+        // Yahan WhatsApp Message me Google Page aur WhatsApp Link add kiya gaya hai
+        let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}%0A%0A*Review Us on Google:* ⭐%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0A*Chat with us on WhatsApp:* 💬%0Ahttps://wa.me/917007420882`;
         
-        let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}`;
         window.open(`https://wa.me/917007420882?text=${waMsg}`, '_blank');
     }).catch((err) => {
         console.error("Fetch Error:", err);
@@ -148,4 +146,3 @@ function processWhatsAppOrder() {
         btn.disabled = false;
     });
 }
-
