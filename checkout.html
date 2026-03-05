@@ -25,7 +25,8 @@
         .summary-value { width: 120px; text-align: right; }
         .grand-total-box { background: #fff9eb; padding: 15px; display: flex; justify-content: flex-end; border: 2px solid #000; margin-top: 10px; }
         .action-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 25px; padding-bottom: 40px; }
-        .btn-link { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 15px; border-radius: 5px; text-decoration: none; font-weight: bold; color: white; cursor: pointer; border: none; font-size: 0.9rem; }
+        .btn-link { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 15px; border-radius: 5px; text-decoration: none; font-weight: bold; color: white; cursor: pointer; border: none; font-size: 0.9rem; transition: opacity 0.3s; }
+        .btn-link:disabled { opacity: 0.7; cursor: not-allowed; }
         .btn-wa { background: #25D366; } .btn-jpg { background: #d63384; } .btn-map { background: #4285F4; }
         .btn-google { background: #db4437; } .btn-fb { background: #1877F2; } .btn-web { background: #333; }
         @media (max-width: 700px) { .action-links { grid-template-columns: 1fr; } }
@@ -37,7 +38,7 @@
     <div class="receipt-wrapper">
         <div class="receipt-card" id="print-area">
             <div class="receipt-header">
-                <img src="images/logo.jpg" alt="Logo" class="shop-logo">
+                <img src="images/logo.jpg" alt="Logo" class="shop-logo" onerror="this.style.display='none'">
                 <div class="shop-details">
                     <h1 style="margin:0;">YA GAREEBNAWAZ CSC</h1>
                     <p>Prop: Mohammad Ejaz Khan</p>
@@ -62,13 +63,13 @@
                         <div style="font-size:1.4rem; color:#d63384;" id="grand-total"></div>
                     </div>
                 </div>
-                <p style="text-align: center; margin-top: 25px; font-weight: bold; color: #003366;">हमारी सेवाएँ लेने के लिए धन्यवाद दोबारा सेवा का अवसर दें</p>
+                <p style="text-align: center; margin-top: 25px; font-weight: bold; color: #003366;">हमारी सेवाएँ लेने کے لیے شکریہ دوبارہ خدمت کا موقع دیں</p>
             </div>
         </div>
 
         <div class="action-links">
-            <button class="btn-link btn-wa" onclick="processWhatsAppOrder()"><i class="fab fa-whatsapp"></i> Save & WhatsApp</button>
-            <button class="btn-link btn-jpg" onclick="downloadJPG()"><i class="fas fa-download"></i> Download JPG</button>
+            <button class="btn-link btn-wa" onclick="processWhatsAppOrder()" id="btn-wa"><i class="fab fa-whatsapp"></i> Save & WhatsApp</button>
+            <button class="btn-link btn-jpg" onclick="downloadJPG()" id="btn-jpg"><i class="fas fa-download"></i> Download JPG</button>
             <a href="https://www.google.com/maps/dir/27.8730403,79.9066366/National+CSC+AADHAAR+UPDATE+CENTER,+Alizai,+near+badi+masjid,+Shahjahanpur,+Uttar+Pradesh+242001,+India/@27.8732635,79.9042067,17z/data=!3m1!4b1!4m17!1m7!3m6!1s0x399fbd97a351e0e3:0x1afbdf4f879c9ba4!2sNational+CSC+AADHAAR+UPDATE+CENTER!8m2!3d27.8731395!4d79.9068512!16s%2Fg%2F11spdq9db0!4m8!1m1!4e1!1m5!1m1!1s0x399fbd97a351e0e3:0x1afbdf4f879c9ba4!2m2!1d79.9068512!2d27.8731395?entry=ttu&g_ep=EgoyMDI2MDIyNS4wIKXMDSoASAFQAw%3D%3D" target="_blank" class="btn-link btn-map"><i class="fas fa-directions"></i> Location</a>
             <a href="https://g.page/r/CaSbnIdP3_saEBE/review" target="_blank" class="btn-link btn-google"><i class="fab fa-google"></i> Review</a>
             <a href="https://facebook.com/Nationalcscdigitalsevakendra" target="_blank" class="btn-link btn-fb"><i class="fab fa-facebook"></i> Facebook</a>
@@ -86,19 +87,25 @@
             if(typeof loadHeader === 'function') loadHeader();
             if(typeof loadFooter === 'function') loadFooter();
 
+            // Added empty fallbacks to prevent crash if cache is empty
             const customer = JSON.parse(localStorage.getItem('cscCustomer')) || {};
             const cart = JSON.parse(localStorage.getItem('cscCart')) || [];
             const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || {};
             
-            document.getElementById('cust-left').innerHTML = `<strong>Name:</strong> ${customer.name || 'N/A'}<br><strong>Date:</strong> ${customer.date || ''}`;
-            document.getElementById('cust-right').innerHTML = `<strong>Mobile:</strong> +91 ${customer.mobile || ''}<br><strong>ID:</strong> #CSC${Date.now().toString().slice(-5)}`;
+            const currentDate = new Date().toLocaleDateString();
+            document.getElementById('cust-left').innerHTML = `<strong>Name:</strong> ${customer.name || 'Guest Customer'}<br><strong>Date:</strong> ${customer.date || currentDate}`;
+            document.getElementById('cust-right').innerHTML = `<strong>Mobile:</strong> +91 ${customer.mobile || 'N/A'}<br><strong>ID:</strong> #CSC${Date.now().toString().slice(-5)}`;
             
             let itemsHtml = "";
-            cart.forEach(item => {
-                let rate = parseFloat(item.Price) || 0;
-                let q = parseInt(item.qty) || 0;
-                itemsHtml += `<tr><td>${item.name}</td><td align="center">${q}</td><td align="right">₹${rate * q}</td></tr>`;
-            });
+            if (cart.length === 0) {
+                itemsHtml = `<tr><td colspan="3" align="center">No items in cart</td></tr>`;
+            } else {
+                cart.forEach(item => {
+                    let rate = parseFloat(item.Price) || 0;
+                    let q = parseInt(item.qty) || 0;
+                    itemsHtml += `<tr><td>${item.name || 'Service'}</td><td align="center">${q}</td><td align="right">₹${rate * q}</td></tr>`;
+                });
+            }
             document.getElementById('receipt-items').innerHTML = itemsHtml;
 
             let subtotal = parseFloat(bill.base) || 0;
@@ -111,19 +118,51 @@
         };
 
         function downloadJPG() {
+            // Scroll to top ensures the canvas doesn't cut off the receipt
+            window.scrollTo(0, 0); 
+            
+            const btn = document.getElementById('btn-jpg');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            btn.disabled = true;
+
             const printArea = document.getElementById('print-area');
-            html2canvas(printArea, { scale: 3, useCORS: true, allowTaint: true, backgroundColor: "#ffffff" }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `CSC_Receipt_${Date.now()}.jpg`;
-                link.href = canvas.toDataURL('image/jpeg', 0.9);
-                link.click();
+            
+            html2canvas(printArea, { 
+                scale: 2, // Scale 2 is usually high enough quality and renders faster
+                useCORS: true, 
+                allowTaint: true, 
+                backgroundColor: "#ffffff" 
+            }).then(canvas => {
+                try {
+                    const link = document.createElement('a');
+                    link.download = `CSC_Receipt_${Date.now()}.jpg`;
+                    link.href = canvas.toDataURL('image/jpeg', 0.9);
+                    link.click();
+                } catch (e) {
+                    console.error("Canvas Tainted Error:", e);
+                    alert("Download blocked by browser security. Are you opening this file directly (file://)? Please test this on a Live Server to allow the image to generate.");
+                }
+            }).catch(err => {
+                console.error("html2canvas Error:", err);
+                alert("Could not generate the receipt image.");
+            }).finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
             });
         }
 
         function processWhatsAppOrder() {
-            const customer = JSON.parse(localStorage.getItem('cscCustomer'));
-            const bill = JSON.parse(localStorage.getItem('cscFinalBill'));
+            // Securely fetching data so it never crashes
+            const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toLocaleDateString() };
+            const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0 };
+            
             const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
+
+            const btn = document.getElementById('btn-wa');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+            btn.disabled = true;
 
             const formData = new FormData();
             formData.append('Name', customer.name);
@@ -136,9 +175,14 @@
                 alert("✅ Data Saved Successfully!");
                 let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${customer.date}`;
                 window.open(`https://wa.me/917007420882?text=${waMsg}`, '_blank');
-            }).catch(() => alert("Error saving data. Please check internet."));
+            }).catch((err) => {
+                console.error("Fetch Error:", err);
+                alert("Error saving data. Please check your internet connection.");
+            }).finally(() => {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            });
         }
     </script>
 </body>
-
 </html>
