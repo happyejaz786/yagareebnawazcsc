@@ -63,7 +63,7 @@
                         <div style="font-size:1.4rem; color:#d63384;" id="grand-total"></div>
                     </div>
                 </div>
-                <p style="text-align: center; margin-top: 25px; font-weight: bold; color: #003366;">हमारी सेवाएँ लेने के लिए धन्यवाद दोबारा सेवा का अवसर दें</p>
+                <p style="text-align: center; margin-top: 25px; font-weight: bold; color: #003366;">हमारी सेवाएँ लेने کے لیے شکریہ دوبارہ خدمت کا موقع دیں</p>
             </div>
         </div>
 
@@ -83,40 +83,26 @@
     <script src="newlogic.js"></script>
 
     <script>
-        // Custom Date Formatter for DD-MMM-YYYY
-        function formatToDDMMMYYYY(dateStr) {
-            const d = new Date(dateStr);
-            if (isNaN(d.getTime())) return dateStr; 
-            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const day = String(d.getDate()).padStart(2, '0');
-            const month = months[d.getMonth()];
-            const year = d.getFullYear();
-            return `${day}-${month}-${year}`;
-        }
-
         window.onload = function() {
             if(typeof loadHeader === 'function') loadHeader();
             if(typeof loadFooter === 'function') loadFooter();
 
+            // Added empty fallbacks to prevent crash if cache is empty
             const customer = JSON.parse(localStorage.getItem('cscCustomer')) || {};
             const cart = JSON.parse(localStorage.getItem('cscCart')) || [];
             const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || {};
             
-            const rawDate = customer.date || new Date().toISOString();
-            const formattedDate = formatToDDMMMYYYY(rawDate);
-
-            // Swapped layout: Mobile on Left, Name on Right
-            document.getElementById('cust-left').innerHTML = `<strong>Mobile:</strong> +91 ${customer.mobile || 'N/A'}<br><strong>Date:</strong> ${formattedDate}`;
-            document.getElementById('cust-right').innerHTML = `<strong>Name:</strong> ${customer.name || 'Guest'}<br><strong>ID:</strong> #CSC${Date.now().toString().slice(-5)}`;
+            const currentDate = new Date().toLocaleDateString();
+            document.getElementById('cust-left').innerHTML = `<strong>Name:</strong> ${customer.name || 'Guest Customer'}<br><strong>Date:</strong> ${customer.date || currentDate}`;
+            document.getElementById('cust-right').innerHTML = `<strong>Mobile:</strong> +91 ${customer.mobile || 'N/A'}<br><strong>ID:</strong> #CSC${Date.now().toString().slice(-5)}`;
             
             let itemsHtml = "";
             if (cart.length === 0) {
                 itemsHtml = `<tr><td colspan="3" align="center">No items in cart</td></tr>`;
             } else {
                 cart.forEach(item => {
-                    // Added fallback to check for lowercase 'price', 'rate', or 'amount' to fix ₹0 issue
-                    let rate = parseFloat(item.price || item.Price || item.rate || item.amount) || 0;
-                    let q = parseInt(item.qty || item.quantity) || 1;
+                    let rate = parseFloat(item.Price) || 0;
+                    let q = parseInt(item.qty) || 0;
                     itemsHtml += `<tr><td>${item.name || 'Service'}</td><td align="center">${q}</td><td align="right">₹${rate * q}</td></tr>`;
                 });
             }
@@ -132,6 +118,7 @@
         };
 
         function downloadJPG() {
+            // Scroll to top ensures the canvas doesn't cut off the receipt
             window.scrollTo(0, 0); 
             
             const btn = document.getElementById('btn-jpg');
@@ -142,7 +129,7 @@
             const printArea = document.getElementById('print-area');
             
             html2canvas(printArea, { 
-                scale: 2, 
+                scale: 2, // Scale 2 is usually high enough quality and renders faster
                 useCORS: true, 
                 allowTaint: true, 
                 backgroundColor: "#ffffff" 
@@ -166,6 +153,7 @@
         }
 
         function processWhatsAppOrder() {
+            // Securely fetching data so it never crashes
             const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toLocaleDateString() };
             const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0 };
             
@@ -179,15 +167,13 @@
             const formData = new FormData();
             formData.append('Name', customer.name);
             formData.append('Mobile', customer.mobile);
-            // Format the date for the Google Sheet as well
-            const sheetDate = typeof formatToDDMMMYYYY === 'function' ? formatToDDMMMYYYY(customer.date || new Date()) : customer.date;
-            formData.append('Date', sheetDate);
+            formData.append('Date', customer.date);
             formData.append('OrderDetails', `Total Bill: ₹${bill.grandTotal}`);
 
             fetch(GOOGLE_SHEET_URL, { method: 'POST', body: formData, mode: 'no-cors' })
             .then(() => {
                 alert("✅ Data Saved Successfully!");
-                let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}`;
+                let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${customer.date}`;
                 window.open(`https://wa.me/917007420882?text=${waMsg}`, '_blank');
             }).catch((err) => {
                 console.error("Fetch Error:", err);
