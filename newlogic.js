@@ -97,11 +97,22 @@ function downloadJPG() {
     });
 }
 
-// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function
+// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function (FINAL DISCOUNT FIX)
 function processWhatsAppOrder() {
     const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toISOString() };
-    const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0 };
+    const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0, manual: 0 };
     const cart = JSON.parse(localStorage.getItem('cscCart')) || []; 
+
+    // SMART TRICK: Agar discount hai, toh usko minus (-) karke cart data me daal do 
+    // Isse Google Sheet auto-calculate karke amount kam kar dega bina Code.gs change kiye!
+    let sheetCart = [...cart];
+    if (bill.manual > 0) {
+        sheetCart.push({
+            name: 'Discount Applied',
+            basePrice: -Math.abs(bill.manual), // Minus mein discount amount
+            qty: 1
+        });
+    }
 
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
 
@@ -116,7 +127,9 @@ function processWhatsAppOrder() {
     
     const sheetDate = typeof formatToDDMMMYYYY === 'function' ? formatToDDMMMYYYY(customer.date || new Date()) : customer.date;
     urlParams.append('Date', sheetDate);
-    urlParams.append('OrderDetails', JSON.stringify(cart));
+    
+    // Purane cart ki jagah naya sheetCart bhej rahe hain jisme discount shamil hai
+    urlParams.append('OrderDetails', JSON.stringify(sheetCart));
 
     fetch(GOOGLE_SHEET_URL, { 
         method: 'POST', 
@@ -129,12 +142,11 @@ function processWhatsAppOrder() {
     .then(() => {
         alert("✅ Data Google Sheet Par Save Ho Gaya!");
         
-        // Order complete hone par memory saaf karna
+        // Order complete hone par memory saaf karna (Naye Customer ke liye fresh cart)
         localStorage.removeItem('cscCart');
         localStorage.removeItem('cscFinalBill');
         localStorage.removeItem('cscCustomer');
 
-        // Yahan WhatsApp Message me Google Page aur WhatsApp Link add kiya gaya hai
         let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}%0A%0A*Review Us on Google:* ⭐%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0A*Chat with us on WhatsApp:* 💬%0Ahttps://wa.me/917007420882`;
         
         window.open(`https://wa.me/917007420882?text=${waMsg}`, '_blank');
@@ -142,7 +154,10 @@ function processWhatsAppOrder() {
         console.error("Fetch Error:", err);
         alert("Data save hone mein error aayi, please internet check karein.");
     }).finally(() => {
-        btn.innerHTML = originalText;
-        btn.disabled = false;
+        if(btn) {
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
     });
 }
+
