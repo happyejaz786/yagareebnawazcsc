@@ -129,24 +129,33 @@ function loadFooter() {
 
     const footerHTML = `
         <footer class="main-footer">
-            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; flex-wrap: wrap; gap: 15px;">
+            <div style="display: flex; flex-direction: row; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px 20px; flex-wrap: wrap; gap: 15px;">
                 <p style="margin: 0; font-weight: bold; font-size: 0.95rem;">&copy; 2026 YA GAREEBNAWAZ CSC. All Rights Reserved.</p>
+                
                 <div style="display: flex; align-items: center; gap: 20px;">
-                    <div style="display: flex; gap: 15px; font-size: 20px;">
-                        <a href="https://facebook.com/Nationalcscdigitalsevakendra" target="_blank" style="color: #1877F2;"><i class="fab fa-facebook"></i></a>
-                        <a href="https://wa.me/917007420882" target="_blank" style="color: #25D366;"><i class="fab fa-whatsapp"></i></a>
+                    <div style="display: flex; gap: 20px; font-size: 28px;">
+                        <a href="https://facebook.com/Nationalcscdigitalsevakendra" target="_blank" style="color: #1877F2; transition: 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-facebook"></i></a>
+                        <a href="https://wa.me/917007420882" target="_blank" style="color: #25D366; transition: 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" target="_blank" style="color: #E1306C; transition: 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-instagram"></i></a>
+                        <a href="#" target="_blank" style="color: #0077B5; transition: 0.3s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)'"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
             </div>
-            <div style="text-align: center; font-size: 0.9rem; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px; display: flex; flex-direction: column; align-items: center; gap: 10px;">
-                <div>Designed & Developed by: <span style="font-family: 'Cambria', serif; font-weight: bold; color: #007bff; font-size: 1.2rem;">MOHAMMAD EJAZ KHAN</span></div>
+            
+            <div style="max-width: 1200px; margin: 0 auto; padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 
-                <div style="margin-top: 5px; background: #fff; padding: 5px 15px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: inline-flex; align-items: center; gap: 10px;">
+                <div style="text-align: left; font-size: 0.9rem;">
+                    Designed & Developed by:<br>
+                    <span style="font-family: 'Cambria', serif; font-weight: bold; color: #007bff; font-size: 1.5rem;">MOHAMMAD EJAZ KHAN</span>
+                </div>
+                
+                <div style="background: #fff; padding: 5px 15px; border-radius: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); display: inline-flex; align-items: center; gap: 10px;">
                     <span style="color: #003366; font-weight: bold;">Total Visits:</span>
                     <a href="https://www.hitwebcounter.com/" target="_blank">
                         <img src="https://hitwebcounter.com/counter/counter.php?page=21480154&style=0010&nbdigits=5&type=page&initCount=0" title="Free Tools" Alt="Free Tools" border="0" style="width: auto !important; height: auto !important; display: inline-block !important; margin: 0 !important; vertical-align: middle;" />
                     </a>
                 </div>
+
             </div>
         </footer>
     `;
@@ -197,7 +206,6 @@ function addToCart(serviceName, price, qtyId) {
     localStorage.setItem('cscCart', JSON.stringify(cart));
     updateUI();
     
-    // SIMPLE TOAST AS REQUESTED
     showToast("Service added to cart");
 }
 
@@ -206,7 +214,6 @@ function showToast(message) {
     if (!toast) {
         toast = document.createElement("div");
         toast.id = "toast";
-        // ORIGINAL SIMPLE STYLING
         toast.style.cssText = "position:fixed; bottom:20px; right:20px; background:#003366; color:white; padding:15px 25px; border-radius:30px; font-weight:600; z-index:2000; box-shadow:0 5px 15px rgba(0,0,0,0.2); transition: opacity 0.3s; opacity: 0;";
         document.body.appendChild(toast);
     }
