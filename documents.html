@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificates & Documents | YA GAREEBNAWAZ CSC</title>
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cambria:wght@400;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        .detail-page-container {
+            max-width: 1000px !important; 
+            padding: 30px 5% !important;
+            margin: auto;
+        }
+
+        .product-wrapper {
+            display: flex;
+            gap: 30px; 
+            background: #fff;
+            padding: 25px; 
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+            border: 1px solid #eee;
+        }
+
+        .product-img-box {
+            flex: 0 0 35%; 
+            max-width: 350px;
+        }
+
+        .product-content {
+            flex: 1; 
+        }
+
+        .main-image-container img {
+            width: 100%;
+            height: 280px; 
+            object-fit: contain;
+        }
+
+        .opt-row-custom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #ffffff;
+            padding: 15px 20px; 
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+            border: 1px solid #eaeaea;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .opt-row-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.06);
+        }
+
+        .opt-left {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .opt-name {
+            font-size: 1.1rem; 
+            font-weight: 700;
+            color: #003366;
+            line-height: 1.2;
+        }
+
+        .opt-desc {
+            font-size: 0.85rem;
+            color: #d63384;
+            font-weight: 600;
+        }
+
+        .opt-middle {
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.3rem; /* Slightly reduced to fit "Rs" nicely */
+            font-weight: 700;
+            color: #003366;
+            width: 90px; /* Slightly increased width for "Rs 100" */
+            text-align: center;
+        }
+
+        .opt-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-input {
+            width: 50px;
+            height: 38px;
+            padding: 5px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .qty-input:focus { border-color: #003366; }
+
+        .add-btn {
+            background: #003366;
+            color: white;
+            height: 38px;
+            padding: 0 20px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.3s ease;
+            white-space: nowrap; 
+        }
+
+        .add-btn:hover { background: #d63384; }
+
+        .back-link {
+            text-decoration: none; color: #d63384;
+            font-weight: 600; display: inline-block; margin-bottom: 15px;
+        }
+
+        @media(max-width: 768px) {
+            .product-wrapper { flex-direction: column; }
+            .product-img-box { max-width: 100%; width: 100%; }
+            .opt-row-custom { flex-wrap: wrap; }
+            .opt-middle { width: 100%; text-align: left; margin: 8px 0; font-size: 1.4rem; }
+            .opt-right { width: 100%; justify-content: flex-end; }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="main-header"></header>
+
+    <div class="detail-page-container">
+        <a href="Services.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Services</a>
+
+        <div class="product-wrapper">
+            <div class="product-img-box">
+                <div class="main-image-wrapper" style="position: relative; background: white; border-radius: 15px; padding: 10px; border: 1px solid #eee;">
+                    <button class="nav-arrow left" onclick="prevImage()" style="position:absolute; left:10px; top:50%; z-index:10; transform: translateY(-50%); background: white; border:1px solid #ddd; width:35px; height:35px; border-radius:50%; cursor: pointer; color: #003366;"><i class="fas fa-chevron-left"></i></button>
+                    
+                    <div class="main-image-container">
+                        <img id="featured-image" src="images/doc1.jpg" alt="Certificates and Documents" onerror="this.src='https://via.placeholder.com/300x280?text=Certificates'">
+                    </div>
+
+                    <button class="nav-arrow right" onclick="nextImage()" style="position:absolute; right:10px; top:50%; z-index:10; transform: translateY(-50%); background: white; border:1px solid #ddd; width:35px; height:35px; border-radius:50%; cursor: pointer; color: #003366;"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                
+                <div class="thumbnail-slider" style="display:flex; gap:8px; margin-top:10px; justify-content:center; flex-wrap: wrap;">
+                    <img src="images/doc1.jpg" class="thumb active" onclick="changeImage(this.src, 0)" style="width:50px; height:50px; cursor:pointer; border-radius:8px; border:2px solid #003366; object-fit: cover;" onerror="this.style.display='none'">
+                    <img src="images/doc2.jpg" class="thumb" onclick="changeImage(this.src, 1)" style="width:50px; height:50px; cursor:pointer; border-radius:8px; border:1px solid #ddd; object-fit: cover;" onerror="this.style.display='none'">
+                </div>
+            </div>
+
+            <div class="product-content">
+                <h1 style="font-family:'Cambria', serif; font-size:2.2rem; margin-bottom:5px; color: #003366;">Certificates & Documents</h1>
+                <p style="color:#666; margin-bottom:20px; font-size: 0.95rem;">आय, जाति, निवास और चरित्र प्रमाण पत्र ऑनलाइन आवेदन की सुविधा।</p>
+
+                <div class="opt-row-custom">
+                    <div class="opt-left">
+                        <span class="opt-name">आय प्रमाण पत्र</span>
+                        <span class="opt-desc">(Income certificate)</span>
+                    </div>
+                    <div class="opt-middle">Rs 100</div>
+                    <div class="opt-right">
+                        <input type="number" id="qty-d1" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('आय प्रमाण पत्र (Income certificate)', 100, 'qty-d1')">Add +</button>
+                    </div>
+                </div>
+
+                <div class="opt-row-custom">
+                    <div class="opt-left">
+                        <span class="opt-name">जाति प्रमाण पत्र</span>
+                        <span class="opt-desc">(Caste certificate)</span>
+                    </div>
+                    <div class="opt-middle">Rs 100</div>
+                    <div class="opt-right">
+                        <input type="number" id="qty-d2" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('जाति प्रमाण पत्र (Caste certificate)', 100, 'qty-d2')">Add +</button>
+                    </div>
+                </div>
+
+                <div class="opt-row-custom">
+                    <div class="opt-left">
+                        <span class="opt-name">निवास प्रमाण पत्र</span>
+                        <span class="opt-desc">(Domicile certificate)</span>
+                    </div>
+                    <div class="opt-middle">Rs 100</div>
+                    <div class="opt-right">
+                        <input type="number" id="qty-d3" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('निवास प्रमाण पत्र (Domicile certificate)', 100, 'qty-d3')">Add +</button>
+                    </div>
+                </div>
+
+                <div class="opt-row-custom">
+                    <div class="opt-left">
+                        <span class="opt-name">चरित्र प्रमाण पत्र</span>
+                        <span class="opt-desc">(Character certificate)</span>
+                    </div>
+                    <div class="opt-middle">Rs 150</div>
+                    <div class="opt-right">
+                        <input type="number" id="qty-d4" value="1" min="1" class="qty-input">
+                        <button class="add-btn" onclick="addToCart('चरित्र प्रमाण पत्र (Character certificate)', 150, 'qty-d4')">Add +</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <footer id="main-footer"></footer>
+
+    <script src="logic.js"></script>
+    <script src="newlogic.js"></script>
+    
+    <script>
+        // Updated variable name for documents
+        var docImages = ['images/doc1.jpg', 'images/doc2.jpg']; 
+        let currentIndex = 0;
+
+        function changeImage(src, index) {
+            document.getElementById('featured-image').src = src;
+            currentIndex = index;
+            updateThumbnails();
+        }
+
+        function prevImage() {
+            if (docImages.length > 0) {
+                currentIndex = (currentIndex - 1 + docImages.length) % docImages.length;
+                document.getElementById('featured-image').src = docImages[currentIndex];
+                updateThumbnails();
+            }
+        }
+
+        function nextImage() {
+            if (docImages.length > 0) {
+                currentIndex = (currentIndex + 1) % docImages.length;
+                document.getElementById('featured-image').src = docImages[currentIndex];
+                updateThumbnails();
+            }
+        }
+
+        function updateThumbnails() {
+            let thumbs = document.getElementsByClassName('thumb');
+            for (let i = 0; i < thumbs.length; i++) {
+                thumbs[i].style.border = "1px solid #ddd";
+                if (i === currentIndex) thumbs[i].style.border = "2px solid #003366";
+            }
+        }
+    </script>
+</body>
+</html>
