@@ -96,18 +96,34 @@ function downloadJPG() {
         btn.disabled = false;
     });
 }
-
 // 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function
 function processWhatsAppOrder() {
     const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toISOString() };
-    const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0, manual: 0 };
+    const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0, manual: 0, base: 0 };
     const cart = JSON.parse(localStorage.getItem('cscCart')) || []; 
 
     // Remove any discount entries from the cart so they don't get saved to the sheet
     const cleanCart = cart.filter(item => !item.name.toLowerCase().includes('discount'));
 
-    // Extract service names for the WhatsApp message
-    const servicesList = cleanCart.map(item => `${item.name} (x${item.qty || item.quantity || 1})`).join('%0A- ');
+    // Extract exact Receipt ID from the screen so it matches the WhatsApp message
+    let orderIdText = "#CSC...";
+    const custRightEl = document.getElementById('cust-right');
+    if (custRightEl) {
+        const match = custRightEl.innerText.match(/(#CSC\d+)/);
+        if (match) orderIdText = match[1];
+    }
+
+    // Receipt-style services list calculation
+    const servicesList = cleanCart.map(item => {
+        let q = parseInt(item.qty || item.quantity) || 1;
+        let rate = parseFloat(item.basePrice || item.price || item.Price || item.rate || item.amount) || 0;
+        return `▪️ ${item.name}\n   Qty: ${q}  |  Amount: ₹${rate * q}`;
+    }).join('\n\n');
+
+    // Subtotal and Savings calculation
+    let subtotal = parseFloat(bill.base) || 0;
+    let grandTotal = parseFloat(bill.grandTotal) || 0;
+    let totalSavings = subtotal - grandTotal;
 
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
 
@@ -137,7 +153,7 @@ function processWhatsAppOrder() {
     .then(() => {
         alert("✅ Data Google Sheet Par Save Ho Gaya!");
         
-        // WhatsApp ke liye Customer ka mobile number ensure karein ki 91 prefix ho
+        // WhatsApp phone number validation
         let custPhone = customer.mobile;
         if(custPhone && custPhone !== 'N/A') {
             if(!custPhone.startsWith('91') && custPhone.length === 10) {
@@ -148,16 +164,40 @@ function processWhatsAppOrder() {
             return;
         }
 
-        // Order complete hone par memory saaf karna
+        // Clear local storage after successful order
         localStorage.removeItem('cscCart');
         localStorage.removeItem('cscFinalBill');
         localStorage.removeItem('cscCustomer');
 
-        // Customer ko bheja jane wala dynamic message jisme service list shamil hai
-        let waMsg = `*YA GAREEBNAWAZ CSC*%0A%0AHello ${customer.name},%0AThank you for using our services.%0A%0A*Services Availed:*%0A- ${servicesList}%0A%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}%0A%0A*Review Us on Google:* ⭐%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0AWe look forward to serving you again!`;
+        // WhatsApp Bill Format (Mimicking your receipt UI exactly)
+        let waMsgText = `*YA GAREEBNAWAZ CSC*
+Prop: Mohammad Ejaz Khan
+------------------------
+*Name:* ${customer.name}
+*Mobile:* +91 ${customer.mobile}
+*Date:* ${sheetDate}
+*ID:* ${orderIdText}
+------------------------
+*SERVICE DETAILS:*
+${servicesList}
+------------------------
+*Subtotal:* ₹${subtotal}
+*Total Savings:* -₹${totalSavings > 0 ? totalSavings : 0}
+*Grand Total:* *₹${grandTotal}*
+------------------------
+हमारी सेवाएँ लेने के लिए धन्यवाद, दोबारा सेवा का अवसर दें।
+
+*Review Us on Google:* ⭐
+https://g.page/r/CaSbnIdP3_saEBE/review
+
+*Visit Our Website:* 🌐
+https://your-website-link.com`;
         
-        // Customer ke number par redirect
-        window.open(`https://wa.me/${custPhone}?text=${waMsg}`, '_blank');
+        // Encode the text block to handle spaces, symbols, and newlines safely for URLs
+        let encodedMsg = encodeURIComponent(waMsgText);
+        
+        // Open WhatsApp
+        window.open(`https://wa.me/${custPhone}?text=${encodedMsg}`, '_blank');
     }).catch((err) => {
         console.error("Fetch Error:", err);
         alert("Data save hone mein error aayi, please internet check karein.");
@@ -168,3 +208,4 @@ function processWhatsAppOrder() {
         }
     });
 }
+
