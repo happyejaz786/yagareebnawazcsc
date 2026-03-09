@@ -109,6 +109,7 @@ function loadHeader() {
                         <a href="voter.html"><i class="fas fa-id-card"></i> Voter Services</a>
                         <a href="pan.html"><i class="fas fa-credit-card"></i> Pan Services</a>
                         <a href="aadhaar.html"><i class="fas fa-fingerprint"></i> Aadhaar Update</a>
+                        <a href="documents.html"><i class="fas fa-list"></i> Govermnment Documents</a>
                         <a href="services.html"><i class="fas fa-list"></i> All Services</a>
                     </div>
                 </li>
@@ -233,4 +234,5 @@ window.addEventListener('DOMContentLoaded', () => {
     loadFooter();
     updateUI();
 });
+
 
