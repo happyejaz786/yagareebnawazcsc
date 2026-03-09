@@ -191,7 +191,7 @@ ${servicesList}
 https://g.page/r/CaSbnIdP3_saEBE/review
 
 *Visit Our Website:* 🌐
-https://your-website-link.com`;
+https://happyejaz786.github.io/yagareebnawazcsc`;
         
         // Encode the text block to handle spaces, symbols, and newlines safely for URLs
         let encodedMsg = encodeURIComponent(waMsgText);
@@ -208,4 +208,5 @@ https://your-website-link.com`;
         }
     });
 }
+
 
