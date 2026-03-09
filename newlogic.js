@@ -2,7 +2,7 @@
 // NEWLOGIC.JS - CHECKOUT, CART RECEIPT & WHATSAPP LOGIC (FINAL VERSION)
 // ==========================================
 
-// 1. Date Format ko DD-MMM-YYYY me convert karne ka function
+// 1. Date Format ko DD/MMM/YYYY me convert karne ka function
 function formatToDDMMMYYYY(dateStr) {
     const d = new Date(dateStr);
     if (isNaN(d.getTime())) return dateStr; 
@@ -10,7 +10,7 @@ function formatToDDMMMYYYY(dateStr) {
     const day = String(d.getDate()).padStart(2, '0');
     const month = months[d.getMonth()];
     const year = d.getFullYear();
-    return `${day}-${month}-${year}`;
+    return `${day}/${month}/${year}`; // Fixed format to dd/mmm/yyyy
 }
 
 // 2. Page load hote hi Receipt generate karne ka kaam
@@ -97,22 +97,17 @@ function downloadJPG() {
     });
 }
 
-// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function (FINAL DISCOUNT FIX)
+// 4. Data Google Sheets me Save karne aur WhatsApp kholne ka Function
 function processWhatsAppOrder() {
     const customer = JSON.parse(localStorage.getItem('cscCustomer')) || { name: 'Guest', mobile: 'N/A', date: new Date().toISOString() };
     const bill = JSON.parse(localStorage.getItem('cscFinalBill')) || { grandTotal: 0, manual: 0 };
     const cart = JSON.parse(localStorage.getItem('cscCart')) || []; 
 
-    // SMART TRICK: Agar discount hai, toh usko minus (-) karke cart data me daal do 
-    // Isse Google Sheet auto-calculate karke amount kam kar dega bina Code.gs change kiye!
-    let sheetCart = [...cart];
-    if (bill.manual > 0) {
-        sheetCart.push({
-            name: 'Discount Applied',
-            basePrice: -Math.abs(bill.manual), // Minus mein discount amount
-            qty: 1
-        });
-    }
+    // Remove any discount entries from the cart so they don't get saved to the sheet
+    const cleanCart = cart.filter(item => !item.name.toLowerCase().includes('discount'));
+
+    // Extract service names for the WhatsApp message
+    const servicesList = cleanCart.map(item => `${item.name} (x${item.qty || item.quantity || 1})`).join('%0A- ');
 
     const GOOGLE_SHEET_URL = "https://script.google.com/macros/s/AKfycbx9u4vLw1LdJIauzSteyqgzPP7NikQJ1r_7v9ngXvzSz1OPpCXhP5zfxV4LEJrgMqpouQ/exec"; 
 
@@ -128,8 +123,8 @@ function processWhatsAppOrder() {
     const sheetDate = typeof formatToDDMMMYYYY === 'function' ? formatToDDMMMYYYY(customer.date || new Date()) : customer.date;
     urlParams.append('Date', sheetDate);
     
-    // Purane cart ki jagah naya sheetCart bhej rahe hain jisme discount shamil hai
-    urlParams.append('OrderDetails', JSON.stringify(sheetCart));
+    // Save cleanCart to Google Sheets without "Discount Applied"
+    urlParams.append('OrderDetails', JSON.stringify(cleanCart));
 
     fetch(GOOGLE_SHEET_URL, { 
         method: 'POST', 
@@ -142,14 +137,27 @@ function processWhatsAppOrder() {
     .then(() => {
         alert("✅ Data Google Sheet Par Save Ho Gaya!");
         
-        // Order complete hone par memory saaf karna (Naye Customer ke liye fresh cart)
+        // WhatsApp ke liye Customer ka mobile number ensure karein ki 91 prefix ho
+        let custPhone = customer.mobile;
+        if(custPhone && custPhone !== 'N/A') {
+            if(!custPhone.startsWith('91') && custPhone.length === 10) {
+                custPhone = '91' + custPhone;
+            }
+        } else {
+            alert("Customer mobile number not found! Message will not be sent.");
+            return;
+        }
+
+        // Order complete hone par memory saaf karna
         localStorage.removeItem('cscCart');
         localStorage.removeItem('cscFinalBill');
         localStorage.removeItem('cscCustomer');
 
-        let waMsg = `*YA GAREEBNAWAZ CSC*%0A*Customer:* ${customer.name}%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}%0A%0A*Review Us on Google:* ⭐%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0A*Chat with us on WhatsApp:* 💬%0Ahttps://wa.me/917007420882`;
+        // Customer ko bheja jane wala dynamic message jisme service list shamil hai
+        let waMsg = `*YA GAREEBNAWAZ CSC*%0A%0AHello ${customer.name},%0AThank you for using our services.%0A%0A*Services Availed:*%0A- ${servicesList}%0A%0A*Total Bill:* ₹${bill.grandTotal}%0A*Date:* ${sheetDate}%0A%0A*Review Us on Google:* ⭐%0Ahttps://g.page/r/CaSbnIdP3_saEBE/review%0A%0AWe look forward to serving you again!`;
         
-        window.open(`https://wa.me/917007420882?text=${waMsg}`, '_blank');
+        // Customer ke number par redirect
+        window.open(`https://wa.me/${custPhone}?text=${waMsg}`, '_blank');
     }).catch((err) => {
         console.error("Fetch Error:", err);
         alert("Data save hone mein error aayi, please internet check karein.");
@@ -160,4 +168,3 @@ function processWhatsAppOrder() {
         }
     });
 }
-
