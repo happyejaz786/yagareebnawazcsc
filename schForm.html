@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholarship Data Entry & Verification Portal</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #18bc9c;
+            --bg-color: #f4f6f9;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --border-color: #dce4ec;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); padding: 20px; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(44, 62, 80, 0.95); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+        .modal-box { background: #ffffff; padding: 35px; border-radius: 8px; width: 100%; max-width: 450px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); text-align: center; }
+        .modal-box h3 { margin-bottom: 15px; color: var(--primary-color); font-size: 18px; text-transform: uppercase; }
+        .modal-box p { font-size: 13px; color: #7f8c8d; margin-bottom: 20px; }
+        .modal-input { width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 4px; font-size: 16px; text-align: center; margin-bottom: 20px; font-weight: bold; letter-spacing: 2px; }
+        .modal-btn-group { display: flex; gap: 10px; }
+        .modal-btn { flex: 1; padding: 12px; font-size: 13px; font-weight: 600; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
+        .btn-search { background-color: var(--secondary-color); color: white; }
+        .btn-skip { background-color: #95a5a6; color: white; }
+        
+        .form-container { max-width: 1200px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); display: none; }
+        .form-header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid var(--secondary-color); padding-bottom: 15px; }
+        .form-header h2 { color: var(--primary-color); font-size: 24px; text-transform: uppercase; }
+        .badge-mode { display: inline-block; padding: 5px 15px; background: #e74c3c; color: white; border-radius: 20px; font-size: 12px; margin-top: 10px; font-weight: bold; display: none; }
+        .section-title { background: var(--primary-color); color: white; padding: 8px 15px; font-size: 14px; font-weight: 600; border-radius: 4px; margin: 25px 0 15px 0; text-transform: uppercase; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 15px 20px; }
+        .form-group { display: flex; flex-direction: column; }
+        .form-group.full-width { grid-column: 1 / -1; }
+        
+        label { font-size: 11px; font-weight: 700; margin-bottom: 6px; color: #4e5d6c; text-transform: uppercase; }
+        input[type="text"], input[type="number"], select, textarea { padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13px; background-color: #fdfdfd; width: 100%; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--secondary-color); background-color: #fff; }
+        input[readonly] { background-color: #e9ecef; color: #495057; cursor: not-allowed; font-weight: bold; }
+        .percentage-field { background-color: #e8f8f5 !important; color: #117a65 !important; font-weight: bold; }
+        
+        .btn-container { margin-top: 35px; text-align: center; display: flex; justify-content: center; gap: 15px; }
+        .btn { padding: 12px 30px; font-size: 14px; font-weight: 600; border: none; border-radius: 4px; cursor: pointer; text-transform: uppercase; }
+        .btn-submit { background-color: var(--secondary-color); color: white; }
+        .btn-reset { background-color: #95a5a6; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="modal-overlay" id="initialModal">
+    <div class="modal-box">
+        <h3>Scholarship Verification Engine</h3>
+        <p>Enter 12 Digit ID Number to Fetch Record</p>
+        <input type="text" id="idSearchInput" class="modal-input" placeholder="000000000000" maxlength="12">
+        <div class="modal-btn-group">
+            <button class="modal-btn btn-search" onclick="triggerIdentitySearch()">Search & Verify</button>
+            <button class="modal-btn btn-skip" onclick="bypassVerificationPopup()">New Fresh Entry</button>
+        </div>
+    </div>
+</div>
+
+<div class="form-container" id="mainContainer">
+    <form id="scholarshipForm" onsubmit="handleSubmit(event)">
+        <input type="hidden" id="editRowIndex" name="EDIT_ROW_INDEX" value="">
+
+        <div class="form-header">
+            <h2>Scholarship Data Entry Portal</h2>
+            <div id="modeBadge" class="badge-mode">EDIT MODE ACTIVE</div>
+        </div>
+
+        <div class="section-title">1. Primary School & Flow Layout</div>
+        <div class="form-grid">
+            <div class="form-group"><label>SERIAL NO</label><input type="text" id="serialNo" name="SERIAL_NO" readonly placeholder="Auto Generated"></div>
+            <div class="form-group"><label>SCHOOL NAME *</label><input type="text" id="schoolName" name="SCHOOL_NAME" value="NATIONAL GIRLS IC SHAHJAHANPUR" required oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>DATE (Submission) *</label><input type="text" id="submissionDate" name="DO_SUB" placeholder="DD/MM/YYYY" maxlength="10" required oninput="formatDateField(this); syncSubmissionDate(this.value);"></div>
+            <div class="form-group"><label>FORM NAME</label><select id="formType" name="FORM_NAME"><option value="STATE">STATE</option><option value="MAEF">MAEF</option></select></div>
+            <div class="form-group"><label>CLASS *</label>
+                <select id="currentClass" name="CLASS" required>
+                    <option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option>
+                </select>
+            </div>
+            <div class="form-group"><label>SECTION *</label>
+                <select id="secInput" name="SEC_INPUT" required>
+                    <option value="">-- Select --</option><option value="A">A</option><option value="B">B</option><option value="C">C</option>
+                </select>
+            </div>
+            <div class="form-group"><label>SCHOLAR REGISTER NO (S_R_NO)</label><input type="text" id="srNoField" name="S_R_NO" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>OTR (One Time Reg)</label><input type="text" id="otr" name="OTR" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>APPLICATION ID</label><input type="text" id="applicationId" name="APPLICATION_ID" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>PASSWORD</label><input type="text" id="portalPassword" name="PASSWORD"></div>
+            <div class="form-group"><label>FRESH / RENEW (APPTYPE)</label>
+                <select id="appType" name="APPTYPE" onchange="handleFreshRenewLogic(this.value)">
+                    <option value="FRESH">FRESH</option><option value="RENEW">RENEW</option>
+                </select>
+            </div>
+            <div class="form-group"><label>EKYC STATUS</label>
+                <select id="ekycStatus" name="EKYC">
+                    <option value="N">N</option><option value="Y">Y</option>
+                </select>
+            </div>
+            <div class="form-group"><label>STATUS</label><input type="text" id="applicationStatus" name="STATUS" placeholder="SUBMIT" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>PAID (Fees)</label><input type="number" id="feePaid" name="PAID" value="100"></div>
+        </div>
+
+        <div class="section-title">2. Student Personal Profile Details</div>
+        <div class="form-grid">
+            <div class="form-group"><label>STUDENT NAME *</label><input type="text" id="studentName" name="STUDENT_NAME" required oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>FATHERS NAME *</label><input type="text" id="fathersName" name="FATHERS_NAME" required oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>MOTHERS NAME *</label><input type="text" id="mothersName" name="MOTHERS_NAME" required oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>DATE OF BIRTH *</label><input type="text" id="dob" name="DATE_OF_BIRTH" required placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateField(this);"></div>
+            <div class="form-group"><label>DO_sub (Auto Submission Mirror)</label><input type="text" id="doSub" name="DO_SUB" placeholder="DD/MM/YYYY" readonly></div>
+            <div class="form-group"><label>MOBILE REGISTERED *</label><input type="text" id="mobileRegistered" name="MOBILE_REGISTERED" maxlength="10" required></div>
+            <div class="form-group"><label>MOBILE (Alternative)</label><input type="text" id="mobileAlt" name="MOBILE" maxlength="10"></div>
+            <div class="form-group"><label>EMAIL</label><input type="email" id="studentEmail" name="EMAIL" oninput="this.value = this.value.toLowerCase();"></div>
+            <div class="form-group"><label>FAMILY ID</label><input type="text" id="familyId" name="FAMILY_ID" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>BOARD REGISTRATION NUMBER</label><input type="text" id="boardRegNo" name="BOARD_REG_NO" maxlength="14" placeholder="281009XXXXXXXX" oninput="handleBoardRegistrationInput(this)"></div>
+            <div class="form-group"><label>DATE OF ADMISSION</label><input type="text" id="admissionDate" name="DATE_OF_ADMISSION" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateField(this)"></div>
+        </div>
+
+        <div class="section-title">3. Religion & Caste Specification</div>
+        <div class="form-grid">
+            <div class="form-group"><label>RELIGION</label><select id="religion" name="RELIGION"><option value="ISLAM">ISLAM</option><option value="HINDU">HINDU</option><option value="SIKHISM">SIKHISM</option><option value="OTHER">OTHER</option></select></div>
+            <div class="form-group"><label>CASTE-1 (Category)</label><select id="caste1" name="CASTE_1"><option value="MIN">MIN</option><option value="OBC">OBC</option><option value="SC">SC</option><option value="GEN">GEN</option></select></div>
+            <div class="form-group"><label>CASTE-2 (Sub-Caste)</label><input type="text" id="caste2" name="CASTE_2" oninput="convertToCaps(this)"></div>
+        </div>
+
+        <div class="section-title">4. Income Verification Parameters</div>
+        <div class="form-grid">
+            <div class="form-group"><label>INCOME (Annual Total)</label><input type="number" id="income" name="INCOME"></div>
+            <div class="form-group"><label>INCOME CERT NUMBER</label><input type="text" id="incomeCertNo" name="INCOME_CERT_NUMBER" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>INCOME APP CERT NO</label><input type="text" id="incomeAppNo" name="INCOME_APP_CERT_NO" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>INCOME ISSUE DATE</label><input type="text" id="incomeIssueDate" name="INCOME_ISSUE_DATE" placeholder="DD/MM/YYYY" maxlength="10" oninput="formatDateField(this)"></div>
+        </div>
+
+        <div class="section-title">5. Academic Performance</div>
+        <div class="form-grid">
+            <div class="form-group"><label>OBT MARKS</label><input type="number" id="lastYearObt" name="OBT_MARKS" oninput="calculatePercentage()"></div>
+            <div class="form-group"><label>MAX MARKS</label><input type="number" id="lastYearMax" name="MAX_MARKS" oninput="calculatePercentage()"></div>
+            <div class="form-group"><label>%AGE (Auto Preview)</label><input type="text" id="percentage" name="PERCENTAGE" class="percentage-field" readonly placeholder="Auto Calculated"></div>
+        </div>
+
+        <div class="section-title">6. High School Matrix</div>
+        <div class="form-grid">
+            <div class="form-group"><label>HSC ROLLNO</label><input type="text" id="hscRollNo" name="HSC_ROLLNO" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>YEAR (Passing)</label><input type="number" id="hscYear" name="YEAR"></div>
+            <div class="form-group"><label>High School Marks (OBT)</label><input type="number" id="hsMarksObt" name="High_School_Marks"></div>
+            <div class="form-group"><label>MAX MARKS (10th)</label><input type="number" id="hsMarksMax" name="MAX_MARKS_1"></div>
+        </div>
+
+        <div class="section-title">7. Bank Account Profile & System Keys</div>
+        <div class="form-grid">
+            <div class="form-group"><label>BANK NAME</label><input type="text" id="bankName" name="BANK_NAME" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>BRANCH NAME</label><input type="text" id="branchName" name="BRANCH_NAME" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>IFSC CODE</label><input type="text" id="ifscCode" name="IFSC_CODE" oninput="convertToCaps(this)"></div>
+            <div class="form-group"><label>ACCOUNT NO *</label><input type="text" id="accountNo" name="ACCOUNT_NO" required oninput="this.value = this.value.replace(/\D/g, '')"></div>
+            <div class="form-group"><label>ID NO (ADHAAR)</label><input type="text" id="adhaarNo" name="ADHAAR_NO" maxlength="12" readonly></div>
+            <div class="form-group"><label>CLASS TEACHER</label><input type="text" id="classTeacher" name="CLASS_TEACHER" oninput="convertToCaps(this)"></div>
+            <div class="form-group full-width"><label>ADDRESS</label><textarea id="studentAddress" name="ADDRESS" rows="2" placeholder="Enter Local Address (SHAHJAHANPUR will auto append)" oninput="convertToCaps(this)"></textarea></div>
+        </div>
+
+        <div class="btn-container">
+            <button type="button" class="btn btn-reset" onclick="triggerResetSystem()">Reset Portal</button>
+            <button type="submit" class="btn btn-submit">Save Entry</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // ⚠️ UPDATE YOUR RE-DEPLOYED APPS SCRIPT URL HERE
+    const googleWebAppUrl = "https://script.google.com/macros/s/AKfycbwEXoWzpI22IJMyZe-3BdZhqFweSh0085-4W3A_U2kFBzrYJdOPX8PbEHsWs6NGmPEd/exec";
+
+    function formatDateField(element) {
+        let val = element.value.replace(/\D/g, ''); 
+        if (val.length > 2 && val.length <= 4) { element.value = val.slice(0, 2) + '/' + val.slice(2); } 
+        else if (val.length > 4) { element.value = val.slice(0, 2) + '/' + val.slice(2, 4) + '/' + val.slice(4, 8); } 
+        else { element.value = val; }
+    }
+
+    function isValidDateStr(dateStr) {
+        if (!dateStr || dateStr === "-") return true; 
+        const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/(19|20)\d\d$/;
+        return regex.test(dateStr);
+    }
+
+    function initFormDefaults() {
+        let today = new Date();
+        let dd = String(today.getDate()).padStart(2, '0');
+        let mm = String(today.getMonth() + 1).padStart(2, '0');
+        let yyyy = today.getFullYear();
+        var dateStr = `${dd}/${mm}/${yyyy}`;
+        document.getElementById('submissionDate').value = dateStr;
+        document.getElementById('doSub').value = dateStr;
+        document.getElementById('schoolName').value = "NATIONAL GIRLS IC SHAHJAHANPUR";
+        document.getElementById('admissionDate').value = "01/04/2026";
+        document.getElementById('feePaid').value = "100";
+    }
+
+    function convertToCaps(element) { element.value = element.value.toUpperCase(); }
+    function syncSubmissionDate(dateValue) { document.getElementById('doSub').value = dateValue; }
+    
+    function handleFreshRenewLogic(mode) {
+        document.getElementById('ekycStatus').value = (mode === "RENEW") ? "Y" : "N";
+    }
+
+    function handleBoardRegistrationInput(element) {
+        let cleanVal = element.value.replace(/\D/g, ''); 
+        const fixPrefix = "281009";
+        if (!cleanVal.startsWith(fixPrefix)) {
+            cleanVal = (cleanVal.length <= fixPrefix.length) ? fixPrefix : fixPrefix + cleanVal.slice(fixPrefix.length);
+        }
+        element.value = cleanVal.slice(0, 14);
+    }
+
+    function calculatePercentage() {
+        const obt = parseFloat(document.getElementById('lastYearObt').value);
+        const max = parseFloat(document.getElementById('lastYearMax').value);
+        const percentField = document.getElementById('percentage');
+        percentField.value = (obt && max && max > 0) ? ((obt / max) * 100).toFixed(2) + "%" : "";
+    }
+
+    function bypassVerificationPopup() {
+        document.getElementById('initialModal').style.display = 'none';
+        document.getElementById('mainContainer').style.display = 'block';
+        document.getElementById('modeBadge').style.display = 'none';
+        document.getElementById('editRowIndex').value = '';
+        document.getElementById('appType').value = 'FRESH';
+        document.getElementById('adhaarNo').value = "-";
+        initFormDefaults();
+    }
+
+    function triggerIdentitySearch() {
+        const targetIdNum = document.getElementById('idSearchInput').value.trim();
+        if (targetIdNum.length !== 12 || isNaN(targetIdNum)) { alert("Kripya sahi 12-digit ID Number enter karein."); return; }
+
+        const searchButton = document.querySelector('.btn-search');
+        searchButton.innerText = "Searching Realtime Database...";
+        searchButton.disabled = true;
+
+        fetch(`${googleWebAppUrl}?searchKey=${targetIdNum}`)
+        .then(res => res.json())
+        .then(response => {
+            searchButton.innerText = "Search & Verify";
+            searchButton.disabled = false;
+
+            if (response.status === "EXISTS_IN_STATE") {
+                let wantEdit = confirm("Record Found in STATE sheet! Kya aap is data ko EDIT aur update karna chahte hain?");
+                if (wantEdit) injectDataIntoFields(response.data, true, response.data.ROW_INDEX);
+            } else if (response.status === "FOUND_IN_2025") {
+                alert("Baseline Trace Found in 2025 Sheet! Fetching parameters...");
+                injectDataIntoFields(response.data, false, "");
+            } else {
+                alert("ID not found. Fresh workspace prepared.");
+                bypassVerificationPopup();
+                document.getElementById('adhaarNo').value = targetIdNum;
+            }
+        })
+        .catch(err => {
+            searchButton.innerText = "Search & Verify";
+            searchButton.disabled = false;
+            alert("Routing directly into layout shell.");
+            bypassVerificationPopup();
+            document.getElementById('adhaarNo').value = targetIdNum;
+        });
+    }
+
+    function injectDataIntoFields(d, isEditMode, rowIndex) {
+        document.getElementById('initialModal').style.display = 'none';
+        document.getElementById('mainContainer').style.display = 'block';
+        
+        const badge = document.getElementById('modeBadge');
+        if (isEditMode) {
+            badge.style.display = 'inline-block';
+            badge.innerText = `EDIT MODE ACTIVE (Row ${rowIndex})`;
+            document.getElementById('editRowIndex').value = rowIndex;
+        } else {
+            badge.style.display = 'none';
+            document.getElementById('editRowIndex').value = '';
+        }
+
+        document.getElementById('serialNo').value = d.SERIAL_NO || "";
+        document.getElementById('schoolName').value = d.SCHOOL_NAME || "NATIONAL GIRLS IC SHAHJAHANPUR";
+        document.getElementById('currentClass').value = d.CLASS || "9";
+        
+		// Purana replace hata kar hyphen se split karne ka naya logic:
+		let fullSec = String(d.SECTION || ""); // Maan lijiye "9-A" aaya
+		let cleanSec = "";
+
+		if (fullSec.includes("-")) {
+			cleanSec = fullSec.split("-")[1]; // Yeh "-" ke baad ka hissa (A, B ya C) nikal lega
+		} else {
+			cleanSec = fullSec.replace(/[0-9]/g, ''); // Agar bina hyphen ka purana data ho toh
+		}
+		document.getElementById('secInput').value = cleanSec.trim() || "";
+
+        document.getElementById('formType').value = d.FORM_NAME || "STATE";
+        document.getElementById('srNoField').value = d.S_R_NO || "";
+        document.getElementById('otr').value = d.OTR || "-";
+        document.getElementById('applicationId').value = d.APPLICATION_ID || "-";
+        document.getElementById('portalPassword').value = d.PASSWORD || "-";
+        
+        const computedMode = d.APPTYPE ? d.APPTYPE.toUpperCase().trim() : (d["FRESH/\nRENEW"] || 'FRESH');
+        document.getElementById('appType').value = computedMode.includes("RENEW") ? "RENEW" : "FRESH";
+        
+        if (d.EKYC) { 
+            var ekycClean = d.EKYC.toUpperCase().trim();
+            document.getElementById('ekycStatus').value = (ekycClean === "Y" || ekycClean === "YES") ? "Y" : "N"; 
+        }
+        
+        document.getElementById('applicationStatus').value = d.STATUS || "";
+        document.getElementById('feePaid').value = d.PAID || "100";
+        
+        document.getElementById('studentName').value = d.STUDENT_NAME || "-";
+        document.getElementById('fathersName').value = d.FATHERS_NAME || "-";
+        document.getElementById('mothersName').value = d.MOTHERS_NAME || "-";
+        
+        //***********************************************************************************
+		//document.getElementById('dob').value = d.DATE_OF_BIRTH || "-";
+        //document.getElementById('doSub').value = d.DO_SUB || d.DATE || "-";
+        //document.getElementById('submissionDate').value = d.DATE || d.DO_SUB || "-";
+		//***********************************************************************************
+		// DOB aur DO_SUB Fix:
+        let dobRaw = String(d.DATE_OF_BIRTH || "-");
+        if (dobRaw !== "-" && dobRaw.includes("/")) {
+            let p = dobRaw.split("/");
+            if (parseInt(p[0]) <= 12 && p[2].length === 4) {
+                document.getElementById('dob').value = `${p[1]}/${p[0]}/${p[2]}`;
+            } else {
+                document.getElementById('dob').value = dobRaw;
+            }
+        } else {
+            document.getElementById('dob').value = dobRaw;
+        }
+
+        document.getElementById('submissionDate').value = d.DATE || d.DO_SUB || "-";
+        document.getElementById('doSub').value = document.getElementById('submissionDate').value;
+		//***********************************************************************************
+
+        document.getElementById('admissionDate').value = d.DATE_OF_ADMISSION || "01/04/2026";
+        document.getElementById('mobileRegistered').value = d.MOBILE_REGISTERED || "-";
+        document.getElementById('mobileAlt').value = d.MOBILE || "-";
+        document.getElementById('studentEmail').value = d.EMAIL || "-";
+        document.getElementById('familyId').value = d.FAMILY_ID || "-";
+        document.getElementById('boardRegNo').value = d.BOARD_REG_NO || "281009";
+        
+        document.getElementById('religion').value = d.RELIGION || "ISLAM";
+        
+        // Exact hyphen naming data mapper logic
+        document.getElementById('caste1').value = d["CASTE_1"] || d.CASTE_1 || "MIN";
+        document.getElementById('caste2').value = d["CASTE_2"] || d.CASTE_2 || "-";
+        
+        document.getElementById('income').value = d.INCOME || "";
+        document.getElementById('incomeCertNo').value = d.INCOME_CERT_NUMBER || "-";
+        document.getElementById('incomeAppNo').value = d.INCOME_APP_CERT_NO || "-";
+        document.getElementById('incomeIssueDate').value = d.INCOME_ISSUE_DATE || "-";
+        
+        document.getElementById('lastYearObt').value = d.OBT_MARKS || "";
+        document.getElementById('lastYearMax').value = d.MAX_MARKS || "";
+        calculatePercentage();
+
+        document.getElementById('hscRollNo').value = d.HSC_ROLLNO || "-";
+        document.getElementById('hscYear').value = d.YEAR || "";
+        document.getElementById('hsMarksObt').value = d.High_School_Marks || "";
+        document.getElementById('hsMarksMax').value = d.MAX_MARKS_1 || "";
+        
+        document.getElementById('bankName').value = d.BANK_NAME || "-";
+        document.getElementById('branchName').value = d.BRANCH_NAME || "-";
+        document.getElementById('ifscCode').value = d.IFSC_CODE || "-";
+        
+        let fetchedAccount = String(d.ACCOUNT_NO || "-");
+        if (fetchedAccount.startsWith("'")) { fetchedAccount = fetchedAccount.slice(1); }
+        document.getElementById('accountNo').value = fetchedAccount;
+        
+        document.getElementById('adhaarNo').value = d.ADHAAR_NO || "-";
+        document.getElementById('classTeacher').value = d.CLASS_TEACHER || "";
+        document.getElementById('studentAddress').value = d.ADDRESS || "-";
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        const submitBtn = document.querySelector('.btn-submit');
+        const isEditing = document.getElementById('editRowIndex').value !== "";
+        
+        submitBtn.disabled = true;
+        submitBtn.innerText = isEditing ? "Updating Database..." : "Appending New Row...";
+        
+        const formElement = document.getElementById('scholarshipForm');
+        const formData = new FormData(formElement);
+        
+        const searchParams = new URLSearchParams();
+        for (const pair of formData.entries()) {
+            searchParams.append(pair[0], pair[1].trim() === "" ? "-" : pair[1].trim());
+        }
+
+        fetch(googleWebAppUrl, {
+            method: "POST",
+            body: searchParams
+        })
+        .then(res => res.text())
+        .then(textStatus => {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Save Entry";
+            
+            if (textStatus.includes("NEW_SERIAL:")) {
+                let sNo = textStatus.split("NEW_SERIAL:")[1];
+                alert(`Data Saved successfully under Serial Number: (${sNo})`);
+            } else if (textStatus.includes("UPDATED_SERIAL:")) {
+                let sNo = textStatus.split("UPDATED_SERIAL:")[1];
+                alert(`Data updated perfectly for Serial Number: (${sNo})`);
+            } else {
+                alert("Data sync complete!");
+            }
+            
+            formElement.reset();
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('initialModal').style.display = 'flex';
+            document.getElementById('idSearchInput').value = '';
+        })
+        .catch(err => {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Save Entry";
+            alert("Network error check details.");
+            formElement.reset();
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('initialModal').style.display = 'flex';
+            document.getElementById('idSearchInput').value = '';
+        });
+    }
+
+    function triggerResetSystem() {
+        if(confirm("Kya aap form reset karna chahte hain?")) {
+            document.getElementById('scholarshipForm').reset();
+            document.getElementById('mainContainer').style.display = 'none';
+            document.getElementById('initialModal').style.display = 'flex';
+            document.getElementById('idSearchInput').value = '';
+        }
+    }
+</script>
+</body>
+</html>
