@@ -1,5 +1,4 @@
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzV2Edf9RyFvF3P3mGAGfjPpwXP579LsRMvfAckH51ntlMMhLbEvPOXL6Lc9mDjaMPfBg/exec';
-
 // 1. Dynamic Serial Number & Auto Date Generation (Bulletproof Default 0001)
 window.addEventListener('DOMContentLoaded', () => {
     const now = new Date();
