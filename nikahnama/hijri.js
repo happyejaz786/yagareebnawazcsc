@@ -1,5 +1,4 @@
 // Dedicated Islamic / Hijri Date Converter Engine
-
 // Traditional Full Month Names Mapping
 const ISLAMIC_MONTHS = [
     "Muharram-ul-Haram",
