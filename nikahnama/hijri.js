@@ -53,7 +53,6 @@ function convertHijriDate(dateString) {
             if (part.type === 'month') monthIndex = parseInt(part.value, 10) - 1; // 0-indexed
             if (part.type === 'year') yearNum = part.value;
         });
-
         // Format day with ordinal, select exact month name from array
         const ordinalDay = getDayOrdinal(dayNum);
         const monthName = ISLAMIC_MONTHS[monthIndex] || "Hijri Month";
