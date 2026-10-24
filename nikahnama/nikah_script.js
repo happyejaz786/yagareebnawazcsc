@@ -82,7 +82,7 @@ function combineDetails(prefix) {
 // 3. Auto City Suffix Engine (Shahjahanpur)
 function applyCitySuffix(elem) {
     if (!elem || !elem.value.trim()) return;
-    const defaultCity = "Shahjahanpur";
+    const defaultCity = "";
     if (!elem.value.toLowerCase().includes(defaultCity.toLowerCase())) {
         elem.value = elem.value.trim() + " " + defaultCity;
     }
