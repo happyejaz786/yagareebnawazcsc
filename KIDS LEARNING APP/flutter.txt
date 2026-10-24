@@ -1,0 +1,38 @@
+import 'dart:async';
+import 'package:flutter/material.dart';
+
+class SubjectSessionManager with ChangeNotifier {
+  Timer? _sessionTimer;
+  int _secondsInCurrentSubject = 0;
+  static const int kCooldownLimitSeconds = 1800; // 30 minutes
+
+  String? _activeSubject;
+  final Set<String> _restingSubjects = {};
+
+  String? get activeSubject => _activeSubject;
+  bool isSubjectResting(String subject) => _restingSubjects.contains(subject);
+
+  void startSubject(String subject) {
+    if (isSubjectResting(subject)) return;
+    _activeSubject = subject;
+    _secondsInCurrentSubject = 0;
+    
+    _sessionTimer?.cancel();
+    _sessionTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _secondsInCurrentSubject++;
+      if (_secondsInCurrentSubject >= kCooldownLimitSeconds) {
+        _triggerCooldownTransition();
+      }
+    });
+    notifyListeners();
+  }
+
+  void _triggerCooldownTransition() {
+    _sessionTimer?.cancel();
+    if (_activeSubject != null) {
+      _restingSubjects.add(_activeSubject!);
+    }
+    // Triggers celebration modal & guides child to switch
+    notifyListeners();
+  }
+}
