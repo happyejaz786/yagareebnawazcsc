@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nikah Nama Certificate - AUF Qazi Board U.P</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@400;700&family=Noto+Sans+Devanagari:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #3f4448;
+      font-family: 'Cambria', Georgia, serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px 0;
+      color: #000;
+    }
+
+    /* Modal Overlay */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(20, 24, 30, 0.95);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10000;
+    }
+
+    .modal-box {
+      background: #ffffff;
+      padding: 30px;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 460px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      text-align: center;
+    }
+
+    .modal-box h3 {
+      margin-bottom: 12px;
+      color: #0f5132;
+      font-size: 19px;
+      text-transform: uppercase;
+      font-family: 'Cambria', serif;
+      font-weight: bold;
+    }
+
+    .modal-box p {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    .modal-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 2px solid #bdc3c7;
+      border-radius: 4px;
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: bold;
+      letter-spacing: 1px;
+    }
+
+    .modal-btn-group {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-btn {
+      flex: 1;
+      padding: 11px;
+      font-size: 13px;
+      font-weight: bold;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    .btn-search {
+      background-color: #0f5132;
+      color: white;
+    }
+
+    .btn-skip {
+      background-color: #7f8c8d;
+      color: white;
+    }
+
+    /* Screen Toolbar */
+    .screen-toolbar {
+      width: 210mm;
+      background: #ffffff;
+      padding: 10px 16px;
+      margin-bottom: 12px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+
+    .screen-toolbar .btn {
+      padding: 8px 18px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    .btn-print {
+      background: #0d6efd;
+      color: white;
+    }
+
+    .btn-new-search {
+      background: #198754;
+      color: white;
+    }
+
+    /* A4 Sheet Frame */
+    .sheet-a4 {
+      width: 210mm;
+      height: 297mm;
+      background: #ffffff;
+      padding: 3.5mm;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Exact Thick Gold Borders Matching PDF */
+    .outer-border {
+      border: 8px solid #e67300;
+      height: 100%;
+      padding: 1px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .inner-border {
+      border: none;
+    }
+
+    /* Header Image Container */
+    .header-banner-wrap {
+      width: 100%;
+      border-bottom: 2px solid #000;
+      background: #ffc400;
+      overflow: hidden;
+    }
+
+    .header-banner-img {
+      width: 100%;
+      height: 225px;
+      max-height: 250px;
+      display: block;
+      object-fit: fill;
+    }
+
+    /* Main Table Grid */
+    .grid-table {
+      width: 100%;
+      border-collapse: collapse;
+      flex-grow: 1;
+      table-layout: fixed;
+    }
+
+    .grid-table th, .grid-table td {
+      border: 1.4px solid #000;
+      padding: 2.5px 4px;
+      vertical-align: middle;
+      word-break: break-word;
+    }
+	
+	/* Sabhi Blocks ke bich Mota Dark Golden Border */
+	.grid-table tr:has(#val_groom_en) td,
+	.grid-table tr:has(#val_bride_en) td,
+	.grid-table tr:has(#val_vakeel_en) td,
+	.grid-table tr:has(#val_w1_en) td,
+	.grid-table tr:has(#val_w2_en) td,
+	.grid-table tr:has(#val_mehar_display) td,
+	.grid-table tr:has(#val_qazi_en) td {
+	  height: 50px; /* Qazi Name wali row ki height */
+	  border-top: 3.5px solid #e67300 !important;
+	}
+	.grid-table tr:has(#val_mehar_display) td,
+	.grid-table tr:has(#val_qazi_en) td {
+	  height: 28px !important;
+	}
+	
+	#val_qazi_addr {
+	  height: auto !important; /* Qazi Address wali row ki height */
+	  padding: 4px !important;
+	}
+
+    /* Proportional Columns */
+    .c-sign  { width: 17%; text-align: center; font-size: 14px; font-weight: bold; vertical-align: top !important; padding-top: 8px !important;}
+    .c-en    { width: 22%; text-align: center; font-size: 10.5px; line-height: 1.25; font-weight: 600; font-family: 'Cambria', Georgia, serif; }
+    .c-hi    { width: 22%; text-align: center; font-family: 'Noto Sans Devanagari', sans-serif; font-size: 11.5px; line-height: 1.25; font-weight: 600; }
+    .c-ur    { width: 23%; text-align: center; direction: rtl; font-family: 'Noto Nastaliq Urdu', serif; font-size: 11.5px; line-height: 1.6; }
+    .c-label { width: 19%; text-align: center; background: #ffffff; vertical-align: middle !important; border-top: hidden;}
+	
+	/* Groom, Bride, Vakeel aur Dono Gawah ke Address Cells Eng and Urdu */
+	#val_groom_addr_en, #val_groom_addr_ur,
+	#val_bride_addr_en,  #val_bride_addr_ur,
+	#val_vakeel_addr_en,  #val_vakeel_addr_ur,
+	#val_w1_addr_en,  #val_w1_addr_ur,
+	#val_w2_addr_en,  #val_w2_addr_ur,
+	.grid-table td:has(.lbl-en-sub) {
+	  border-top: hidden !important;
+	  font-size: 13px;
+	}
+	/* Groom, Bride, Vakeel aur Dono Gawah ke Address Cells (Hindi) */
+	#val_groom_addr_hi, #val_bride_addr_hi,#val_vakeel_addr_hi,
+	#val_w1_addr_hi, #val_w2_addr_hi,
+	.grid-table td:has(.lbl-en-sub) {
+		border-top: hidden !important;
+	  font-size: 14px;
+	}
+	
+
+    /* Registration Number (Single Line, Large, No-wrap) */
+    .reg-no-title {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      line-height: 1.1;
+    }
+
+    .reg-no-val {
+      font-size: 17px;
+      font-weight: 800;
+      color: #000;
+      margin-top: 3px;
+      display: block;
+    }
+
+    /* Venue & Date Box (No vertical border, 3 lines, Left align) */
+    .venue-date-box {
+      text-align: left !important;
+      padding: 4px 8px !important;
+      vertical-align: middle !important;
+    }
+
+    .vd-row {
+      font-size: 13px;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .vd-row strong {
+      font-family: 'Cambria', Georgia, serif;
+      font-size: 13px;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .vd-val {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .hijri-font {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 13.5px;
+      font-weight: bold;
+      direction: rtl;
+      display: inline-block;
+    }
+	
+	#val_groom_addr_en, #val_groom_addr_hi, #val_groom_addr_ur {
+	  border-top: hidden;
+	}
+
+    /* Name & Father Titles */
+    .name-title {
+      font-size: 13px;
+      font-weight: bold;
+      display: block;
+      line-height: 1.25;
+    }
+
+    .father-title {
+      font-size: 13px;
+      font-weight: bold;
+      display: block;
+      margin-top: 2px;
+      line-height: 1.2;
+    }
+
+    /* Labels Styling (Col 5) */
+    .lbl-ur-groom {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #ba1c1d;
+      line-height: 1.4;
+      display: block;
+    }
+
+    .lbl-ur-bride {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #15803d;
+      line-height: 1.4;
+      display: block;
+    }
+
+    .lbl-ur-common {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #000;
+      line-height: 1.4;
+      display: block;
+    }
+
+    .lbl-en-sub {
+      font-family: 'Cambria', serif;
+      font-size: 12px;
+      font-weight: bold;
+      color: #000;
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* DOB & Caste Strip */
+    .dob-caste-strip {
+      background-color: #fff3b5 !important;
+      text-align: center !important;
+      padding: 2.5px 4px !important;
+      font-size: 15px !important;
+      font-weight: bold !important;
+      line-height: 1.25 !important;
+    }
+
+    .dob-highlight {
+      color: #ba1c1d;
+      font-weight: bold;
+    }
+
+    /* Confession (اقرار دولہا) */
+    .conf-td {
+      padding: 5px 8px !important;
+      text-align: center;
+    }
+
+    .conf-text-ur {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      font-size: 13px;
+      line-height: 1.9;
+      direction: rtl;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .conf-text-en {
+      font-family: 'Cambria', serif;
+      font-size: 14px;
+      font-weight: bold;
+      color: #000;
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
+    .highlight-name {
+      text-decoration: underline;
+      padding: 0 3px;
+    }
+
+    /* Footer Table */
+    .footer-table {
+      width: 100%;
+      border-collapse: collapse;
+      border-top: 1.5px solid #000;
+    }
+
+    .footer-table td {
+      border: 1.4px solid #000;
+      padding: 6px 8px;
+      vertical-align: top;
+      height: 135px;
+    }
+
+    .groom-sign-box {
+      width: 50%;
+      text-align: left;
+    }
+
+    .qazi-stamp-box {
+      width: 50%;
+      text-align: right;
+	  : center;
+    }
+
+    /* Print Setup */
+    @media print {
+      body {
+        background: transparent;
+        padding: 0;
+        margin: 0;
+      }
+      .modal-overlay, .screen-toolbar {
+        display: none !important;
+      }
+      .sheet-a4 {
+        box-shadow: none;
+        padding: 3.5mm;
+        width: 100%;
+        height: 100%;
+        page-break-after: avoid;
+        page-break-inside: avoid;
+		zoom: 0.85;
+      }
+
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Retrieval Modal -->
+  <div class="modal-overlay" id="initialModal">
+    <div class="modal-box">
+      <h3>Nikah Nama Retrieval Portal</h3>
+      <p>Enter Groom or Bride's 12-Digit ID Number</p>
+      <input type="text" id="idSearchInput" class="modal-input" placeholder="Enter 12-Digit ID Number" maxlength="12">
+      <div class="modal-btn-group">
+        <button class="modal-btn btn-search" id="btnSearch" onclick="triggerIdentitySearch()">Search & Load</button>
+        <button class="modal-btn btn-skip" onclick="closeModal()">Skip / Blank</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen Toolbar -->
+  <div class="screen-toolbar">
+    <button class="btn btn-new-search" onclick="openModal()">Search Another Entry</button>
+    <div style="font-weight: bold; font-size: 14px; color: #0f5132;">AUF QAZI BOARD <br>*** DIGITAL NIKAH NAMA PORTAL ***</div>
+    <button class="btn btn-print" onclick="window.print()">Print Nikahnama</button>
+  </div>
+
+  <!-- A4 Printable Certificate -->
+  <div class="sheet-a4">
+    <div class="outer-border">
+      <div class="inner-border">
+
+        <!-- Top Header Banner -->
+        <div class="header-banner-wrap">
+          <img src="header.png" alt="AUF QAZI BOARD U.P" class="header-banner-img">
+        </div>
+
+        <!-- 5-Column Grid Table -->
+        <table class="grid-table">
+          <!-- Row 1: Venue & Dates (Left align, No middle border, 3 clean lines) -->
+          <tr>
+            <td class="c-sign">
+              <div class="reg-no-title">REG. NO</div>
+              <span class="reg-no-val" id="val_reg_no"></span>
+            </td>
+            <td colspan="3" class="venue-date-box">
+              <div class="vd-row">
+                <strong>VENUE : </strong><span class="vd-val" id="val_place"></span>
+              </div>
+              <div class="vd-row">
+                <strong>WEDDING DATE (ENGLISH) : </strong><span class="vd-val" id="val_date"></span>
+                <span class="vd-val" id="val_day" style="margin-left: 5px;"></span>
+                <span class="vd-val" id="val_time" style="margin-left: 5px;"></span>
+              </div>
+              <div class="vd-row">
+                <strong>WEDDING DATE (HIJRI) : </strong><span class="hijri-font" id="val_date_hijri"></span>
+              </div>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-common">مقام و تاریخ</span>
+              <span class="lbl-en-sub">Place & Date</span>
+            </td>
+          </tr>
+
+          <!-- GROOM BLOCK -->
+          <tr>
+            <td class="c-sign" rowspan="4">
+              SIGN GROOM
+            </td>
+            <td class="c-en">
+              <span class="name-title" id="val_groom_en"></span>
+              <span class="father-title" id="val_groom_father_en"></span>
+            </td>
+            <td class="c-hi">
+              <span class="name-title" id="val_groom_hi"></span>
+              <span class="father-title" id="val_groom_father_hi"></span>
+            </td>
+            <td class="c-ur">
+              <span class="name-title" id="val_groom_ur"></span>
+              <span class="father-title" id="val_groom_father_ur"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-groom"> نام دولہا، قومیت، ولدیت و سکونت، عمر / تاریخ پیدائش </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="c-en" id="val_groom_addr_en"></td>
+            <td class="c-hi" id="val_groom_addr_hi"></td>
+            <td class="c-ur" id="val_groom_addr_ur"></td>
+            <td class="c-label" rowspan="3">
+              <span class="lbl-en-sub">Name of Groom, Father's Name, Cast, Address, Age or DOB</span>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="3" class="dob-caste-strip">
+              <span id="val_groom_caste_text"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dob-highlight">DOB : <span id="val_groom_dob"></span></span>
+            </td>
+          </tr>
+		  <tr>
+            <td colspan="3" class="dob-caste-strip">
+              GROOM AADHAAR NUMBER : <span id="val_groom_aadhaar"></span>
+            </td>
+          </tr>
+		  
+
+          <!-- BRIDE BLOCK -->
+          <tr>
+            <td class="c-sign" rowspan="4">
+              SIGN BRIDE
+            </td>
+            <td class="c-en">
+              <span class="name-title" id="val_bride_en"></span>
+              <span class="father-title" id="val_bride_father_en"></span>
+            </td>
+            <td class="c-hi">
+              <span class="name-title" id="val_bride_hi"></span>
+              <span class="father-title" id="val_bride_father_hi"></span>
+            </td>
+            <td class="c-ur">
+              <span class="name-title" id="val_bride_ur"></span>
+              <span class="father-title" id="val_bride_father_ur"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-bride"> نام دلہن بالغہ، قومیت، ولدیت و سکونت، عمر / تاریخ پیدائش </span>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="c-en" id="val_bride_addr_en"></td>
+            <td class="c-hi" id="val_bride_addr_hi"></td>
+            <td class="c-ur" id="val_bride_addr_ur"></td>
+            <td class="c-label" rowspan="3">
+              <span class="lbl-en-sub">Name of Bride, Father's Name, Cast, Address, Age or DOB</span>
+            </td>
+          </tr>
+
+          <tr>
+            <td colspan="3" class="dob-caste-strip">
+              <span id="val_bride_caste_text"></span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="dob-highlight">DOB : <span id="val_bride_dob"></span></span>
+            </td>
+          </tr>
+		  <tr>
+            <td colspan="3" class="dob-caste-strip">
+              BRIDE AADHAAR NUMBER : <span id="val_bride_aadhaar"></span>
+            </td>
+          </tr>
+
+          <!-- ADVOCATE / VAKEEL BLOCK -->
+          <tr>
+            <td class="c-sign" rowspan="2">
+              SIGN
+            </td>
+            <td class="c-en">
+              <span class="name-title" id="val_vakeel_en"></span>
+            </td>
+            <td class="c-hi">
+              <span class="name-title" id="val_vakeel_hi"></span>
+            </td>
+            <td class="c-ur">
+              <span class="name-title" id="val_vakeel_ur"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-common">نام وکیل، مع ولدیت و سکونت</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="c-en" id="val_vakeel_addr_en"></td>
+            <td class="c-hi" id="val_vakeel_addr_hi"></td>
+            <td class="c-ur" id="val_vakeel_addr_ur"></td>
+            <td class="c-label">
+              <span class="lbl-en-sub">Name of Advocate, Father's name and Address</span>
+            </td>
+          </tr>
+
+          <!-- WITNESS 1 BLOCK -->
+          <tr>
+            <td class="c-sign" rowspan="2">
+              SIGN
+            </td>
+            <td class="c-en">
+              <span class="name-title" id="val_w1_en"></span>
+            </td>
+            <td class="c-hi">
+              <span class="name-title" id="val_w1_hi"></span>
+            </td>
+            <td class="c-ur">
+              <span class="name-title" id="val_w1_ur"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-common">نام گواہ اول، مع ولدیت و سکونت</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="c-en" id="val_w1_addr_en"></td>
+            <td class="c-hi" id="val_w1_addr_hi"></td>
+            <td class="c-ur" id="val_w1_addr_ur"></td>
+            <td class="c-label">
+              <span class="lbl-en-sub">Witness 1 Address</span>
+            </td>
+          </tr>
+
+          <!-- WITNESS 2 BLOCK -->
+          <tr>
+            <td class="c-sign" rowspan="2">
+              SIGN
+            </td>
+            <td class="c-en">
+              <span class="name-title" id="val_w2_en"></span>
+            </td>
+            <td class="c-hi">
+              <span class="name-title" id="val_w2_hi"></span>
+            </td>
+            <td class="c-ur">
+              <span class="name-title" id="val_w2_ur"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-common">نام گواہ ثانی، مع ولدیت و سکونت</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="c-en" id="val_w2_addr_en"></td>
+            <td class="c-hi" id="val_w2_addr_hi"></td>
+            <td class="c-ur" id="val_w2_addr_ur"></td>
+            <td class="c-label">
+              <span class="lbl-en-sub">Witness 2 Address</span>
+            </td>
+          </tr>
+
+          <!-- MEHAR BLOCK -->
+          <tr>
+            <td class="c-sign" rowspan="2">
+              MEHAR
+            </td>
+            <td colspan="3" style="text-align: center; vertical-align: middle;">
+              <span style="font-size: 13.5px; font-weight: bold; font-family: 'Cambria', serif;" id="val_mehar_display"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-common">مہر (ہندسوں اور حروف میں)</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: center; vertical-align: middle;">
+              <span id="val_mehar_words" style="font-size: 14px; font-weight: bold; font-family: 'Cambria', serif; text-transform: uppercase;"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-en-sub">Mehar in Words</span>
+            </td>
+          </tr>
+
+          <!-- QAZI BLOCK -->
+          <tr>
+            <td class="c-sign" rowspan="2">
+              SIGN
+            </td>
+            <td class="c-en">
+              <span class="name-title" id="val_qazi_en"></span>
+            </td>
+            <td class="c-hi">
+              <span class="name-title" id="val_qazi_hi"></span>
+            </td>
+            <td class="c-ur">
+              <span class="name-title" id="val_qazi_ur"></span>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-common">نام قاضی و پتہ</span>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="3" style="text-align: center; vertical-align: middle; font-weight: 600; font-size: 11px; font-family: 'Cambria', serif;" id="val_qazi_addr">
+            </td>
+            <td class="c-label">
+              <span class="lbl-en-sub">Qazi Address</span>
+            </td>
+          </tr>
+
+          <!-- CONFESSION OF GROOM BLOCK -->
+          <tr>
+            <td colspan="4" class="conf-td">
+              <div class="conf-text-ur">
+                میں تصدیق کرتا ہوں کہ مذکورہ بالا وکیل اور گواہوں کی موجودگی میں (<span class="highlight-name" id="conf_bride_ur"></span>) کو مہر مذکور پر اپنے نکاح میں قبول کرتا ہوں۔
+              </div>
+              <div class="conf-text-en">
+                I hereby certify that I accept (<span class="highlight-name" id="conf_bride_en"></span>) in my marriage with the above mentioned Mehar.
+              </div>
+            </td>
+            <td class="c-label">
+              <span class="lbl-ur-common">اقرار دولہا</span>
+              <span class="lbl-en-sub">Confession of Groom</span>
+            </td>
+          </tr>
+        </table>
+
+        <!-- Footer Signatures -->
+        <table class="footer-table">
+          <tr>
+            <td class="groom-sign-box">
+              <div style="font-family: 'Noto Nastaliq Urdu', serif; font-size: 18px; font-weight: bold; line-height: 1.3;">دستخط دولہا</div>
+              <div style="font-size: 16px; font-weight: bold; text-transform: uppercase; margin-top: 10px;">Signature Groom</div>
+            </td>
+            <td class="qazi-stamp-box">
+              <div style="font-family: 'Noto Nastaliq Urdu', serif; font-size: 18px; font-weight: bold; line-height: 1.4;">مہر قاضی</div>
+              <div style="font-size: 16px; font-weight: bold; text-transform: uppercase;letter-spacing: 0.5px; margin-top: 10px;">Distt. Qazi Stamp</div>
+            </td>
+          </tr>
+        </table>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const googleWebAppUrl = "https://script.google.com/macros/s/AKfycbw4fbrksfFqzq7NvRdslgw6BzBl72E746Uzca6J4PWDzSByKwtaxZ5Awbx8PrfZqeA/exec";
+
+    function openModal() {
+      document.getElementById('initialModal').style.display = 'flex';
+      document.getElementById('idSearchInput').value = "";
+      document.getElementById('idSearchInput').focus();
+    }
+
+    function closeModal() {
+      document.getElementById('initialModal').style.display = 'none';
+    }
+
+    function cleanVal(v) {
+      if (v === undefined || v === null) return "";
+      let s = String(v).trim();
+      return (s === "-" || s === "undefined" || s === "null") ? "" : s;
+    }
+
+    function cleanDate(v) {
+      if (!v || v === "-") return "";
+      let s = String(v).trim();
+      if (s.includes("T")) s = s.split("T")[0];
+      if (s.includes("-")) {
+        let parts = s.split("-");
+        if (parts.length === 3 && parts[0].length === 4) {
+          return parts[2] + "/" + parts[1] + "/" + parts[0];
+        }
+      }
+      return s;
+    }
+
+    function formatTime(v) {
+      if (!v || v === "-") return "";
+      let s = String(v).trim();
+      if (s.includes("T")) {
+        let timePart = s.split("T")[1].split(".")[0];
+        let tParts = timePart.split(":");
+        let hrs = parseInt(tParts[0], 10);
+        let mins = tParts[1] || "00";
+        let ampm = hrs >= 12 ? 'PM' : 'AM';
+        hrs = hrs % 12 || 12;
+        let hrsStr = hrs < 10 ? "0" + hrs : hrs;
+        return `AT ${hrsStr}:${mins} ${ampm}`;
+      }
+      return `AT ${s}`;
+    }
+
+    function getDayOfWeek(dateStr) {
+      if (!dateStr || dateStr === "-") return "";
+      let s = String(dateStr).trim();
+      if (s.includes("T")) s = s.split("T")[0];
+      let dt;
+      if (s.includes("-")) {
+        let parts = s.split("-");
+        if (parts.length === 3 && parts[0].length === 4) {
+          dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        }
+      } else if (s.includes("/")) {
+        let parts = s.split("/");
+        if (parts.length === 3) {
+          dt = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+        }
+      } else {
+        dt = new Date(s);
+      }
+      if (dt && !isNaN(dt.getTime())) {
+        return `(${dt.toLocaleDateString('en-US', { weekday: 'long' })})`;
+      }
+      return "";
+    }
+
+    function triggerIdentitySearch() {
+      const searchVal = document.getElementById('idSearchInput').value.trim();
+      if (searchVal.length !== 12 || isNaN(searchVal)) {
+        alert("Kripya sahi 12-Digit ID Number enter karein.");
+        return;
+      }
+
+      const btn = document.getElementById('btnSearch');
+      btn.innerText = "Searching Realtime Sheet...";
+      btn.disabled = true;
+
+      fetch(`${googleWebAppUrl}?aadhaar=${encodeURIComponent(searchVal)}`)
+        .then(res => res.json())
+        .then(res => {
+          btn.innerText = "Search & Load";
+          btn.disabled = false;
+
+          if (res.status === "success" && res.data) {
+            populateCertificate(res.data);
+            closeModal();
+          } else {
+            alert("Record nahi mila! Check karein ki ye ID Number Sheet me maujood hai ya nahi.");
+          }
+        })
+        .catch(err => {
+          btn.innerText = "Search & Load";
+          btn.disabled = false;
+          alert("Network / Script Error: " + err);
+        });
+    }
+
+    // Dynamic Binding directly from Google Sheet
+    function populateCertificate(d) {
+      if (!d) return;
+
+      // 1. Meta / Dates / Venue (Single line, Left align)
+      document.getElementById('val_reg_no').innerText = cleanVal(d.field_1);
+      document.getElementById('val_place').innerText = cleanVal(d.field_4);
+      
+      let rawWeddingDate = cleanVal(d.field_2);
+      document.getElementById('val_date').innerText = cleanDate(rawWeddingDate);
+      document.getElementById('val_day').innerText = getDayOfWeek(rawWeddingDate);
+      
+      let rawNikahTime = cleanVal(d.field_5 || d.time || d.Time);
+      document.getElementById('val_time').innerText = formatTime(rawNikahTime);
+      
+      document.getElementById('val_date_hijri').innerText = cleanVal(d.field_3);
+
+      // 2. Groom Details
+      document.getElementById('val_groom_en').innerText = cleanVal(d.field_6);
+      let gFatherEn = cleanVal(d.field_9);
+      if (gFatherEn) {
+        if (!gFatherEn.toUpperCase().startsWith("SON OF")) {
+          gFatherEn = "SON OF " + gFatherEn;
+        }
+        document.getElementById('val_groom_father_en').innerText = gFatherEn;
+      } else {
+        document.getElementById('val_groom_father_en').innerText = "";
+      }
+
+      document.getElementById('val_groom_hi').innerText = cleanVal(d.field_7);
+      let gFatherHi = cleanVal(d.field_10);
+      if (gFatherHi) {
+        if (!gFatherHi.startsWith("पुत्र")) {
+          gFatherHi = "पुत्र " + gFatherHi;
+        }
+        document.getElementById('val_groom_father_hi').innerText = gFatherHi;
+      } else {
+        document.getElementById('val_groom_father_hi').innerText = "";
+      }
+
+      document.getElementById('val_groom_ur').innerText = cleanVal(d.field_8);
+      let gFatherUr = cleanVal(d.field_11);
+      if (gFatherUr) {
+        if (!gFatherUr.startsWith("ولد")) {
+          gFatherUr = "ولد " + gFatherUr;
+        }
+        document.getElementById('val_groom_father_ur').innerText = gFatherUr;
+      } else {
+        document.getElementById('val_groom_father_ur').innerText = "";
+      }
+
+      let gCasteEn = cleanVal(d.field_12);
+      let gCasteHi = cleanVal(d.field_13);
+      let gCasteUr = cleanVal(d.field_14);
+      let gCasteArr = [gCasteEn, gCasteHi, gCasteUr].filter(Boolean);
+      document.getElementById('val_groom_caste_text').innerText = gCasteArr.join(' / ');
+
+      document.getElementById('val_groom_dob').innerText = cleanDate(d.field_15);
+      document.getElementById('val_groom_aadhaar').innerText = cleanVal(d.field_20);
+      document.getElementById('val_groom_addr_en').innerText = cleanVal(d.field_17);
+      document.getElementById('val_groom_addr_hi').innerText = cleanVal(d.field_18);
+      document.getElementById('val_groom_addr_ur').innerText = cleanVal(d.field_19);
+
+      // 3. Bride Details
+      let bEn = cleanVal(d.field_21);
+      document.getElementById('val_bride_en').innerText = bEn;
+
+      let bFatherEn = cleanVal(d.field_24);
+      if (bFatherEn) {
+        if (!bFatherEn.toUpperCase().startsWith("DAUGHTER OF")) {
+          bFatherEn = "DAUGHTER OF " + bFatherEn;
+        }
+        document.getElementById('val_bride_father_en').innerText = bFatherEn;
+      } else {
+        document.getElementById('val_bride_father_en').innerText = "";
+      }
+
+      let bHi = cleanVal(d.field_22);
+      document.getElementById('val_bride_hi').innerText = bHi;
+
+      let bFatherHi = cleanVal(d.field_25);
+      if (bFatherHi) {
+        if (!bFatherHi.startsWith("पुत्री")) {
+          bFatherHi = "पुत्री " + bFatherHi;
+        }
+        document.getElementById('val_bride_father_hi').innerText = bFatherHi;
+      } else {
+        document.getElementById('val_bride_father_hi').innerText = "";
+      }
+
+      let bUr = cleanVal(d.field_23);
+      document.getElementById('val_bride_ur').innerText = bUr;
+
+      let bFatherUr = cleanVal(d.field_26);
+      if (bFatherUr) {
+        if (!bFatherUr.startsWith("بنت")) {
+          bFatherUr = "بنت " + bFatherUr;
+        }
+        document.getElementById('val_bride_father_ur').innerText = bFatherUr;
+      } else {
+        document.getElementById('val_bride_father_ur').innerText = "";
+      }
+
+      let bCasteEn = cleanVal(d.field_27);
+      let bCasteHi = cleanVal(d.field_28);
+      let bCasteUr = cleanVal(d.field_29);
+      let bCasteArr = [bCasteEn, bCasteHi, bCasteUr].filter(Boolean);
+      document.getElementById('val_bride_caste_text').innerText = bCasteArr.join(' / ');
+
+      document.getElementById('val_bride_dob').innerText = cleanDate(d.field_30);
+      document.getElementById('val_bride_aadhaar').innerText = cleanVal(d.field_35);
+      document.getElementById('val_bride_addr_en').innerText = cleanVal(d.field_32);
+      document.getElementById('val_bride_addr_hi').innerText = cleanVal(d.field_33);
+      document.getElementById('val_bride_addr_ur').innerText = cleanVal(d.field_34);
+
+      // 4. Advocate Details
+      document.getElementById('val_vakeel_en').innerText = cleanVal(d.field_36);
+      document.getElementById('val_vakeel_hi').innerText = cleanVal(d.field_37);
+      document.getElementById('val_vakeel_ur').innerText = cleanVal(d.field_38);
+      document.getElementById('val_vakeel_addr_en').innerText = cleanVal(d.field_39);
+      document.getElementById('val_vakeel_addr_hi').innerText = cleanVal(d.field_40);
+      document.getElementById('val_vakeel_addr_ur').innerText = cleanVal(d.field_41);
+
+      // 5. Witness 1
+      document.getElementById('val_w1_en').innerText = cleanVal(d.field_43);
+      document.getElementById('val_w1_hi').innerText = cleanVal(d.field_44);
+      document.getElementById('val_w1_ur').innerText = cleanVal(d.field_45);
+      document.getElementById('val_w1_addr_en').innerText = cleanVal(d.field_46);
+      document.getElementById('val_w1_addr_hi').innerText = cleanVal(d.field_47);
+      document.getElementById('val_w1_addr_ur').innerText = cleanVal(d.field_48);
+
+      // 6. Witness 2
+      document.getElementById('val_w2_en').innerText = cleanVal(d.field_50);
+      document.getElementById('val_w2_hi').innerText = cleanVal(d.field_51);
+      document.getElementById('val_w2_ur').innerText = cleanVal(d.field_52);
+      document.getElementById('val_w2_addr_en').innerText = cleanVal(d.field_53);
+      document.getElementById('val_w2_addr_hi').innerText = cleanVal(d.field_54);
+      document.getElementById('val_w2_addr_ur').innerText = cleanVal(d.field_55);
+
+      // 7. Mehar Details
+      let meharNum = cleanVal(d.field_57);
+      document.getElementById('val_mehar_display').innerText = meharNum ? `RS. ${meharNum}/-` : "";
+
+      let meharWords = cleanVal(d.field_58);
+      document.getElementById('val_mehar_words').innerText = meharWords ? String(meharWords).toUpperCase() : "";
+
+      // 8. Qazi Details (Address in single line)
+      document.getElementById('val_qazi_en').innerText = cleanVal(d.field_59);
+      document.getElementById('val_qazi_hi').innerText = cleanVal(d.field_60);
+      document.getElementById('val_qazi_ur').innerText = cleanVal(d.field_61);
+      document.getElementById('val_qazi_addr').innerText = cleanVal(d.field_62);
+
+      // 9. Confession (Dynamic Bride Name + Father's Name)
+      let brideFullUr = bFatherUr ? `${bUr} ${bFatherUr}` : bUr;
+      let brideFullEn = bFatherEn ? `${bEn} ${bFatherEn}` : bEn;
+
+      document.getElementById('conf_bride_ur').innerText = brideFullUr;
+      document.getElementById('conf_bride_en').innerText = brideFullEn.toUpperCase();
+    }
+
+    document.getElementById('idSearchInput').addEventListener("keyup", function(e) {
+      if (e.key === "Enter") triggerIdentitySearch();
+    });
+  </script>
+</body>
+</html>
