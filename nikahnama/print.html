@@ -376,7 +376,7 @@
 
     .conf-text-en {
       font-family: 'Cambria', serif;
-      font-size: 10px;
+      font-size: 14px;
       font-weight: bold;
       color: #000;
       margin-top: 3px;
@@ -398,8 +398,8 @@
     .footer-table td {
       border: 1.4px solid #000;
       padding: 6px 8px;
-      vertical-align: middle;
-      height: 88px;
+      vertical-align: top;
+      height: 135px;
     }
 
     .groom-sign-box {
@@ -410,6 +410,7 @@
     .qazi-stamp-box {
       width: 50%;
       text-align: right;
+	  : center;
     }
 
     /* Print Setup */
@@ -444,7 +445,7 @@
   <!-- Retrieval Modal -->
   <div class="modal-overlay" id="initialModal">
     <div class="modal-box">
-      <h3>AUF QAZI BOARD <br>*** DIGITAL NIKAH NAMA PORTAL ***</h3>
+      <h3>Nikah Nama Retrieval Portal</h3>
       <p>Enter Groom or Bride's 12-Digit ID Number</p>
       <input type="text" id="idSearchInput" class="modal-input" placeholder="Enter 12-Digit ID Number" maxlength="12">
       <div class="modal-btn-group">
@@ -457,7 +458,7 @@
   <!-- Screen Toolbar -->
   <div class="screen-toolbar">
     <button class="btn btn-new-search" onclick="openModal()">Search Another Entry</button>
-    <div style="font-weight: bold; font-size: 14px; color: #0f5132;">AUF QAZI BOARD *** DIGITAL NIKAH NAMA *** </div>
+    <div style="font-weight: bold; font-size: 14px; color: #0f5132;">AUF QAZI BOARD <br>*** DIGITAL NIKAH NAMA PORTAL ***</div>
     <button class="btn btn-print" onclick="window.print()">Print Nikahnama</button>
   </div>
 
@@ -485,6 +486,8 @@
               </div>
               <div class="vd-row">
                 <strong>WEDDING DATE (ENGLISH) : </strong><span class="vd-val" id="val_date"></span>
+                <span class="vd-val" id="val_day" style="margin-left: 5px;"></span>
+                <span class="vd-val" id="val_time" style="margin-left: 5px;"></span>
               </div>
               <div class="vd-row">
                 <strong>WEDDING DATE (HIJRI) : </strong><span class="hijri-font" id="val_date_hijri"></span>
@@ -734,12 +737,12 @@
         <table class="footer-table">
           <tr>
             <td class="groom-sign-box">
-              <div style="font-family: 'Noto Nastaliq Urdu', serif; font-size: 13px; font-weight: bold; line-height: 1.3;">دستخط دولہا</div>
-              <div style="font-size: 9px; font-weight: bold; text-transform: uppercase;">Signature Groom</div>
+              <div style="font-family: 'Noto Nastaliq Urdu', serif; font-size: 18px; font-weight: bold; line-height: 1.3;">دستخط دولہا</div>
+              <div style="font-size: 16px; font-weight: bold; text-transform: uppercase; margin-top: 10px;">Signature Groom</div>
             </td>
             <td class="qazi-stamp-box">
-              <div style="font-family: 'Noto Nastaliq Urdu', serif; font-size: 13px; font-weight: bold; line-height: 1.3;">مہر قاضی</div>
-              <div style="font-size: 9px; font-weight: bold; text-transform: uppercase;">Distt. Qazi Stamp</div>
+              <div style="font-family: 'Noto Nastaliq Urdu', serif; font-size: 18px; font-weight: bold; line-height: 1.4;">مہر قاضی</div>
+              <div style="font-size: 16px; font-weight: bold; text-transform: uppercase;letter-spacing: 0.5px; margin-top: 10px;">Distt. Qazi Stamp</div>
             </td>
           </tr>
         </table>
@@ -780,6 +783,51 @@
       return s;
     }
 
+    function formatTime(v) {
+	  if (!v || v === "-") return "";
+	  let s = String(v).trim();
+	  
+	  // Agar Google Apps Script se ISO String aayi
+	  if (s.includes("T")) {
+		let dt = new Date(s);
+		// 8 ghante (480 minutes) ka timezone offset manually fix karein
+		dt.setMinutes(dt.getMinutes() - 480);
+		
+		let hrs = dt.getUTCHours();
+		let mins = String(dt.getUTCMinutes()).padStart(2, '0');
+		let ampm = hrs >= 12 ? 'PM' : 'AM';
+		hrs = hrs % 12 || 12;
+		let hrsStr = String(hrs).padStart(2, '0');
+		return `AT ${hrsStr}:${mins} ${ampm}`;
+	  }
+	  
+	  return s.toUpperCase().startsWith("AT") ? s : `AT ${s}`;
+	}
+
+    function getDayOfWeek(dateStr) {
+      if (!dateStr || dateStr === "-") return "";
+      let s = String(dateStr).trim();
+      if (s.includes("T")) s = s.split("T")[0];
+      let dt;
+      if (s.includes("-")) {
+        let parts = s.split("-");
+        if (parts.length === 3 && parts[0].length === 4) {
+          dt = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+        }
+      } else if (s.includes("/")) {
+        let parts = s.split("/");
+        if (parts.length === 3) {
+          dt = new Date(parseInt(parts[2], 10), parseInt(parts[1], 10) - 1, parseInt(parts[0], 10));
+        }
+      } else {
+        dt = new Date(s);
+      }
+      if (dt && !isNaN(dt.getTime())) {
+        return `(${dt.toLocaleDateString('en-US', { weekday: 'long' })})`;
+      }
+      return "";
+    }
+
     function triggerIdentitySearch() {
       const searchVal = document.getElementById('idSearchInput').value.trim();
       if (searchVal.length !== 12 || isNaN(searchVal)) {
@@ -818,10 +866,18 @@
       // 1. Meta / Dates / Venue (Single line, Left align)
       document.getElementById('val_reg_no').innerText = cleanVal(d.field_1);
       document.getElementById('val_place').innerText = cleanVal(d.field_4);
-      document.getElementById('val_date').innerText = cleanDate(d.field_2);
+      
+      let rawWeddingDate = cleanVal(d.field_2);
+      document.getElementById('val_date').innerText = cleanDate(rawWeddingDate);
+      document.getElementById('val_day').innerText = getDayOfWeek(rawWeddingDate);
+      
+      let rawNikahTime = cleanVal(d.field_5 || d.time || d.Time);
+      document.getElementById('val_time').innerText = formatTime(rawNikahTime);
+	  
+	  
       document.getElementById('val_date_hijri').innerText = cleanVal(d.field_3);
 
-      // 2. Groom Details (Prefixing SON OF / पुत्र / ولد directly before Father's name)
+      // 2. Groom Details
       document.getElementById('val_groom_en').innerText = cleanVal(d.field_6);
       let gFatherEn = cleanVal(d.field_9);
       if (gFatherEn) {
@@ -862,13 +918,12 @@
       document.getElementById('val_groom_caste_text').innerText = gCasteArr.join(' / ');
 
       document.getElementById('val_groom_dob').innerText = cleanDate(d.field_15);
-	  document.getElementById('val_groom_aadhaar').innerText = cleanVal(d.field_20);
+      document.getElementById('val_groom_aadhaar').innerText = cleanVal(d.field_20);
       document.getElementById('val_groom_addr_en').innerText = cleanVal(d.field_17);
       document.getElementById('val_groom_addr_hi').innerText = cleanVal(d.field_18);
       document.getElementById('val_groom_addr_ur').innerText = cleanVal(d.field_19);
-	  
 
-      // 3. Bride Details (Prefixing DAUGHTER OF / पुत्री / بنت directly before Father's name)
+      // 3. Bride Details
       let bEn = cleanVal(d.field_21);
       document.getElementById('val_bride_en').innerText = bEn;
 
@@ -915,7 +970,7 @@
       document.getElementById('val_bride_caste_text').innerText = bCasteArr.join(' / ');
 
       document.getElementById('val_bride_dob').innerText = cleanDate(d.field_30);
-	  document.getElementById('val_bride_aadhaar').innerText = cleanVal(d.field_35);
+      document.getElementById('val_bride_aadhaar').innerText = cleanVal(d.field_35);
       document.getElementById('val_bride_addr_en').innerText = cleanVal(d.field_32);
       document.getElementById('val_bride_addr_hi').innerText = cleanVal(d.field_33);
       document.getElementById('val_bride_addr_ur').innerText = cleanVal(d.field_34);
