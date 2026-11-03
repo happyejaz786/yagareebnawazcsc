@@ -79,15 +79,6 @@ function combineDetails(prefix) {
     if (document.getElementById(hiddenMap[prefix].ur)) document.getElementById(hiddenMap[prefix].ur).value = resUr;
 }
 
-// 3. Auto City Suffix Engine (Shahjahanpur)
-function applyCitySuffix(elem) {
-    if (!elem || !elem.value.trim()) return;
-    const defaultCity = "";
-    if (!elem.value.toLowerCase().includes(defaultCity.toLowerCase())) {
-        elem.value = elem.value.trim() + " " + defaultCity;
-    }
-}
-
 // 4. Multi-Step Navigation Engine (Bulletproof Step Forwarding)
 function nextStep(current) {
     let currentStepElem = document.getElementById(`step-${current}`);
