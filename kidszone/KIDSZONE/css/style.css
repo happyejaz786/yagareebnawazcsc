@@ -1,0 +1,72 @@
+/* KidsZone Global Theme & Common Styles */
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Quicksand:wght@600;700;800&display=swap');
+
+body {
+  font-family: 'Quicksand', sans-serif;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  background-color: #fffbeb;
+  margin: 0;
+  padding: 0;
+  color: #1e293b;
+}
+
+.fun-font {
+  font-family: 'Fredoka One', cursive;
+  letter-spacing: 0.5px;
+}
+
+.btn-bounce {
+  transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+}
+
+.btn-bounce:active {
+  transform: scale(0.92);
+}
+
+.card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.12);
+}
+
+.sticker-pop {
+  animation: stickerPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes stickerPop {
+  0% { transform: scale(0.4) rotate(-15deg); opacity: 0; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.floating-anim {
+  animation: floatAnim 3s ease-in-out infinite;
+}
+
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.sleeping-subject {
+  filter: grayscale(85%) opacity(0.6);
+  pointer-events: none;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #fef3c7;
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #f59e0b;
+  border-radius: 8px;
+}

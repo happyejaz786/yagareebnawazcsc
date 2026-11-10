@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>English Phonics - KidsZone</title>
+  
+  <!-- Tailwind CSS & Confetti -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body class="bg-amber-50 text-slate-800 flex flex-col min-h-screen">
+
+  <!-- Top App Bar -->
+  <header class="app-header bg-white/95 backdrop-blur shadow-md px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+    <div class="flex items-center space-x-3">
+      <!-- Hamburger Menu Button -->
+      <button id="menuBtn" class="hamburger-btn p-2 rounded-2xl bg-amber-100 hover:bg-amber-200 text-amber-800 text-xl font-bold shadow-sm transition">
+        ☰
+      </button>
+      
+      <!-- Brand & Timer -->
+      <div class="flex items-center space-x-2 cursor-pointer" onclick="window.location.href='index.html'">
+        <div class="mascot-badge text-3xl">🐯</div>
+        <div>
+          <h1 class="brand-title fun-font text-amber-700 leading-tight">KidsZone</h1>
+          <p class="timer-badge text-xs font-bold text-slate-500" id="timerBadge">⏱️ 00:00</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Header Actions (Stars Counter & Sticker Book Button) -->
+    <div class="flex items-center space-x-2">
+      <div class="flex items-center bg-yellow-100 px-3 py-1 rounded-full border border-yellow-300 shadow-sm">
+        <span class="text-lg mr-1 animate-bounce">⭐</span>
+        <span id="starCounter" class="fun-font text-base text-yellow-800">20</span>
+      </div>
+      <button onclick="Rewards.openStickerBook()" class="bg-pink-100 hover:bg-pink-200 p-2 rounded-full border border-pink-300 text-xl shadow-sm btn-bounce" title="Meri Sticker Book">
+        🎁
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar Drawer Navigation (Off-canvas) -->
+  <div id="drawerOverlay" class="drawer-overlay hidden fixed inset-0 bg-slate-900/50 backdrop-blur-xs z-50 transition-opacity"></div>
+  <aside id="sidebarDrawer" class="sidebar-drawer fixed top-0 left-0 h-full w-72 bg-white shadow-2xl z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div>
+      <div class="p-4 border-b border-amber-100 flex items-center justify-between bg-amber-50">
+        <div class="flex items-center space-x-2">
+          <span class="text-3xl">🐯</span>
+          <span class="fun-font text-xl text-amber-700">KidsZone Menu</span>
+        </div>
+        <button id="closeDrawerBtn" class="text-2xl font-bold text-slate-500 hover:text-slate-800 p-1">✕</button>
+      </div>
+      <nav class="p-4 space-y-2">
+        <a href="index.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-2xl hover:bg-amber-50 text-slate-700 font-bold transition">
+          <span class="text-xl">🏠</span><span>Home Hub</span>
+        </a>
+        <a href="maths.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-2xl hover:bg-blue-50 text-slate-700 font-bold transition">
+          <span class="text-xl">🔢</span><span>Mathematics</span>
+        </a>
+        <a href="gk.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-2xl hover:bg-purple-50 text-slate-700 font-bold transition">
+          <span class="text-xl">🌍</span><span>General Knowledge</span>
+        </a>
+        <a href="english.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-2xl bg-rose-100 font-extrabold text-rose-800 transition">
+          <span class="text-xl">🔤</span><span>English & Phonics</span>
+        </a>
+        <a href="hindi.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-2xl hover:bg-orange-50 text-slate-700 font-bold transition">
+          <span class="text-xl">🇮🇳</span><span>Hindi Varnamala</span>
+        </a>
+        <a href="urdu.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-2xl hover:bg-emerald-50 text-slate-700 font-bold transition">
+          <span class="text-xl">🌙</span><span>Urdu Qaida</span>
+        </a>
+        <a href="science.html" class="w-full flex items-center space-x-3 px-3 py-2.5 rounded-2xl hover:bg-lime-50 text-slate-700 font-bold transition">
+          <span class="text-xl">🦁</span><span>Science Safari</span>
+        </a>
+      </nav>
+    </div>
+    <div class="p-4 border-t border-slate-100 bg-amber-50">
+      <button onclick="Rewards.openStickerBook(); App.closeDrawer();" class="w-full py-2.5 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-2xl shadow btn-bounce flex items-center justify-center space-x-2">
+        <span>📖</span><span>Meri Sticker Book</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-grow p-4 max-w-5xl mx-auto w-full pb-24 md:pb-8">
+    
+<div class="space-y-4">
+  <div class="flex items-center justify-between">
+    <a href="index.html" class="bg-white px-4 py-2 rounded-2xl shadow border-2 border-slate-200 fun-font text-slate-700 btn-bounce">← Home</a>
+    <h2 class="fun-font text-xl md:text-2xl text-rose-900">🔤 English & Phonics</h2>
+    <button onclick="App.speak('A to Z Alphabet aur pyare pyare 3 letter words seekhein!')" class="bg-yellow-200 p-2.5 rounded-2xl border-2 border-yellow-400 text-xl btn-bounce">🔊</button>
+  </div>
+
+  <!-- Activity Tabs -->
+  <div class="grid grid-cols-2 gap-3 max-w-sm mx-auto">
+    <button onclick="EnglishModule.initAlphabet()" class="p-2.5 bg-rose-100 hover:bg-rose-200 text-rose-900 rounded-2xl fun-font text-sm border-2 border-rose-300 btn-bounce">🔤 A to Z Phonics</button>
+    <button onclick="EnglishModule.initWords()" class="p-2.5 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-2xl fun-font text-sm border-2 border-amber-300 btn-bounce">🧩 3-Letter Words</button>
+  </div>
+
+  <div id="gameArena" class="game-arena-box w-full bg-white rounded-3xl shadow-xl border-4 border-rose-300 p-4 md:p-6 flex flex-col items-center justify-center min-h-[380px] relative">
+  </div>
+</div>
+
+  </main>
+
+  <!-- Mobile Bottom App Bar -->
+  <nav class="mobile-bottom-nav fixed bottom-0 left-0 right-0 bg-white border-t-2 border-amber-200 py-2 px-3 flex justify-around items-center z-40 md:hidden shadow-2xl">
+    <a href="index.html" class="bottom-nav-item flex flex-col items-center text-slate-600">
+      <span class="text-2xl">🏠</span>
+      <span class="text-[10px]">Home</span>
+    </a>
+    <a href="maths.html" class="bottom-nav-item flex flex-col items-center text-slate-600">
+      <span class="text-2xl">🔢</span>
+      <span class="text-[10px]">Maths</span>
+    </a>
+    <a href="gk.html" class="bottom-nav-item flex flex-col items-center text-slate-600">
+      <span class="text-2xl">🌍</span>
+      <span class="text-[10px]">GK</span>
+    </a>
+    <button onclick="Rewards.openStickerBook()" class="bottom-nav-item flex flex-col items-center text-slate-600 focus:text-pink-600">
+      <span class="text-2xl">🎁</span>
+      <span class="text-[10px]">Stickers</span>
+    </button>
+  </nav>
+
+  <!-- Scratch Card Pop-Up Modal -->
+  <div id="scratchModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-yellow-400 text-center shadow-2xl relative">
+      <button onclick="Rewards.closeScratchCard()" class="absolute top-3 right-3 text-xl font-bold bg-slate-100 rounded-full w-8 h-8 flex items-center justify-center">✕</button>
+      <h3 class="fun-font text-2xl text-amber-600 mb-1">Surprise Scratch Card! 🎉</h3>
+      <p class="text-xs font-bold text-slate-500 mb-4">Silver patti ko scratch karke apna inaam nikalein!</p>
+      
+      <div class="relative w-64 h-64 mx-auto rounded-2xl overflow-hidden border-4 border-dashed border-amber-300 bg-amber-50 shadow-inner flex items-center justify-center">
+        <!-- SVG Prize Behind -->
+        <div id="scratchPrize" class="absolute inset-0 flex flex-col items-center justify-center p-4 select-none">
+          <div id="prizeSvgContainer" class="w-28 h-28 mb-2 sticker-pop"></div>
+          <span id="prizeName" class="fun-font text-xl text-slate-800">Prize</span>
+          <span id="prizeDesc" class="text-xs font-bold text-emerald-600 mt-0.5">Unlocked! ⭐</span>
+        </div>
+        <!-- Canvas Overlay -->
+        <canvas id="scratchCanvas" width="260" height="260" class="absolute inset-0 cursor-pointer z-10"></canvas>
+      </div>
+
+      <button id="claimRewardBtn" onclick="Rewards.claimReward()" class="hidden mt-4 w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl fun-font text-base shadow btn-bounce">
+        Wah! Sticker Jama Karein ⭐
+      </button>
+    </div>
+  </div>
+
+  <!-- Sticker Book Modal -->
+  <div id="stickerModal" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-amber-50 rounded-3xl p-5 max-w-md w-full border-4 border-pink-400 shadow-2xl">
+      <div class="flex justify-between items-center mb-3">
+        <h3 class="fun-font text-2xl text-pink-600">Meri Sticker Book 📖</h3>
+        <button onclick="Rewards.closeStickerBook()" class="text-xl font-bold bg-white rounded-full w-8 h-8 border border-pink-200 shadow flex items-center justify-center">✕</button>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 p-3 bg-white rounded-2xl border-2 border-pink-200 max-h-[350px] overflow-y-auto" id="stickerItems"></div>
+      <p class="text-xs text-center text-slate-500 font-bold mt-3">Kisi bhi sticker par tap karke bada dekhein!</p>
+    </div>
+  </div>
+
+  <!-- Sticker Big Zoom Modal -->
+  <div id="stickerZoomModal" class="hidden fixed inset-0 bg-slate-900/75 backdrop-blur-md z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-sm w-full border-4 border-amber-400 text-center shadow-2xl sticker-pop relative">
+      <button onclick="Rewards.closeStickerZoomModal()" class="absolute top-3 right-3 text-xl font-bold bg-slate-100 hover:bg-slate-200 rounded-full w-9 h-9 flex items-center justify-center">✕</button>
+      <div id="zoomSvgContainer" class="w-44 h-44 mx-auto my-3 floating-anim"></div>
+      <h3 id="zoomTitle" class="fun-font text-2xl text-amber-700">Sticker Title</h3>
+      <p id="zoomSubtitle" class="fun-font text-lg text-emerald-600 mb-1"></p>
+      <p id="zoomDesc" class="text-xs font-bold text-slate-500 leading-relaxed"></p>
+      <button onclick="Rewards.closeStickerZoomModal()" class="mt-4 px-6 py-2.5 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl fun-font text-sm shadow btn-bounce">
+        Aage Badhein ⭐
+      </button>
+    </div>
+  </div>
+
+  <!-- 30-Minute Cooldown Modal -->
+  <div id="cooldownModal" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-md w-full border-4 border-amber-400 text-center shadow-2xl">
+      <div class="text-6xl mb-2">🐯 🏆 🎈</div>
+      <h3 class="fun-font text-2xl text-amber-600 mb-2">Shabash! 30 Minute Pure Hue!</h3>
+      <p class="text-slate-700 font-bold mb-5 leading-relaxed">
+        Aapne bohot shandar padhai ki! Ab thoda aaraam karein ya naya subject shuru karein!
+      </p>
+      <button onclick="App.confirmCooldownSwitch()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-2xl fun-font text-lg shadow btn-bounce">
+        Chalo Home Chalte Hain! 🚀
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/rewards.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/english.js"></script><script>window.onload = () => { App.init("english"); EnglishModule.initAlphabet(); };</script>
+</body>
+</html>
