@@ -1,0 +1,41 @@
+/* Dedicated Mobile App Styles & Bottom Navigation */
+@media (max-width: 768px) {
+  body {
+    padding-bottom: 74px; /* Space for sticky bottom navigation */
+  }
+
+  .app-header {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .brand-title {
+    font-size: 1.1rem !important;
+  }
+
+  .subject-card {
+    padding: 0.85rem !important;
+    border-radius: 1.25rem !important;
+  }
+
+  .game-arena-box {
+    min-height: 350px !important;
+    padding: 1rem !important;
+    border-radius: 1.5rem !important;
+  }
+
+  .mobile-bottom-nav {
+    display: flex !important;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .bottom-nav-item:active {
+    transform: scale(0.9);
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-bottom-nav {
+    display: none !important;
+  }
+}
